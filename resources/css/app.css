@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        /* --- WARNA DASAR (LIGHT MODE) --- */
+        --background: 210 25% 98%;
+        --foreground: 215 25% 15%;
+        --card: 0 0% 100%;
+        --card-foreground: 215 25% 15%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 215 25% 15%;
+
+        /* --- WARNA AKADEMIK --- */
+        /* Primary (Biru) */
+        --primary: 210 85% 45%;
+        --primary-foreground: 0 0% 100%;
+        --primary-light: 210 85% 65%;
+        --primary-dark: 210 85% 35%;
+
+        /* Secondary (Hijau) */
+        --secondary: 150 60% 50%;
+        --secondary-foreground: 0 0% 100%;
+        --secondary-light: 150 60% 70%;
+
+        /* Accent (Kuning/Emas) */
+        --accent: 45 85% 60%;
+        --accent-foreground: 215 25% 15%;
+
+        /* --- WARNA Fungsional --- */
+        --muted: 210 15% 95%;
+        --muted-foreground: 215 15% 45%;
+        --destructive: 0 75% 55%;
+        --destructive-foreground: 0 0% 100%;
+        --success: 150 60% 50%;
+        --success-foreground: 0 0% 100%;
+
+        /* --- Elemen UI --- */
+        --border: 210 20% 88%;
+        --input: 210 20% 92%;
+        --ring: 210 85% 45%;
+        --radius: 0.75rem;
+
+        /* --- GRADIENTS --- */
+        --gradient-primary: linear-gradient(
+            135deg,
+            hsl(210 85% 45%) 0%,
+            hsl(210 85% 35%) 100%
+        );
+        --gradient-secondary: linear-gradient(
+            135deg,
+            hsl(150 60% 50%) 0%,
+            hsl(150 60% 40%) 100%
+        );
+        --gradient-hero: linear-gradient(
+            135deg,
+            hsl(210 85% 45%) 0%,
+            hsl(180 60% 50%) 100%
+        );
+        --gradient-card: linear-gradient(
+            145deg,
+            hsl(0 0% 100%) 0%,
+            hsl(210 25% 98%) 100%
+        );
+
+        /* --- SHADOWS --- */
+        --shadow-soft: 0 4px 12px -4px hsl(210 15% 0% / 0.1);
+        --shadow-medium: 0 8px 25px -8px hsl(210 15% 0% / 0.15);
+        --shadow-strong: 0 12px 40px -12px hsl(210 15% 0% / 0.2);
+    }
+
+    .dark {
+        /* --- WARNA DASAR (DARK MODE) --- */
+        --background: 215 25% 12%;
+        --foreground: 210 15% 92%;
+        --card: 215 25% 15%;
+        --card-foreground: 210 15% 92%;
+        --popover: 215 25% 15%;
+        --popover-foreground: 210 15% 92%;
+
+        /* --- WARNA AKADEMIK (DARK MODE) --- */
+        --primary: 210 85% 55%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 150 60% 45%;
+        --secondary-foreground: 0 0% 100%;
+        --accent: 45 85% 65%;
+        --accent-foreground: 215 25% 12%;
+
+        /* --- WARNA Fungsional (DARK MODE) --- */
+        --muted: 215 15% 18%;
+        --muted-foreground: 210 15% 65%;
+        --destructive: 0 75% 50%;
+        --destructive-foreground: 0 0% 100%;
+
+        /* --- Elemen UI (DARK MODE) --- */
+        --border: 215 15% 25%;
+        --input: 215 15% 20%;
+        --ring: 210 85% 55%;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground font-sans antialiased;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-semibold tracking-tight;
+    }
+}
+
+@layer components {
+    .card-academic {
+        @apply bg-card border border-border rounded-xl p-6;
+        background: var(--gradient-card);
+        box-shadow: var(--shadow-soft);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card-academic:hover {
+        box-shadow: var(--shadow-medium);
+        transform: translateY(-2px);
+    }
+    .btn-academic {
+        @apply inline-flex items-center justify-center rounded-lg px-6 py-3 font-medium;
+        background: var(--gradient-primary);
+        color: hsl(var(--primary-foreground));
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-soft);
+    }
+    .btn-academic:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-medium);
+    }
+    .hero-gradient {
+        background: var(--gradient-hero);
+    }
+}
