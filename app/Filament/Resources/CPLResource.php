@@ -37,6 +37,11 @@ class CPLResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('bloom_level')
                     ->maxLength(255),
+                Forms\Components\ColorPicker::make('bg_color')
+                    ->label('Warna CPL')
+                    ->default('#16a34a') // warna hijau
+                    ->required(),
+
             ]);
     }
 

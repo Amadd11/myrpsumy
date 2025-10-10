@@ -37,9 +37,6 @@ class RPSController extends Controller
             ->where('slug', $courseSlug)
             ->firstOrFail();
 
-        $allCpls = Cpl::orderBy('code')->get();
-        $selectedCplIds = $course->cpls->pluck('id');
-
         // Ambil rencana pembelajaran berdasarkan course -> cpmk -> sub_cpmk
         $rencanas = Rencana::with('subCpmk.cpmk')
             ->whereHas('subCpmk.cpmk', function ($query) use ($course) {
@@ -60,6 +57,7 @@ class RPSController extends Controller
                 ];
             });
 
+
         return Inertia::render('CourseRPS', [
             'course' => [
                 'name' => $course->name,
@@ -67,8 +65,12 @@ class RPSController extends Controller
                 'sks' => $course->sks,
                 'semester' => 'Semester ' . $course->semester,
             ],
-            'allCpls' => $allCpls,
-            'selectedCplIds' => $selectedCplIds,
+            'allCpls' => CPL::orderBy('code')->get(), // semua CPL
+            'relatedCpls' => $course->cpls->map(fn($cpl) => [
+                'id' => $cpl->id,
+                'code' => $cpl->code,
+                'description' => $cpl->description,
+            ]),
             'initialCpmks' => $course->cpmks,
             'initialSubCpmks' => $course->cpmks->flatMap->subCpmks,
             'initialRencanas' => $rencanas,
