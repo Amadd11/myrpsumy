@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Badge } from "@/Components/ui/badge";
-import { Target, CheckCircle2 } from "lucide-react";
+import { Target, CheckCircle } from "lucide-react";
 
 interface Cpl {
     id: number;
@@ -70,33 +70,39 @@ const CplTab: FC<CplTabProps> = ({ allCpls, relatedCpls }) => {
                 </div>
 
                 {/* --- CPL Terpilih --- */}
-                <div className="pt-4 mt-4 border-t">
-                    <h3 className="mb-3 font-bold text-gray-800">
-                        CPL Terpilih untuk Mata Kuliah Ini ({relatedCpls.length}{" "}
-                        dari {allCpls.length})
-                    </h3>
+                {relatedCpls && relatedCpls.length > 0 ? (
+                    <div className="p-4 mt-6 border rounded-lg bg-primary/5 border-primary/20">
+                        <h4 className="mb-3 font-semibold text-primary">
+                            CPL Terpilih untuk Mata Kuliah Ini{" "}
+                            <span className="text-sm text-muted-foreground">
+                                ({relatedCpls.length} total)
+                            </span>
+                        </h4>
 
-                    {relatedCpls.length > 0 ? (
                         <div className="space-y-2">
                             {relatedCpls.map((cpl) => (
                                 <div
                                     key={cpl.id}
-                                    className="flex items-start gap-2"
+                                    className="flex items-start gap-2 text-sm"
                                 >
-                                    <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5" />
-                                    <p className="text-gray-700">
-                                        <strong>{cpl.code}</strong> –{" "}
-                                        {cpl.description}
-                                    </p>
+                                    <CheckCircle className="w-4 h-4 text-primary mt-0.5" />
+                                    <div>
+                                        <div className="font-medium text-gray-800">
+                                            {cpl.code} {cpl.title}
+                                        </div>
+                                        <div className="text-gray-600">
+                                            {cpl.description}
+                                        </div>
+                                    </div>
                                 </div>
                             ))}
                         </div>
-                    ) : (
-                        <p className="italic text-gray-500">
-                            Belum ada CPL yang terpilih untuk mata kuliah ini.
-                        </p>
-                    )}
-                </div>
+                    </div>
+                ) : (
+                    <p className="mt-6 text-sm italic text-gray-500">
+                        Belum ada CPL yang dipilih untuk mata kuliah ini.
+                    </p>
+                )}
             </CardContent>
         </Card>
     );

@@ -160,8 +160,6 @@ const CourseRPS = () => {
         useState<SubCpmk[]>(initialSubCpmks);
     const [bobotItems, setBobotItems] = useState<Bobot[]>(initialBobots || []);
 
-    // ... sisa fungsi generate Anda ...
-
     return (
         <Layout>
             <Head title={`RPS - ${course.name}`} />
@@ -217,11 +215,7 @@ const CourseRPS = () => {
                             />
                         </TabsContent>
                         <TabsContent value="cpmk">
-                            <CpmkTab
-                                cpmkItems={cpmkItems}
-                                setCpmkItems={setCpmkItems}
-                                onGenerateFromCpl={() => {}}
-                            />
+                            <CpmkTab cpmkItems={cpmkItems} allCpls={allCpls} />
                         </TabsContent>
                         <TabsContent value="subcpmk">
                             <SubCpmkTab
