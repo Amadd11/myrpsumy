@@ -19,7 +19,6 @@ class Cpmk extends Model
         'cpl_id',
         'title',
         'description',
-        'border_color',
         'bg_color',
     ];
 

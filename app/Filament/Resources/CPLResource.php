@@ -35,7 +35,8 @@ class CPLResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('bloom_level')
+                Forms\Components\TextInput::make('taksonomi')
+                    ->label('Taksonomi Bloom')
                     ->maxLength(255),
                 Forms\Components\ColorPicker::make('bg_color')
                     ->label('Warna CPL')
@@ -55,7 +56,7 @@ class CPLResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('bloom_level')
+                Tables\Columns\TextColumn::make('taksonomi')
                     ->searchable()
                     ->badge(),
                 Tables\Columns\TextColumn::make('created_at')

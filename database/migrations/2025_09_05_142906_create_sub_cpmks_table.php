@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('sub_cpmks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('cpmk_id')->constrained()->cascadeOnDelete();
-            $table->string('code'); // misalnya SUB1, SUB2
+            $table->string('title'); // misalnya SUB1, SUB2
             $table->text('description')->nullable();
-            $table->string('bloom_level')->nullable();
             $table->timestamps();
         });
     }

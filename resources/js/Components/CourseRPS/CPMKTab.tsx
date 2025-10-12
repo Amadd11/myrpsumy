@@ -9,8 +9,7 @@ export interface Cpmk {
     title: string;
     description: string;
     cpl_id?: number; // relasi ke CPL
-    borderColor?: string;
-    bgColor?: string;
+    bg_color: string;
 }
 
 export interface Cpl {
@@ -18,7 +17,7 @@ export interface Cpl {
     code: string;
     title: string;
     description: string;
-    bloom_level: string;
+    taksonomi: string;
     bg_color: string;
 }
 
@@ -89,10 +88,9 @@ const CpmkTab: FC<CpmkTabProps> = ({ cpmkItems, allCpls }) => {
                                 {cpmks.map((cpmk) => (
                                     <div
                                         key={cpmk.id}
-                                        className={`p-4 border-l-4 rounded-lg ${
-                                            cpmk.borderColor ||
-                                            "border-blue-400"
-                                        } ${cpmk.bgColor || "bg-blue-50"}`}
+                                        className={`p-4 border-l-4 rounded-lg ${"border-blue-400"} ${
+                                            cpmk.bg_color || "bg-blue-50"
+                                        }`}
                                     >
                                         <div className="flex flex-col gap-1">
                                             <div className="flex items-center gap-2">

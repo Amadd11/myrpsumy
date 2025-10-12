@@ -15,9 +15,8 @@ class SubCPMK extends Model
 
     protected $fillable = [
         'cpmk_id',
-        'code',
+        'title',
         'description',
-        'bloom_level',
     ];
 
     /**

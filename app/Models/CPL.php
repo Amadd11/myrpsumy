@@ -17,12 +17,17 @@ class CPL extends Model
         'code',
         'title',
         'description',
-        'bloom_level',
+        'taksonomi',
         'bg_color',
     ];
-    public function courses(): BelongsToMany
+    public function courses()
     {
-        return $this->belongsToMany(Course::class, 'course_cpl');
+        return $this->belongsToMany(
+            Course::class,
+            'course_cpl',
+            'cpl_id',
+            'course_id'
+        );
     }
 
     // Relasi ke CPMK

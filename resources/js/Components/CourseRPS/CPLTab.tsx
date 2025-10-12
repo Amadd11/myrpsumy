@@ -8,7 +8,7 @@ interface Cpl {
     code: string;
     title: string;
     description: string;
-    bloom_level: string;
+    taksonomi: string;
     bg_color: string;
 }
 
@@ -58,7 +58,7 @@ const CplTab: FC<CplTabProps> = ({ allCpls, relatedCpls }) => {
                                         variant="outline"
                                         className="text-yellow-800 bg-yellow-100 border-yellow-400"
                                     >
-                                        Taksonomi: {cpl.bloom_level}
+                                        Taksonomi: {cpl.taksonomi}
                                     </Badge>
                                 </div>
                                 <p className="mt-1 text-sm text-gray-700">

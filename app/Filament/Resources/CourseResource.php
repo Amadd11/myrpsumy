@@ -12,8 +12,11 @@ use Illuminate\Support\Str;
 use Filament\Resources\Resource;
 use RelationManagers\CPLsRelationManager;
 use App\Filament\Resources\CourseResource\Pages;
+use App\Filament\Resources\CourseResource\RelationManagers\BobotRelationManager;
 use App\Filament\Resources\CourseResource\RelationManagers\CPLsRelationManager as RelationManagersCPLsRelationManager;
 use App\Filament\Resources\CourseResource\RelationManagers\CPMKRelationManager;
+use App\Filament\Resources\CourseResource\RelationManagers\SubCpmksRelationManager as RelationManagersSubCpmksRelationManager;
+use App\Filament\Resources\CPMKResource\RelationManagers\SubCpmksRelationManager;
 use App\Models\CPL;
 
 class CourseResource extends Resource
@@ -61,7 +64,8 @@ class CourseResource extends Resource
                     ->numeric()
                     ->required()
                     ->placeholder('contoh: 1'),
-
+                Forms\Components\Textarea::make('description')
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('penanggung_jawab')
                     ->label('Penanggung Jawab')
                     ->maxLength(255)
@@ -77,7 +81,7 @@ class CourseResource extends Resource
                         Forms\Components\CheckboxList::make('cpls') // Nama relasi harus sama dengan nama metode di Model Course
                             ->relationship('cpls', 'code') // 'cpls' adalah nama relasi, 'code' adalah kolom yang ingin ditampilkan
                             ->options(
-                                CPL::all()->pluck('description', 'id')->toArray() // Opsi checkbox diambil dari semua CPL yang ada
+                                CPL::all()->pluck('code', 'id')->toArray() // Opsi checkbox diambil dari semua CPL yang ada
                             )
                             ->columns(2)
                             ->helperText('Pilih satu atau lebih CPL yang sesuai.')
@@ -148,6 +152,8 @@ class CourseResource extends Resource
             // Contoh nanti bisa tambah Relation Manager: CPMK, CPL, dll.
             RelationManagersCPLsRelationManager::class,
             CPMKRelationManager::class,
+            RelationManagersSubCpmksRelationManager::class,
+            BobotRelationManager::class,
         ];
     }
 

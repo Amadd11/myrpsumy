@@ -41,10 +41,6 @@ class SubCpmkResource extends Resource
                             ->required()
                             ->maxLength(255),
 
-                        Forms\Components\TextInput::make('bloom_level')
-                            ->maxLength(255)
-                            ->helperText('Contoh: C2, C3, P4'),
-
                         Forms\Components\Textarea::make('description')
                             ->columnSpanFull(),
                     ])->columns(2),

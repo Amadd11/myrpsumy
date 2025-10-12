@@ -16,6 +16,7 @@ class Course extends Model
         'name',
         'slug',
         'code',
+        'deskripsi',
         'sks',
         'semester',
         'penanggung_jawab',
@@ -42,6 +43,18 @@ class Course extends Model
             'course_cpl',    // Nama tabel pivot
             'course_id',     // Foreign key di pivot untuk model ini (Course)
             'cpl_id'         // Foreign key di pivot untuk model tujuan (Cpl)
+        );
+    }
+
+    public function subCpmks()
+    {
+        return $this->hasManyThrough(
+            SubCPMK::class,
+            Cpmk::class,
+            'course_id', // Foreign key di tabel cpmks yang mengarah ke courses
+            'cpmk_id',   // Foreign key di tabel sub_cpmks yang mengarah ke cpmks
+            'id',        // Local key di tabel courses
+            'id'         // Local key di tabel cpmks
         );
     }
 

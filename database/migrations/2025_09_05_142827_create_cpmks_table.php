@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('cpl_id')->nullable()->constrained()->nullOnDelete();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('border_color')->nullable();
             $table->string('bg_color')->nullable();
             $table->timestamps();
         });

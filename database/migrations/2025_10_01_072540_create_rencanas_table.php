@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('rencanas', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('course_id')->constrained()->onDelete('cascade');
             $table->foreignId('sub_cpmk_id')->unique()->constrained()->onDelete('cascade');
             $table->unsignedTinyInteger('week'); // Minggu ke-
             $table->text('materi_pembelajaran')->nullable(); // Materi Pembelajaran
             $table->string('metode')->nullable(); // Metode (Offline)
             $table->string('pengalaman_belajar')->nullable(); // Pengalaman Belajar (Online)
-            $table->string('waktu')->default('3 x 50 menit'); // Waktu
+            $table->string('waktu')->nullable(); // Waktu
             $table->timestamps();
         });
     }

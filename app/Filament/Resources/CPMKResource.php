@@ -107,7 +107,6 @@ class CPMKResource extends Resource
     public static function getRelations(): array
     {
         return [
-            SubCpmksRelationManager::class,
         ];
     }
 

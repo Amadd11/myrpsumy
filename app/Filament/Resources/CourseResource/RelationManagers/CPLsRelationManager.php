@@ -14,6 +14,10 @@ class CplsRelationManager extends RelationManager
 {
     protected static string $relationship = 'cpls';
 
+    protected static ?string $navigationLabel = 'CPL';
+    protected static ?string $title = 'CPL';
+    protected static ?string $pluralLabel = 'CPL';
+
     public function form(Form $form): Form
     {
         return $form
@@ -24,6 +28,14 @@ class CplsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Textarea::make('description')
+                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('bloom_level')
+                    ->maxLength(255),
+                Forms\Components\ColorPicker::make('bg_color')
+                    ->label('Warna CPL')
+                    ->default('#16a34a') // warna hijau
+                    ->required(),
             ]);
     }
 
@@ -32,21 +44,33 @@ class CplsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('code')
             ->columns([
-                Tables\Columns\TextColumn::make('code')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('title')->searchable(),
-                Tables\Columns\TextColumn::make('bloom_level')->badge(),
+                Tables\Columns\TextColumn::make('code')
+                    ->label('Kode')
+                    ->sortable()
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Judul CPL')
+                    ->wrap()
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('bloom_level')
+                    ->searchable()
+                    ->badge(),
             ])
             ->headerActions([
-                // Tombol untuk menghubungkan CPL yang sudah ada
-                Tables\Actions\AttachAction::make(),
+                // Tambahkan CPL yang sudah ada ke Course
+                // Tables\Actions\AttachAction::make()
+                //     ->label('Hubungkan CPL'),
             ])
             ->actions([
-                // Tombol untuk melepas hubungan CPL
-                Tables\Actions\DetachAction::make(),
+                Tables\Actions\DetachAction::make()
+                    ->label('Lepas CPL'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DetachBulkAction::make(),
+                    Tables\Actions\DetachBulkAction::make()
+                        ->label('Lepas Terpilih'),
                 ]),
             ]);
     }

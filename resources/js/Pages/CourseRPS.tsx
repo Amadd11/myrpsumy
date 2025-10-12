@@ -20,6 +20,7 @@ interface Course {
     id: number;
     name: string;
     code: string;
+    deskripsi: string;
     sks: number;
     semester: string;
 }
@@ -28,15 +29,14 @@ interface Cpl {
     code: string;
     title: string;
     description: string;
-    bloom_level: string;
+    taksonomi: string;
     bg_color: string;
 }
 interface Cpmk {
     id: number;
     title: string;
     description: string;
-    borderColor: string;
-    bgColor: string;
+    bg_color: string;
     relatedCpl?: string;
 }
 interface Rencana {
@@ -58,8 +58,8 @@ interface SubCpmk {
     id: number;
     code: string;
     description: string;
-    relatedCpmk: string;
-    bloomLevel: string;
+    relatedCpmk?: string; // boleh undefined biar aman
+    cpmk_id?: number;
 }
 type PageProps = {
     course: Course;
@@ -220,9 +220,7 @@ const CourseRPS = () => {
                         <TabsContent value="subcpmk">
                             <SubCpmkTab
                                 subCpmkItems={subCpmkItems}
-                                setSubCpmkItems={setSubCpmkItems}
                                 cpmkItems={cpmkItems}
-                                onGenerateFromCpmk={() => {}}
                             />
                         </TabsContent>
                         <TabsContent value="rencana">

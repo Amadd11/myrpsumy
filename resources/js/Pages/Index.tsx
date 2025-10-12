@@ -92,7 +92,6 @@ const Index = () => {
 
     return (
         <>
-            <Head title="My RPS - Beranda" />
             <Layout>
                 {/* Hero Section */}
                 <section className="text-white hero-gradient">

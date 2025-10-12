@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('code'); // CPL1, CPL2, dst
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('bloom_level')->nullable();
+            $table->string('taksonomi')->nullable();
             $table->string('bg_color')->nullable();
             $table->timestamps();
         });

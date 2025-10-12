@@ -141,8 +141,7 @@ const semesterData: Semester[] = [
 const Kurikulum = () => {
     return (
         <>
-            <Head title="Kurikulum - Prodi MARS UMY" />
-
+            <Head title="Kurikulum" />
             {/* Header Section */}
             <section className="text-white bg-gradient-to-r from-blue-600 to-cyan-500">
                 <div className="container px-6 py-12 mx-auto">

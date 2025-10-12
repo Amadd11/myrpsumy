@@ -11,6 +11,9 @@ use Filament\Tables\Table;
 class CPMKRelationManager extends RelationManager
 {
     protected static string $relationship = 'cpmks';
+    protected static ?string $navigationLabel = 'CPMK';
+    protected static ?string $title = 'CPMK';
+    protected static ?string $pluralLabel = 'CPMK';
 
     public function form(Form $form): Form
     {
