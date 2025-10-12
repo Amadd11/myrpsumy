@@ -58,6 +58,7 @@ class RPSController extends Controller
             });
 
 
+
         return Inertia::render('CourseRPS', [
             'course' => [
                 'name' => $course->name,
@@ -71,6 +72,8 @@ class RPSController extends Controller
                 'code' => $cpl->code,
                 'description' => $cpl->description,
             ]),
+            'evaluasi' => $course->evaluasi,
+            'tugas' => $course->tugas,
             'initialCpmks' => $course->cpmks,
             'initialSubCpmks' => $course->cpmks->flatMap->subCpmks,
             'initialRencanas' => $rencanas,

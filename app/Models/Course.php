@@ -31,9 +31,29 @@ class Course extends Model
     {
         return $this->hasMany(CPMK::class);
     }
-    public function bobots()
+
+    public function evaluasi()
+    {
+        return $this->hasMany(Evaluasi::class);
+    }
+    public function bobot()
     {
         return $this->hasMany(Bobot::class);
+    }
+
+    public function tugas()
+    {
+        return $this->hasMany(Tugas::class);
+    }
+
+    public function rencana()
+    {
+        return $this->hasMany(Rencana::class);
+    }
+
+    public function referensi()
+    {
+        return $this->hasMany(Referensi::class);
     }
 
     public function cpls(): BelongsToMany

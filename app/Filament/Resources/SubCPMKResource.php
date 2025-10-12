@@ -37,10 +37,9 @@ class SubCpmkResource extends Resource
                             ->preload()
                             ->required(),
 
-                        Forms\Components\TextInput::make('code')
+                        Forms\Components\TextInput::make('title')
                             ->required()
                             ->maxLength(255),
-
                         Forms\Components\Textarea::make('description')
                             ->columnSpanFull(),
                     ])->columns(2),
@@ -57,11 +56,7 @@ class SubCpmkResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('code')
-                    ->searchable(),
-
-                Tables\Columns\TextColumn::make('bloom_level')
-                    ->badge()
+                Tables\Columns\TextColumn::make('title')
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('created_at')

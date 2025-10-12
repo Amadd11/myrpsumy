@@ -10,7 +10,7 @@ use Filament\Tables\Table;
 
 class BobotRelationManager extends RelationManager
 {
-    protected static string $relationship = 'bobots'; // Pastikan relasi di model Course bernama bobots()
+    protected static string $relationship = 'bobot'; // Pastikan relasi di model Course bernama bobots()
     protected static ?string $navigationLabel = 'Bobot';
     protected static ?string $title = 'Bobot';
     protected static ?string $pluralLabel = 'Bobot';

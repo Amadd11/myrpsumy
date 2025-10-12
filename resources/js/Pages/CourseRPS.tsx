@@ -14,6 +14,8 @@ import CpmkTab from "@/Components/CourseRPS/CPMKTab";
 import SubCpmkTab from "@/Components/CourseRPS/SubCPMKTab";
 import RencanaTab from "@/Components/CourseRPS/RencanaTab";
 import BobotTab from "@/Components/CourseRPS/BobotTab";
+import EvaluasiTab from "@/Components/CourseRPS/EvaluasiTab";
+import TugasTab from "@/Components/CourseRPS/TugasTab";
 
 // --- Tipe Data ---
 interface Course {
@@ -56,15 +58,30 @@ interface Bobot {
 }
 interface SubCpmk {
     id: number;
-    code: string;
+    title: string;
     description: string;
     relatedCpmk?: string; // boleh undefined biar aman
     cpmk_id?: number;
+}
+interface Evaluasi {
+    id: number;
+    komponen_penilaian: string;
+    teknik_penilaian: string;
+    kriteria_penilaian: string;
+    waktu_pelaksanaan: string;
+    bobot: number;
+}
+interface Tugas {
+    id: number;
+    tugas: string;
+    created_at: string;
 }
 type PageProps = {
     course: Course;
     relatedCpls: Cpl[];
     allCpls: Cpl[];
+    evaluasi: Evaluasi[];
+    tugas: Tugas[];
     initialCpmks: Cpmk[];
     initialSubCpmks: SubCpmk[];
     initialRencanas: Rencana[];
@@ -141,6 +158,8 @@ const CourseRPS = () => {
     const {
         course,
         allCpls,
+        evaluasi,
+        tugas,
         relatedCpls,
         initialCpmks,
         initialSubCpmks,
@@ -231,8 +250,15 @@ const CourseRPS = () => {
                                 subCpmkItems={subCpmkItems}
                             />
                         </TabsContent>
+
                         <TabsContent value="bobot">
                             <BobotTab bobotItems={bobotItems} />
+                        </TabsContent>
+                        <TabsContent value="evaluasi">
+                            <EvaluasiTab evaluasi={evaluasi} />
+                        </TabsContent>
+                        <TabsContent value="tugas">
+                            <TugasTab tugas={tugas} />
                         </TabsContent>
                     </Tabs>
                 </div>

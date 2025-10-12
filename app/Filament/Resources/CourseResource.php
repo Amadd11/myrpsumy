@@ -15,7 +15,11 @@ use App\Filament\Resources\CourseResource\Pages;
 use App\Filament\Resources\CourseResource\RelationManagers\BobotRelationManager;
 use App\Filament\Resources\CourseResource\RelationManagers\CPLsRelationManager as RelationManagersCPLsRelationManager;
 use App\Filament\Resources\CourseResource\RelationManagers\CPMKRelationManager;
+use App\Filament\Resources\CourseResource\RelationManagers\EvaluasisRelationManager;
+use App\Filament\Resources\CourseResource\RelationManagers\ReferensisRelationManager;
+use App\Filament\Resources\CourseResource\RelationManagers\RencanasRelationManager;
 use App\Filament\Resources\CourseResource\RelationManagers\SubCpmksRelationManager as RelationManagersSubCpmksRelationManager;
+use App\Filament\Resources\CourseResource\RelationManagers\TugasesRelationManager;
 use App\Filament\Resources\CPMKResource\RelationManagers\SubCpmksRelationManager;
 use App\Models\CPL;
 
@@ -64,6 +68,7 @@ class CourseResource extends Resource
                     ->numeric()
                     ->required()
                     ->placeholder('contoh: 1'),
+
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('penanggung_jawab')
@@ -153,7 +158,11 @@ class CourseResource extends Resource
             RelationManagersCPLsRelationManager::class,
             CPMKRelationManager::class,
             RelationManagersSubCpmksRelationManager::class,
+            RencanasRelationManager::class,
             BobotRelationManager::class,
+            TugasesRelationManager::class,
+            EvaluasisRelationManager::class,
+            ReferensisRelationManager::class,
         ];
     }
 

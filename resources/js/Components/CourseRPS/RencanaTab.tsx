@@ -25,7 +25,7 @@ interface Rencana {
 
 interface SubCpmk {
     id: number;
-    code: string;
+    title: string;
     description: string;
 }
 
@@ -109,7 +109,7 @@ const RencanaTab: FC<RencanaTabProps> = ({
                                                 </TableCell>
                                                 <TableCell className="font-medium text-purple-800">
                                                     {subCpmk
-                                                        ? `${subCpmk.code} - ${subCpmk.description}`
+                                                        ? `${subCpmk.title} `
                                                         : "-"}
                                                 </TableCell>
                                                 <TableCell>

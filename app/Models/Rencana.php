@@ -15,6 +15,7 @@ class Rencana extends Model
 
     protected $fillable = [
         'sub_cpmk_id',
+        'course_id',
         'week',
         'materi_pembelajaran',
         'metode',

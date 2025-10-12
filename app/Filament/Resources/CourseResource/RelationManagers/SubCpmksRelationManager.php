@@ -32,11 +32,9 @@ class SubCpmksRelationManager extends RelationManager
                     })
                     ->required()
                     ->searchable(),
-                Forms\Components\TextInput::make('code')
+                Forms\Components\TextInput::make('title')
                     ->label('Kode Sub-CPMK')
                     ->required(),
-                Forms\Components\TextInput::make('bloom_level')
-                    ->label('Tingkat Taksonomi Bloom'),
                 Forms\Components\Textarea::make('description')
                     ->label('Deskripsi')
                     ->rows(2),
@@ -48,8 +46,7 @@ class SubCpmksRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('cpmk.title')->label('CPMK Induk'),
-                Tables\Columns\TextColumn::make('code')->label('Kode Sub-CPMK'),
-                Tables\Columns\TextColumn::make('bloom_level')->label('Taksonomi Bloom'),
+                Tables\Columns\TextColumn::make('title')->label('Kode Sub-CPMK'),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),

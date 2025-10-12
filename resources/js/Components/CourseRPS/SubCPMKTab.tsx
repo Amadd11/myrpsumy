@@ -5,7 +5,7 @@ import { Badge } from "@/Components/ui/badge";
 
 interface SubCpmk {
     id: number;
-    code: string;
+    title: string;
     description: string;
     relatedCpmk?: string; // boleh undefined biar aman
     cpmk_id?: number;
@@ -81,15 +81,14 @@ const SubCpmkTab: FC<SubCpmkTabProps> = ({ subCpmkItems, cpmkItems }) => {
                                     >
                                         <div className="flex flex-col gap-1">
                                             <span className="font-medium text-gray-800">
-                                                {sub.code}
+                                                {sub.title}
                                             </span>
                                             <p className="text-sm text-gray-700">
                                                 {sub.description}
                                             </p>
                                             <span className="text-xs text-gray-500">
                                                 Taksonomi Bloom:{" "}
-                                                <span className="font-medium text-blue-700">
-                                                </span>
+                                                <span className="font-medium text-blue-700"></span>
                                             </span>
                                         </div>
                                     </div>
