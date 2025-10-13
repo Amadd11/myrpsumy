@@ -18,6 +18,8 @@ class BobotResource extends Resource
     protected static ?string $model = Bobot::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Bobot';
+    protected static ?string $pluralModelLabel = 'Bobot';
 
     public static function form(Form $form): Form
     {

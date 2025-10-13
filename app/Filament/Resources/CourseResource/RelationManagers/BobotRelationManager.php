@@ -11,8 +11,9 @@ use Filament\Tables\Table;
 class BobotRelationManager extends RelationManager
 {
     protected static string $relationship = 'bobot'; // Pastikan relasi di model Course bernama bobots()
-    protected static ?string $navigationLabel = 'Bobot';
+
     protected static ?string $title = 'Bobot';
+    protected static ?string $modelLabel = 'Bobot';
     protected static ?string $pluralLabel = 'Bobot';
 
     public function form(Form $form): Form
@@ -24,7 +25,7 @@ class BobotRelationManager extends RelationManager
                     ->required()
                     ->maxLength(255),
 
-                Forms\Components\Textarea::make('description')
+                Forms\Components\RichEditor::make('description')
                     ->label('Deskripsi')
                     ->columnSpanFull(),
 
@@ -41,20 +42,16 @@ class BobotRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Nama Bobot')
-                    ->searchable(),
-
+                    ->label('Nama Bobot'),
                 Tables\Columns\TextColumn::make('bobot')
                     ->label('Bobot (%)')
                     ->sortable()
                     ->numeric(),
-
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
                     ->dateTime('d M Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Diubah')
                     ->dateTime('d M Y H:i')

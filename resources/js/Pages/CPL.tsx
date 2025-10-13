@@ -5,7 +5,7 @@ import { Head, Link } from "@inertiajs/react";
 const CapaianPembelajaran = () => {
     return (
         <Layout>
-            <div className="container px-4 py-8 mx-auto">
+            <div className="container px-4 py-6 mx-auto md:px-8 md:py-8 lg:px-16 lg:py-12">
                 <div className="flex items-center gap-4 mb-8">
                     <Link
                         href="/"
@@ -22,7 +22,6 @@ const CapaianPembelajaran = () => {
                         </h1>
                     </div>
                 </div>
-
                 <div className="max-w-4xl card-academic">
                     <div className="prose prose-lg max-w-none">
                         <p className="mb-6 text-muted-foreground">

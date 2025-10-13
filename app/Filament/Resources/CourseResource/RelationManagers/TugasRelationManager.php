@@ -13,14 +13,15 @@ class TugasesRelationManager extends RelationManager
     protected static string $relationship = 'tugas';
 
     protected static ?string $title = 'Tugas & Ujian';
+    protected static ?string $modelLabel = 'Tugas & Ujian';
+    protected static ?string $pluralModelLabel = 'Tugas & Ujian';
 
     public function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\Textarea::make('tugas')
+            Forms\Components\RichEditor::make('tugas')
                 ->label('Deskripsi Tugas / Ujian')
                 ->required()
-                ->rows(3)
                 ->columnSpanFull(),
         ]);
     }

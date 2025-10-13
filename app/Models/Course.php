@@ -21,7 +21,6 @@ class Course extends Model
         'semester',
         'penanggung_jawab',
         'tahun_ajaran',
-        'icon_name',
     ];
 
     /**

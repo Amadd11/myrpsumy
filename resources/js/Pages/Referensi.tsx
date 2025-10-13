@@ -5,7 +5,7 @@ import { BookMarked, ArrowLeft } from "lucide-react";
 const Referensi = () => {
     return (
         <Layout>
-            <div className="container px-16 py-8 mx-auto">
+            <div className="container px-4 py-6 mx-auto md:px-8 md:py-8 lg:px-16 lg:py-12">
                 <div className="flex items-center gap-4 mb-8">
                     <Link
                         href="/"

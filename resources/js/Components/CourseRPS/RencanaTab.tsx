@@ -10,9 +10,6 @@ import {
 } from "@/Components/ui/table";
 import { BookOpen, Calendar, GitBranch, Target } from "lucide-react";
 
-// =======================
-// Interfaces
-// =======================
 interface Rencana {
     id: number;
     week: number;
@@ -44,11 +41,13 @@ const RencanaTab: FC<RencanaTabProps> = ({
     subCpmkItems,
 }) => {
     return (
-        <Card className="shadow-md">
-            <CardHeader>
+        <Card className="border shadow-xl border-gray-200/50 bg-white/80 rounded-2xl">
+            <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-3 text-gray-800">
-                    <Calendar className="w-6 h-6 text-indigo-600" />
-                    <span className="text-xl font-bold">
+                    <div className="p-2 text-white shadow-lg bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl">
+                        <Calendar className="w-5 h-5" />
+                    </div>
+                    <span className="text-xl font-bold tracking-tight">
                         Rencana Kegiatan Pembelajaran
                     </span>
                 </CardTitle>
@@ -146,101 +145,84 @@ const RencanaTab: FC<RencanaTabProps> = ({
                     </div>
                 </div>
 
-                {/* =======================
-                    METODE PEMBELAJARAN
-                ======================= */}
-                <div className="p-6 rounded-lg bg-gradient-to-r from-green-50 to-blue-50">
-                    <h3 className="mb-4 text-lg font-bold text-green-900">
+                {/* Metode Pembelajaran */}
+                <div className="p-6 border bg-gradient-to-r from-green-50 to-blue-50 border-green-200/60 rounded-xl">
+                    <h3 className="flex items-center gap-2 mb-6 text-lg font-bold text-green-900">
+                        <BookOpen className="w-5 h-5" />
                         Metode Pembelajaran
                     </h3>
 
                     <div className="grid gap-4 md:grid-cols-2">
-                        <div className="space-y-3">
-                            {[
-                                {
-                                    title: "1. Ceramah Interaktif",
-                                    color: "green",
-                                    desc: "Penyampaian materi dengan melibatkan partisipasi aktif mahasiswa melalui tanya jawab dan diskusi.",
-                                },
-                                {
-                                    title: "2. Diskusi Kelompok",
-                                    color: "blue",
-                                    desc: "Pembahasan kasus dan permasalahan dalam kelompok kecil untuk mengembangkan kemampuan analisis.",
-                                },
-                                {
-                                    title: "3. Studi Kasus",
-                                    color: "purple",
-                                    desc: "Analisis kasus nyata untuk mengaplikasikan teori dalam situasi praktis.",
-                                },
-                            ].map((m, i) => (
-                                <div
-                                    key={i}
-                                    className={`p-4 bg-white border-l-4 border-${m.color}-500 rounded-lg shadow-sm`}
+                        {[
+                            {
+                                title: "1. Ceramah Interaktif",
+                                border: "border-green-400",
+                                text: "text-green-800",
+                                desc: "Penyampaian materi dengan melibatkan partisipasi aktif mahasiswa melalui tanya jawab dan diskusi.",
+                            },
+                            {
+                                title: "2. Diskusi Kelompok",
+                                border: "border-blue-400",
+                                text: "text-blue-800",
+                                desc: "Pembahasan kasus dan permasalahan dalam kelompok kecil untuk mengembangkan kemampuan analisis.",
+                            },
+                            {
+                                title: "3. Studi Kasus",
+                                border: "border-purple-400",
+                                text: "text-purple-800",
+                                desc: "Analisis kasus nyata untuk mengaplikasikan teori dalam situasi praktis.",
+                            },
+                            {
+                                title: "4. Presentasi",
+                                border: "border-orange-400",
+                                text: "text-orange-800",
+                                desc: "Penyajian hasil analisis dan penelitian oleh mahasiswa untuk melatih kemampuan komunikasi.",
+                            },
+                            {
+                                title: "5. Praktik Lapangan",
+                                border: "border-red-400",
+                                text: "text-red-800",
+                                desc: "Observasi dan praktik langsung di lapangan untuk mengaplikasikan teori.",
+                            },
+                            {
+                                title: "6. E-Learning",
+                                border: "border-indigo-400",
+                                text: "text-indigo-800",
+                                desc: "Pembelajaran daring melalui platform digital untuk fleksibilitas waktu dan akses.",
+                            },
+                        ].map((m, i) => (
+                            <div
+                                key={i}
+                                className={`group p-5 bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 border-l-4 ${m.border}`}
+                            >
+                                <h4
+                                    className={`mb-3 font-semibold leading-tight ${m.text}`}
                                 >
-                                    <h4
-                                        className={`mb-2 font-semibold text-${m.color}-800`}
-                                    >
-                                        {m.title}
-                                    </h4>
-                                    <p className="text-sm text-gray-700">
-                                        {m.desc}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="space-y-3">
-                            {[
-                                {
-                                    title: "4. Presentasi",
-                                    color: "orange",
-                                    desc: "Penyajian hasil analisis dan penelitian oleh mahasiswa untuk melatih kemampuan komunikasi.",
-                                },
-                                {
-                                    title: "5. Praktik Lapangan",
-                                    color: "red",
-                                    desc: "Observasi dan praktik langsung di lapangan untuk mengaplikasikan teori.",
-                                },
-                                {
-                                    title: "6. E-Learning",
-                                    color: "indigo",
-                                    desc: "Pembelajaran daring melalui platform digital untuk fleksibilitas waktu dan akses.",
-                                },
-                            ].map((m, i) => (
-                                <div
-                                    key={i}
-                                    className={`p-4 bg-white border-l-4 border-${m.color}-500 rounded-lg shadow-sm`}
-                                >
-                                    <h4
-                                        className={`mb-2 font-semibold text-${m.color}-800`}
-                                    >
-                                        {m.title}
-                                    </h4>
-                                    <p className="text-sm text-gray-700">
-                                        {m.desc}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
+                                    {m.title}
+                                </h4>
+                                <p className="text-sm leading-relaxed text-gray-700">
+                                    {m.desc}
+                                </p>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
-                {/* =======================
-                    PENGALAMAN BELAJAR
-                ======================= */}
-                <div className="p-6 rounded-lg bg-gradient-to-r from-yellow-50 to-orange-50">
-                    <h3 className="mb-4 text-lg font-bold text-orange-900">
+                {/* Pengalaman Belajar Mahasiswa */}
+                <div className="p-6 border bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200/60 rounded-xl">
+                    <h3 className="flex items-center gap-2 mb-6 text-lg font-bold text-orange-900">
+                        <Target className="w-5 h-5" />
                         Pengalaman Belajar Mahasiswa
                     </h3>
 
                     <div className="grid gap-4 md:grid-cols-3">
                         {/* Teoritis */}
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                            <h4 className="flex items-center gap-2 mb-3 font-semibold text-yellow-800">
+                        <div className="p-5 transition-all duration-300 bg-white shadow-sm group rounded-xl hover:shadow-md hover:-translate-y-1">
+                            <h4 className="flex items-center gap-2 mb-4 font-semibold text-yellow-800">
                                 <BookOpen className="w-4 h-4" />
                                 Pembelajaran Teoritis
                             </h4>
-                            <ul className="space-y-1 text-sm text-gray-700">
+                            <ul className="space-y-2 text-sm text-gray-700">
                                 <li>• Mengikuti kuliah dan membuat catatan</li>
                                 <li>• Membaca literatur yang ditugaskan</li>
                                 <li>• Menganalisis konsep dan teori</li>
@@ -249,12 +231,12 @@ const RencanaTab: FC<RencanaTabProps> = ({
                         </div>
 
                         {/* Praktis */}
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                            <h4 className="flex items-center gap-2 mb-3 font-semibold text-orange-800">
+                        <div className="p-5 transition-all duration-300 bg-white shadow-sm group rounded-xl hover:shadow-md hover:-translate-y-1">
+                            <h4 className="flex items-center gap-2 mb-4 font-semibold text-orange-800">
                                 <Target className="w-4 h-4" />
                                 Pembelajaran Praktis
                             </h4>
-                            <ul className="space-y-1 text-sm text-gray-700">
+                            <ul className="space-y-2 text-sm text-gray-700">
                                 <li>• Melakukan studi kasus</li>
                                 <li>• Praktik di laboratorium</li>
                                 <li>• Observasi lapangan</li>
@@ -263,12 +245,12 @@ const RencanaTab: FC<RencanaTabProps> = ({
                         </div>
 
                         {/* Kolaboratif */}
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                            <h4 className="flex items-center gap-2 mb-3 font-semibold text-red-800">
+                        <div className="p-5 transition-all duration-300 bg-white shadow-sm group rounded-xl hover:shadow-md hover:-translate-y-1">
+                            <h4 className="flex items-center gap-2 mb-4 font-semibold text-red-800">
                                 <GitBranch className="w-4 h-4" />
                                 Pembelajaran Kolaboratif
                             </h4>
-                            <ul className="space-y-1 text-sm text-gray-700">
+                            <ul className="space-y-2 text-sm text-gray-700">
                                 <li>• Diskusi kelompok</li>
                                 <li>• Presentasi hasil kerja</li>
                                 <li>• Peer review dan feedback</li>

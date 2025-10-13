@@ -13,6 +13,8 @@ class ReferensisRelationManager extends RelationManager
     protected static string $relationship = 'referensi';
 
     protected static ?string $title = 'Referensi';
+    protected static ?string $modelLabel = 'Referensi';
+    protected static ?string $pluralModelLabel = 'Referensi';
 
     public function form(Form $form): Form
     {

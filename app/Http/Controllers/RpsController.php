@@ -37,7 +37,6 @@ class RPSController extends Controller
             ->where('slug', $courseSlug)
             ->firstOrFail();
 
-        // Ambil rencana pembelajaran berdasarkan course -> cpmk -> sub_cpmk
         $rencanas = Rencana::with('subCpmk.cpmk')
             ->whereHas('subCpmk.cpmk', function ($query) use ($course) {
                 $query->where('course_id', $course->id);
@@ -64,6 +63,7 @@ class RPSController extends Controller
                 'name' => $course->name,
                 'code' => $course->code,
                 'sks' => $course->sks,
+                'deskripsi' => $course->deskripsi,
                 'semester' => 'Semester ' . $course->semester,
             ],
             'allCpls' => CPL::orderBy('code')->get(), // semua CPL
@@ -74,6 +74,7 @@ class RPSController extends Controller
             ]),
             'evaluasi' => $course->evaluasi,
             'tugas' => $course->tugas,
+            'referensi' => $course->referensi,
             'initialCpmks' => $course->cpmks,
             'initialSubCpmks' => $course->cpmks->flatMap->subCpmks,
             'initialRencanas' => $rencanas,
@@ -81,6 +82,7 @@ class RPSController extends Controller
             'initialCourseInfo' => [
                 'penanggungJawab' => $course->penanggung_jawab ?? 'Belum Diatur',
                 'tahunAjaran' => $course->tahun_ajaran ?? '2024/2025',
+                'deskripsi' => $course->deskripsi ?? 'Belum ada deskripsi',
             ]
         ]);
     }

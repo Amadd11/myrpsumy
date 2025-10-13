@@ -1,4 +1,3 @@
-import { Head } from "@inertiajs/react";
 import {
     BookOpen,
     Target,
@@ -13,6 +12,7 @@ import {
 import React, { ReactElement, ReactNode } from "react";
 import Layout from "@/Components/Layout";
 import RPSCard from "@/Components/RPSCard";
+import Footer from "@/Components/Footer"; // Import Footer baru
 
 interface RpsMenuItem {
     title: string;
@@ -94,7 +94,7 @@ const Index = () => {
         <>
             <Layout>
                 {/* Hero Section */}
-                <section className="text-white hero-gradient">
+                <section className="text-white bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600">
                     <div className="container px-4 py-16 mx-auto">
                         <div className="max-w-4xl mx-auto text-center">
                             <div className="flex justify-center mb-6">

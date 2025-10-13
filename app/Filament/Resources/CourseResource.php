@@ -69,7 +69,7 @@ class CourseResource extends Resource
                     ->required()
                     ->placeholder('contoh: 1'),
 
-                Forms\Components\Textarea::make('description')
+                Forms\Components\RichEditor::make('deskripsi')
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('penanggung_jawab')
                     ->label('Penanggung Jawab')
@@ -88,6 +88,7 @@ class CourseResource extends Resource
                             ->options(
                                 CPL::all()->pluck('code', 'id')->toArray() // Opsi checkbox diambil dari semua CPL yang ada
                             )
+                            ->label('CPL')
                             ->columns(2)
                             ->helperText('Pilih satu atau lebih CPL yang sesuai.')
                     ]),

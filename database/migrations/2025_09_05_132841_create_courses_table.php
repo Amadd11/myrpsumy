@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name'); // Nama mata kuliah, cth: "Manajemen Pelayanan RS"
             $table->string('slug')->unique(); // Untuk URL, cth: "manajemen-pelayanan-rs"
             $table->string('code')->unique(); // Kode mata kuliah, cth: "MRS102"
-            $table->string('deskripsi')->nullable(); // Kode mata kuliah, cth: "MRS102"
+            $table->text('deskripsi')->nullable(); // Kode mata kuliah, cth: "MRS102"
             $table->string('sks');
             $table->string('semester'); // Semester 1, 2, atau 3
             $table->string('penanggung_jawab')->nullable();

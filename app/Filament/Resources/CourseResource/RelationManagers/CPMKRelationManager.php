@@ -11,9 +11,9 @@ use Filament\Tables\Table;
 class CPMKRelationManager extends RelationManager
 {
     protected static string $relationship = 'cpmks';
-    protected static ?string $navigationLabel = 'CPMK';
     protected static ?string $title = 'CPMK';
-    protected static ?string $pluralLabel = 'CPMK';
+    protected static ?string $modelLabel = 'CPMK';
+    protected static ?string $pluralModelLabel = 'CPMK';
 
     public function form(Form $form): Form
     {
@@ -37,7 +37,7 @@ class CPMKRelationManager extends RelationManager
                 ->nullable()
                 ->helperText('Hanya CPL yang sudah terhubung dengan mata kuliah ini yang akan tampil.'),
 
-            Forms\Components\Textarea::make('description')
+            Forms\Components\RichEditor::make('description')
                 ->label('Deskripsi')
                 ->nullable()
                 ->columnSpanFull(),
@@ -49,7 +49,7 @@ class CPMKRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('title')
             ->columns([
-                Tables\Columns\TextColumn::make('title')->label('Judul')->searchable(),
+                Tables\Columns\TextColumn::make('title')->label('Judul'),
                 Tables\Columns\TextColumn::make('cpl.code')->label('Dari CPL')->badge(),
                 Tables\Columns\TextColumn::make('description')->label('Deskripsi')->limit(50)->toggleable(),
             ])

@@ -13,7 +13,9 @@ class EvaluasisRelationManager extends RelationManager
     protected static string $relationship = 'evaluasi';
 
     protected static ?string $title = 'Evaluasi';
-    
+    protected static ?string $modelLabel = 'Evaluasi';
+    protected static ?string $pluralModelLabel = 'Evaluasi';
+
     public function form(Form $form): Form
     {
         return $form
@@ -50,7 +52,6 @@ class EvaluasisRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('komponen_penilaian')
                     ->label('Komponen Penilaian')
-                    ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('teknik_penilaian')

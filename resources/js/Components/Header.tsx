@@ -50,9 +50,12 @@ const Header: FC = () => {
 
     return (
         <header className="sticky top-0 z-50 border-b bg-card border-border backdrop-blur-sm">
-            <div className="container flex items-center justify-between px-16 py-4 mx-auto">
-                {/* Logo */}
-                <Link href="/" className="flex items-center space-x-3 group">
+            <div className="container flex items-center justify-between px-2 py-4 mx-auto md:px-16">
+                {/* Logo - Agak ke kiri dengan mr-auto */}
+                <Link
+                    href="/"
+                    className="flex items-center mr-auto space-x-3 group"
+                >
                     <div className="p-2 transition-transform rounded-lg bg-gradient-primary group-hover:scale-105">
                         <GraduationCap className="w-8 h-8 text-primary-foreground" />
                     </div>
@@ -147,9 +150,9 @@ const Header: FC = () => {
                     </Link>
                 </nav>
 
-                {/* Hamburger for mobile */}
+                {/* Hamburger for mobile - Sudah di kanan dengan justify-between */}
                 <button
-                    className="p-2 rounded-lg hover:bg-muted md:hidden"
+                    className="rounded-lg hover:bg-muted md:hidden"
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 >
                     {isMobileMenuOpen ? (

@@ -3,26 +3,38 @@
 namespace App\Filament\Resources\CourseResource\RelationManagers;
 
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use App\Models\SubCPMK;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class RencanasRelationManager extends RelationManager
 {
     protected static string $relationship = 'rencana'; // pastikan relasi ini ada di model Course
 
     protected static ?string $title = 'Rencana';
+    protected static ?string $modelLabel = 'Rencana';
+    protected static ?string $pluralModelLabel = 'Rencana';
 
     public function form(Form $form): Form
     {
         return $form->schema([
             Forms\Components\Select::make('sub_cpmk_id')
                 ->label('Sub-CPMK')
-                ->relationship('subCpmk', 'title')
+                ->options(function (RelationManager $livewire) {
+                    // Pastikan hanya ambil Sub-CPMK milik course ini
+                    $course = $livewire->getOwnerRecord(); // Record course aktif
+                    return SubCPMK::whereHas('cpmk', function (Builder $query) use ($course) {
+                        $query->where('course_id', $course->id); // Asumsikan relasi cpmk di SubCpmk
+                    })
+                        ->orderBy('title')
+                        ->pluck('title', 'id');
+                })
+                ->required()
                 ->searchable()
-                ->preload()
-                ->required(),
+                ->placeholder('Pilih Sub-CPMK dari course ini...'),
 
             Forms\Components\TextInput::make('week')
                 ->label('Minggu ke-')

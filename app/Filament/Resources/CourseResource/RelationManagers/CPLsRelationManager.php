@@ -14,9 +14,9 @@ class CplsRelationManager extends RelationManager
 {
     protected static string $relationship = 'cpls';
 
-    protected static ?string $navigationLabel = 'CPL';
     protected static ?string $title = 'CPL';
-    protected static ?string $pluralLabel = 'CPL';
+    protected static ?string $modelLabel = 'CPL';
+    protected static ?string $pluralModelLabel = 'CPL';
 
     public function form(Form $form): Form
     {
@@ -30,7 +30,7 @@ class CplsRelationManager extends RelationManager
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('bloom_level')
+                Forms\Components\TextInput::make('taksonomi')
                     ->maxLength(255),
                 Forms\Components\ColorPicker::make('bg_color')
                     ->label('Warna CPL')
@@ -46,22 +46,15 @@ class CplsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('code')
                     ->label('Kode')
-                    ->sortable()
-                    ->searchable(),
-
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->label('Judul CPL')
-                    ->wrap()
-                    ->searchable(),
-
-                Tables\Columns\TextColumn::make('bloom_level')
-                    ->searchable()
+                    ->wrap(),
+                Tables\Columns\TextColumn::make('taksonomi')
                     ->badge(),
             ])
             ->headerActions([
-                // Tambahkan CPL yang sudah ada ke Course
-                // Tables\Actions\AttachAction::make()
-                //     ->label('Hubungkan CPL'),
+                Tables\Actions\CreateAction::make(),
             ])
             ->actions([
                 Tables\Actions\DetachAction::make()

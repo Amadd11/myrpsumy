@@ -1,14 +1,13 @@
-import React, { useState, ReactNode } from "react";
-import { Head, usePage } from "@inertiajs/react";
+import React, { useState } from "react";
+import { usePage } from "@inertiajs/react";
 import Layout from "@/Components/Layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
 import { Badge } from "@/Components/ui/badge";
 import * as LucideIcons from "lucide-react";
 import { useToast } from "@/Components/hooks/use-toast";
 
-// Impor komponen-komponen tab
+// Impor komponen tab
 import DeskripsiTab from "@/Components/CourseRPS/DeskripsiTab";
-// --- PERBAIKAN: Mengoreksi path impor dari CPLTab menjadi CplTab ---
 import CplTab from "@/Components/CourseRPS/CPLTab";
 import CpmkTab from "@/Components/CourseRPS/CPMKTab";
 import SubCpmkTab from "@/Components/CourseRPS/SubCPMKTab";
@@ -16,8 +15,9 @@ import RencanaTab from "@/Components/CourseRPS/RencanaTab";
 import BobotTab from "@/Components/CourseRPS/BobotTab";
 import EvaluasiTab from "@/Components/CourseRPS/EvaluasiTab";
 import TugasTab from "@/Components/CourseRPS/TugasTab";
+import ReferensiTab from "@/Components/CourseRPS/ReferensiTab";
 
-// --- Tipe Data ---
+// --- Tipe data ---
 interface Course {
     id: number;
     name: string;
@@ -60,7 +60,7 @@ interface SubCpmk {
     id: number;
     title: string;
     description: string;
-    relatedCpmk?: string; // boleh undefined biar aman
+    relatedCpmk?: string;
     cpmk_id?: number;
 }
 interface Evaluasi {
@@ -76,20 +76,34 @@ interface Tugas {
     tugas: string;
     created_at: string;
 }
+interface Referensi {
+    id: number;
+    tipe: string;
+    penulis?: string;
+    judul: string;
+    tahun?: string;
+    penerbit?: string;
+    tautan?: string;
+}
 type PageProps = {
     course: Course;
     relatedCpls: Cpl[];
     allCpls: Cpl[];
+    referensi: Referensi[];
     evaluasi: Evaluasi[];
     tugas: Tugas[];
     initialCpmks: Cpmk[];
     initialSubCpmks: SubCpmk[];
     initialRencanas: Rencana[];
     initialBobots: Bobot[];
-    initialCourseInfo: { penanggungJawab: string; tahunAjaran: string };
+    initialCourseInfo: {
+        penanggungJawab: string;
+        tahunAjaran: string;
+        deskripsi: string;
+    };
 };
 
-// --- Konfigurasi Tabs ---
+// Konfigurasi Tabs
 const tabsConfig = [
     {
         value: "deskripsi",
@@ -160,6 +174,7 @@ const CourseRPS = () => {
         allCpls,
         evaluasi,
         tugas,
+        referensi,
         relatedCpls,
         initialCpmks,
         initialSubCpmks,
@@ -170,7 +185,6 @@ const CourseRPS = () => {
 
     const { toast } = useToast();
 
-    // --- State ---
     const [courseInfo, setCourseInfo] = useState(initialCourseInfo);
     const [rencanaItems, setRencanaItems] =
         useState<Rencana[]>(initialRencanas);
@@ -181,24 +195,22 @@ const CourseRPS = () => {
 
     return (
         <Layout>
-            <Head title={`RPS - ${course.name}`} />
-
             {/* Header */}
-            <section className="text-white bg-blue-600">
-                <div className="container px-6 py-8 mx-auto">
-                    <div className="flex items-center gap-4 mb-3">
-                        <LucideIcons.BookOpen className="w-6 h-6" />
-                        <Badge className="text-white bg-blue-500 border border-blue-400">
+            <section className="text-white bg-gradient-to-r from-blue-600 to-blue-700">
+                <div className="container px-4 py-8 mx-auto sm:px-6 md:px-8 lg:px-12">
+                    <div className="flex flex-wrap items-center gap-3 mb-4">
+                        <LucideIcons.BookOpen className="w-6 h-6 text-blue-200 shrink-0" />
+                        <Badge className="px-3 py-1 text-sm text-white border shadow-lg bg-blue-500/80 backdrop-blur-sm border-blue-400/50">
                             {course.code}
                         </Badge>
-                        <Badge className="text-white bg-blue-500 border border-blue-400">
+                        <Badge className="px-3 py-1 text-sm text-white border shadow-lg bg-blue-500/80 backdrop-blur-sm border-blue-400/50">
                             {course.sks} SKS
                         </Badge>
                     </div>
-                    <h1 className="text-3xl font-bold md:text-4xl">
+                    <h1 className="mb-3 text-3xl font-bold leading-tight break-words md:text-4xl lg:text-5xl">
                         {course.name}
                     </h1>
-                    <p className="mt-1 text-lg text-blue-100">
+                    <p className="text-base font-medium text-blue-100 md:text-lg">
                         Rencana Pembelajaran Semester - {course.semester}
                     </p>
                 </div>
@@ -206,20 +218,27 @@ const CourseRPS = () => {
 
             {/* Tabs */}
             <section className="py-8 bg-gray-50">
-                <div className="container px-6 mx-auto">
+                <div className="container px-4 mx-auto sm:px-6 md:px-8">
                     <Tabs defaultValue="deskripsi" className="w-full">
-                        <TabsList className="grid w-full grid-cols-3 gap-2 mb-8 sm:grid-cols-5 lg:grid-cols-9">
-                            {tabsConfig.map(({ value, label, Icon, color }) => (
-                                <TabsTrigger
-                                    key={value}
-                                    value={value}
-                                    className={`${colorClasses[color]} flex items-center justify-center gap-2 text-xs font-bold p-2 rounded-md transition-colors`}
-                                >
-                                    <Icon className="w-4 h-4" />
-                                    <span>{label}</span>
-                                </TabsTrigger>
-                            ))}
-                        </TabsList>
+                        {/* Scroll horizontal untuk mobile */}
+                        <div className="mb-8 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                            <TabsList className="flex w-full gap-2 mb-8 overflow-x-auto scrollbar-hide sm:grid sm:grid-cols-5 sm:overflow-visible sm:gap-2 lg:grid-cols-9">
+                                {tabsConfig.map(
+                                    ({ value, label, Icon, color }) => (
+                                        <TabsTrigger
+                                            key={value}
+                                            value={value}
+                                            className={`${colorClasses[color]} flex items-center justify-center gap-2 text-xs sm:text-sm font-semibold px-3 py-2 sm:px-4 sm:py-2.5 rounded-md whitespace-nowrap transition-colors leading-tight min-w-[90px] sm:min-w-0`}
+                                        >
+                                            <Icon className="w-4 h-4 shrink-0" />
+                                            <span className="relative top-[0.5px]">
+                                                {label}
+                                            </span>
+                                        </TabsTrigger>
+                                    )
+                                )}
+                            </TabsList>
+                        </div>
 
                         <TabsContent value="deskripsi">
                             <DeskripsiTab
@@ -243,14 +262,12 @@ const CourseRPS = () => {
                             />
                         </TabsContent>
                         <TabsContent value="rencana">
-                            {/* PERBAIKAN: Menambahkan prop 'subCpmkItems' yang dibutuhkan */}
                             <RencanaTab
                                 rencanaItems={rencanaItems}
                                 setRencanaItems={setRencanaItems}
                                 subCpmkItems={subCpmkItems}
                             />
                         </TabsContent>
-
                         <TabsContent value="bobot">
                             <BobotTab bobotItems={bobotItems} />
                         </TabsContent>
@@ -259,6 +276,9 @@ const CourseRPS = () => {
                         </TabsContent>
                         <TabsContent value="tugas">
                             <TugasTab tugas={tugas} />
+                        </TabsContent>
+                        <TabsContent value="referensi">
+                            <ReferensiTab referensi={referensi} />
                         </TabsContent>
                     </Tabs>
                 </div>

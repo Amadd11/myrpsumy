@@ -1,13 +1,13 @@
 import React, { FC } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
-import { GitBranch } from "lucide-react";
+import { Layers, BookOpen } from "lucide-react";
 import { Badge } from "@/Components/ui/badge";
 
 interface SubCpmk {
     id: number;
     title: string;
     description: string;
-    relatedCpmk?: string; // boleh undefined biar aman
+    relatedCpmk?: string;
     cpmk_id?: number;
 }
 
@@ -22,15 +22,9 @@ interface SubCpmkTabProps {
 }
 
 const SubCpmkTab: FC<SubCpmkTabProps> = ({ subCpmkItems, cpmkItems }) => {
-    // Debug: lihat isi di console browser
-    console.log("🧩 Data CPMK:", cpmkItems);
-    console.log("📘 Data Sub-CPMK:", subCpmkItems);
-
-    // --- Grouping berdasarkan CPMK induk ---
-    // --- Grouping berdasarkan CPMK induk ---
+    // Grouping berdasarkan CPMK induk
     const grouped = subCpmkItems.reduce<Record<string, SubCpmk[]>>(
         (acc, item) => {
-            // Ambil judul CPMK dari cpmkItems berdasarkan cpmk_id
             const relatedCpmkTitle =
                 cpmkItems.find((c) => c.id === item.cpmk_id)?.title ||
                 "Tanpa CPMK";
@@ -43,66 +37,72 @@ const SubCpmkTab: FC<SubCpmkTabProps> = ({ subCpmkItems, cpmkItems }) => {
     );
 
     return (
-        <Card className="border border-gray-200 shadow-md">
-            <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-3 text-gray-800">
-                    <GitBranch className="w-6 h-6 text-orange-600" />
-                    <span className="text-xl font-bold">
-                        Sub-Capaian Pembelajaran Mata Kuliah (Sub-CPMK)
-                    </span>
-                </CardTitle>
-            </CardHeader>
+        <div className="p-6 border shadow-xl bg-white/80 rounded-2xl border-gray-100/50">
+            <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 text-white shadow-lg bg-gradient-to-br from-orange-500 to-red-600 rounded-xl">
+                    <Layers className="w-5 h-5" />
+                </div>
+                <h2 className="text-xl font-bold tracking-tight text-gray-900">
+                    Sub-Capaian Pembelajaran Mata Kuliah (Sub-CPMK)
+                </h2>
+            </div>
 
-            <CardContent className="p-6 space-y-8 bg-gray-50">
-                {Object.keys(grouped).length > 0 ? (
-                    Object.entries(grouped).map(([cpmkTitle, subItems]) => (
+            {Object.keys(grouped).length > 0 ? (
+                <div className="space-y-6">
+                    {Object.entries(grouped).map(([cpmkTitle, subItems]) => (
                         <div
                             key={cpmkTitle}
-                            className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm"
+                            className="p-6 transition-all duration-300 border shadow-sm group bg-gradient-to-r from-gray-50 to-white border-gray-200/60 rounded-xl hover:shadow-md"
                         >
-                            <div className="flex items-center justify-between">
-                                <h3 className="flex items-center gap-2 font-semibold text-gray-800">
-                                    <span>Sub-CPMK dari {cpmkTitle}</span>
-                                    <Badge
-                                        variant="secondary"
-                                        className="text-sm font-normal"
-                                    >
-                                        {subCpmkItems.length} CPMK
-                                    </Badge>
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
+                                    <BookOpen className="w-5 h-5 text-orange-600" />
+                                    Sub-CPMK dari {cpmkTitle}
                                 </h3>
+                                <Badge
+                                    variant="secondary"
+                                    className="text-xs font-medium text-orange-700 bg-orange-100 border-orange-200"
+                                >
+                                    {subItems.length} Sub-CPMK
+                                </Badge>
                             </div>
 
                             {/* List Sub-CPMK */}
-                            <div className="space-y-2">
+                            <div className="space-y-3">
                                 {subItems.map((sub) => (
                                     <div
                                         key={sub.id}
-                                        className="p-3 border-l-4 border-blue-400 rounded-md bg-blue-50"
+                                        className="p-4 transition-colors duration-200 bg-white border border-l-4 rounded-lg border-gray-200/50 hover:bg-blue-50/50 border-l-blue-400"
                                     >
-                                        <div className="flex flex-col gap-1">
-                                            <span className="font-medium text-gray-800">
+                                        <div className="flex flex-col gap-2">
+                                            <h4 className="text-sm font-semibold leading-tight text-gray-900">
                                                 {sub.title}
-                                            </span>
-                                            <p className="text-sm text-gray-700">
+                                            </h4>
+                                            <p className="text-sm leading-relaxed text-gray-700">
                                                 {sub.description}
                                             </p>
-                                            <span className="text-xs text-gray-500">
-                                                Taksonomi Bloom:{" "}
-                                                <span className="font-medium text-blue-700"></span>
-                                            </span>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
-                    ))
-                ) : (
-                    <p className="text-center text-gray-500">
-                        Belum ada Sub-CPMK untuk mata kuliah ini.
+                    ))}
+                </div>
+            ) : (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <div className="p-4 mb-4 bg-gray-100 rounded-full">
+                        <Layers className="w-8 h-8 text-gray-400" />
+                    </div>
+                    <h3 className="mb-2 text-lg font-semibold text-gray-900">
+                        Belum Ada Sub-CPMK
+                    </h3>
+                    <p className="max-w-md text-gray-500">
+                        Tidak ada sub-capaian pembelajaran untuk mata kuliah ini
+                        saat ini. Silakan periksa kembali nanti.
                     </p>
-                )}
-            </CardContent>
-        </Card>
+                </div>
+            )}
+        </div>
     );
 };
 
