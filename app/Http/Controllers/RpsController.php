@@ -71,7 +71,7 @@ class RPSController extends Controller
             'initialRencanas' => $rencanas,
             'initialBobots' => $bobots,
             'initialCourseInfo' => [
-                'penanggungJawab' => $course->penanggung_jawab ?? 'Belum Diatur',
+                'penanggungJawab' => $course->dosen->name ?? 'Belum Diatur',
                 'tahunAjaran' => $course->tahun_ajaran ?? '2024/2025',
                 'deskripsi' => $course->deskripsi ?? 'Belum ada deskripsi',
             ],

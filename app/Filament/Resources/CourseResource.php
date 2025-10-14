@@ -72,11 +72,11 @@ class CourseResource extends Resource
 
                 Forms\Components\RichEditor::make('deskripsi')
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('penanggung_jawab')
+                Forms\Components\Select::make('dosen_id')
+                    ->relationship('dosen', 'name')
                     ->label('Penanggung Jawab')
-                    ->maxLength(255)
-                    ->placeholder('contoh: Dr. Dosen, M.Kom'),
-
+                    ->searchable()
+                    ->preload(),
                 Forms\Components\TextInput::make('tahun_ajaran')
                     ->label('Tahun Ajaran')
                     ->maxLength(255)

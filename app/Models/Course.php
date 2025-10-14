@@ -19,7 +19,7 @@ class Course extends Model
         'deskripsi',
         'sks',
         'semester',
-        'penanggung_jawab',
+        'dosen_id',
         'tahun_ajaran',
     ];
 
@@ -53,6 +53,11 @@ class Course extends Model
     public function referensi()
     {
         return $this->hasMany(Referensi::class);
+    }
+
+    public function dosen()
+    {
+        return $this->belongsTo(Dosen::class);
     }
 
     public function cpls(): BelongsToMany

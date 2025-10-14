@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('deskripsi')->nullable(); // Kode mata kuliah, cth: "MRS102"
             $table->string('sks');
             $table->string('semester'); // Semester 1, 2, atau 3
-            $table->string('penanggung_jawab')->nullable();
+            $table->foreignId('dosen_id')->constrained()->onDelete('cascade')->nullable(); // Relasi ke tabel dosens
             $table->string('tahun_ajaran')->nullable();
             $table->timestamps();
         });
