@@ -31,11 +31,6 @@ const TugasTab: React.FC<Props> = ({ tugas, courseName }) => {
                 <h2 className="text-xl font-bold tracking-tight text-gray-900">
                     Daftar Tugas & Ujian {courseName ? `- ${courseName}` : ""}
                 </h2>
-                {tugas.length > 0 && (
-                    <span className="ml-auto text-sm font-medium text-gray-500">
-                        Total: {tugas.length}
-                    </span>
-                )}
             </div>
 
             {tugas.length === 0 ? (
@@ -60,17 +55,9 @@ const TugasTab: React.FC<Props> = ({ tugas, courseName }) => {
                         >
                             <div className="flex items-start justify-between p-5 space-x-4">
                                 <div className="flex-1">
-                                    <p className="mb-3 font-medium leading-relaxed text-gray-900 transition-colors group-hover:text-blue-600">
+                                    <p className="mb-3 leading-relaxed text-gray-900 transition-colors group-hover:text-blue-600">
                                         {item.tugas}
                                     </p>
-                                    <div className="flex items-center space-x-4 text-sm text-gray-500">
-                                        <div className="flex items-center space-x-1">
-                                            <Clock className="w-4 h-4" />
-                                            <span>
-                                                {formatDate(item.created_at)}
-                                            </span>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div className="flex-shrink-0 p-2 transition-colors rounded-lg bg-blue-50 group-hover:bg-blue-100">
                                     <FileText className="w-5 h-5 text-blue-600" />

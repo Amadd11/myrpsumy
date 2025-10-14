@@ -37,7 +37,7 @@ interface Semester {
 const semesterData: Semester[] = [
     {
         semester: "SEMESTER 1",
-        totalSKS: 15,
+        totalSKS: 13,
         color: "bg-blue-50 border-blue-200",
         courses: [
             {
@@ -47,7 +47,7 @@ const semesterData: Semester[] = [
             },
             {
                 name: "Manajemen Pelayanan RS",
-                sks: 4,
+                sks: 3,
                 icon: <Building className="w-4 h-4" />,
             },
             {
@@ -62,7 +62,7 @@ const semesterData: Semester[] = [
             },
             {
                 name: "Metodologi Penelitian Pelayanan Kesehatan",
-                sks: 4,
+                sks: 3,
                 icon: <Search className="w-4 h-4" />,
             },
             {
@@ -74,7 +74,7 @@ const semesterData: Semester[] = [
     },
     {
         semester: "SEMESTER 2",
-        totalSKS: 22,
+        totalSKS: 17,
         color: "bg-purple-50 border-purple-200",
         courses: [
             {
@@ -88,8 +88,8 @@ const semesterData: Semester[] = [
                 icon: <Microscope className="w-4 h-4" />,
             },
             {
-                name: "Pemberdayaan Masyarakat Kesehatan",
-                sks: 4,
+                name: "Enterprenuership Pemberdayaan Masyarakat Kesehatan",
+                sks: 3,
                 icon: <Globe className="w-4 h-4" />,
             },
             {
@@ -109,14 +109,14 @@ const semesterData: Semester[] = [
             },
             {
                 name: "Publikasi Ilmiah",
-                sks: 6,
+                sks: 2,
                 icon: <FileText className="w-4 h-4" />,
             },
         ],
     },
     {
         semester: "SEMESTER 3",
-        totalSKS: 17,
+        totalSKS: 10,
         color: "bg-yellow-50 border-yellow-200",
         courses: [
             {
@@ -126,12 +126,12 @@ const semesterData: Semester[] = [
             },
             {
                 name: "Residensi",
-                sks: 3,
+                sks: 2,
                 icon: <Stethoscope className="w-4 h-4" />,
             },
             {
                 name: "Tesis",
-                sks: 12,
+                sks: 6,
                 icon: <GraduationCap className="w-4 h-4" />,
             },
         ],
@@ -142,11 +142,11 @@ const Kurikulum = () => {
     return (
         <>
             {/* Header Section */}
-            <section className="text-white bg-gradient-to-r from-blue-600 to-cyan-500">
-                <div className="container px-6 py-12 mx-auto">
+            <section className="relative text-white bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 overflow-hidden min-h-[400px]">
+                <div className="container px-6 py-20 mx-auto">
                     <div className="max-w-3xl mx-auto text-center">
-                        <div className="flex justify-center mb-4">
-                            <div className="p-3 bg-white/10 rounded-xl backdrop-blur-sm">
+                        <div className="flex justify-center mb-6">
+                            <div className="p-4 bg-white/10 rounded-xl backdrop-blur-sm">
                                 <BookOpen className="w-12 h-12" />
                             </div>
                         </div>
@@ -154,9 +154,9 @@ const Kurikulum = () => {
                             Peta Kurikulum Prodi MARS UMY
                         </h1>
                         <p className="text-lg text-white/90">
-                            Struktur mata kuliah dan distribusi SKS per semester
-                            dalam Program Studi Manajemen dan Administrasi Rumah
-                            Sakit.
+                            Struktur mata kuliah dan distribusi SKS dalam
+                            Program Studi Manajemen dan Administrasi Rumah Sakit
+                            Total Keseluruhan Adalah 40 SKS.
                         </p>
                     </div>
                 </div>

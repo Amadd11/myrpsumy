@@ -50,11 +50,6 @@ const CpmkTab: FC<CpmkTabProps> = ({ cpmkItems, allCpls, courseName }) => {
                     Capaian Pembelajaran Mata Kuliah (CPMK)
                     {courseName ? ` - ${courseName}` : ""}
                 </h2>
-                {cpmkItems.length > 0 && (
-                    <span className="ml-auto text-sm font-medium text-gray-500">
-                        Total: {cpmkItems.length}
-                    </span>
-                )}
             </div>
 
             {/* Info section */}

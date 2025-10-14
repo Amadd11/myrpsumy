@@ -38,18 +38,14 @@ const CapaianPembelajaran = () => {
                                     CPL Sikap
                                 </h3>
                                 <ul className="space-y-2 text-sm text-muted-foreground">
+                                    <li>Bertakwa kepada Tuhan Yang Maha Esa</li>
+                                    <li>Menjunjung tinggi nilai kemanusiaan</li>
                                     <li>
-                                        • Bertakwa kepada Tuhan Yang Maha Esa
-                                    </li>
-                                    <li>
-                                        • Menjunjung tinggi nilai kemanusiaan
-                                    </li>
-                                    <li>
-                                        • Berperan sebagai warga negara yang
+                                        Berperan sebagai warga negara yang
                                         bangga dan cinta tanah air
                                     </li>
                                     <li>
-                                        • Berkontribusi dalam peningkatan mutu
+                                        Berkontribusi dalam peningkatan mutu
                                         kehidupan bermasyarakat
                                     </li>
                                 </ul>
@@ -61,18 +57,18 @@ const CapaianPembelajaran = () => {
                                 </h3>
                                 <ul className="space-y-2 text-sm text-muted-foreground">
                                     <li>
-                                        • Menguasai konsep teoritis bidang rekam
+                                        Menguasai konsep teoritis bidang rekam
                                         medis
                                     </li>
                                     <li>
-                                        • Menguasai prinsip dan teknik analisis
+                                        Menguasai prinsip dan teknik analisis
                                         data kesehatan
                                     </li>
                                     <li>
-                                        • Menguasai sistem informasi kesehatan
+                                        Menguasai sistem informasi kesehatan
                                     </li>
                                     <li>
-                                        • Memahami aspek hukum dan etika profesi
+                                        Memahami aspek hukum dan etika profesi
                                     </li>
                                 </ul>
                             </div>
@@ -83,15 +79,15 @@ const CapaianPembelajaran = () => {
                                 </h3>
                                 <ul className="space-y-2 text-sm text-muted-foreground">
                                     <li>
-                                        • Mampu menerapkan pemikiran logis,
+                                        Mampu menerapkan pemikiran logis,
                                         kritis, sistematis, dan inovatif
                                     </li>
                                     <li>
-                                        • Mampu menunjukkan kinerja mandiri,
+                                        Mampu menunjukkan kinerja mandiri,
                                         bermutu, dan terukur
                                     </li>
                                     <li>
-                                        • Mampu mengkaji implikasi pengembangan
+                                        Mampu mengkaji implikasi pengembangan
                                         ilmu pengetahuan
                                     </li>
                                 </ul>
@@ -103,18 +99,18 @@ const CapaianPembelajaran = () => {
                                 </h3>
                                 <ul className="space-y-2 text-sm text-muted-foreground">
                                     <li>
-                                        • Mampu melakukan pengkodean diagnosis
-                                        dan tindakan medis
+                                        Mampu melakukan pengkodean diagnosis dan
+                                        tindakan medis
                                     </li>
                                     <li>
-                                        • Mampu mengelola rekam medis elektronik
+                                        Mampu mengelola rekam medis elektronik
                                     </li>
                                     <li>
-                                        • Mampu melakukan analisis data rekam
+                                        Mampu melakukan analisis data rekam
                                         medis
                                     </li>
                                     <li>
-                                        • Mampu melakukan audit klinis sederhana
+                                        Mampu melakukan audit klinis sederhana
                                     </li>
                                 </ul>
                             </div>

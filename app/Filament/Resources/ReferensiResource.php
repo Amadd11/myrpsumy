@@ -18,6 +18,7 @@ class ReferensiResource extends Resource
     protected static ?string $navigationLabel = 'Referensi';
     protected static ?string $modelLabel = 'Referensi';
     protected static ?string $pluralModelLabel = 'Daftar Referensi';
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {

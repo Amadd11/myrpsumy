@@ -29,12 +29,14 @@ class ReferensisRelationManager extends RelationManager
                     ->required()
                     ->default('utama'),
 
-                Forms\Components\TextInput::make('penulis')
+                Forms\Components\Textarea::make('penulis')
                     ->label('Penulis')
+                    ->columnSpanFull()
                     ->maxLength(255),
 
-                Forms\Components\TextInput::make('judul')
+                Forms\Components\Textarea::make('judul')
                     ->label('Judul')
+                    ->columnSpanFull()
                     ->required()
                     ->maxLength(255),
 
@@ -42,7 +44,7 @@ class ReferensisRelationManager extends RelationManager
                     ->label('Tahun')
                     ->maxLength(4),
 
-                Forms\Components\TextInput::make('penerbit')
+                Forms\Components\Textarea::make('penerbit')
                     ->label('Penerbit')
                     ->maxLength(255),
 

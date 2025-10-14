@@ -26,7 +26,7 @@ class SubCpmksRelationManager extends RelationManager
                     ->options(function (RelationManager $livewire) {
                         // Pastikan hanya ambil CPMK milik course ini
                         $course = $livewire->getOwnerRecord(); // Record course aktif
-                        return Cpmk::where('course_id', $course->cpmk_id->id)
+                        return Cpmk::where('course_id', $course->id)
                             ->orderBy('title')
                             ->pluck('title', 'id');
                     })
@@ -35,8 +35,9 @@ class SubCpmksRelationManager extends RelationManager
                 Forms\Components\TextInput::make('title')
                     ->label('Kode Sub-CPMK')
                     ->required(),
-                Forms\Components\RichEditor::make('description')
+                Forms\Components\Textarea::make('description')
                     ->label('Deskripsi')
+                    ->rows(6)
                     ->columnSpanFull()
             ]);
     }

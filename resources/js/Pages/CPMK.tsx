@@ -81,29 +81,29 @@ const CPMK = () => {
                                 <div className="grid gap-4 md:grid-cols-2">
                                     <ul className="space-y-2 text-sm text-muted-foreground">
                                         <li>
-                                            • <strong>Spesifik:</strong> Jelas
-                                            dan terarah pada kemampuan tertentu
+                                            <strong>Spesifik:</strong> Jelas dan
+                                            terarah pada kemampuan tertentu
                                         </li>
                                         <li>
-                                            • <strong>Measurable:</strong> Dapat
+                                            <strong>Measurable:</strong> Dapat
                                             diukur dan dinilai
                                         </li>
                                         <li>
-                                            • <strong>Achievable:</strong> Dapat
+                                            <strong>Achievable:</strong> Dapat
                                             dicapai oleh mahasiswa
                                         </li>
                                     </ul>
                                     <ul className="space-y-2 text-sm text-muted-foreground">
                                         <li>
-                                            • <strong>Relevant:</strong> Sesuai
+                                            <strong>Relevant:</strong> Sesuai
                                             dengan CPL dan profil lulusan
                                         </li>
                                         <li>
-                                            • <strong>Time-bound:</strong>{" "}
+                                            <strong>Time-bound:</strong>{" "}
                                             Memiliki batasan waktu yang jelas
                                         </li>
                                         <li>
-                                            • <strong>Observable:</strong> Dapat
+                                            <strong>Observable:</strong> Dapat
                                             diamati pencapaiannya
                                         </li>
                                     </ul>

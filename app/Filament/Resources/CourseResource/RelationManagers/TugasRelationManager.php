@@ -19,8 +19,9 @@ class TugasesRelationManager extends RelationManager
     public function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\RichEditor::make('tugas')
+            Forms\Components\Textarea::make('tugas')
                 ->label('Deskripsi Tugas / Ujian')
+                ->rows(8)
                 ->required()
                 ->columnSpanFull(),
         ]);

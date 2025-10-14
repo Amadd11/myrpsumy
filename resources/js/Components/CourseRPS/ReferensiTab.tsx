@@ -39,11 +39,6 @@ const ReferensiTab: React.FC<ReferensiTabProps> = ({ referensi }) => {
                 <h2 className="text-xl font-bold tracking-tight text-gray-900">
                     Daftar Referensi
                 </h2>
-                {referensi.length > 0 && (
-                    <span className="ml-auto text-sm font-medium text-gray-500">
-                        Total: {referensi.length}
-                    </span>
-                )}
             </div>
 
             {referensi.length === 0 ? (

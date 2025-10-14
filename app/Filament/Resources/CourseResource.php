@@ -45,6 +45,7 @@ class CourseResource extends Resource
                     ->placeholder('contoh: Manajemen Pelayanan RS'),
 
                 Forms\Components\TextInput::make('slug')
+                    ->hidden()
                     ->required()
                     ->maxLength(255)
                     ->disabled()

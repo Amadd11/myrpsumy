@@ -56,10 +56,18 @@ const DeskripsiTab: FC<DeskripsiTabProps> = ({ courseInfo }) => {
                     Deskripsi Mata Kuliah
                 </h4>
                 <div className="p-6 bg-white border shadow-sm border-gray-200/50 rounded-xl">
-                    <p className="leading-relaxed text-gray-700 whitespace-pre-line">
-                        {courseInfo.deskripsi ||
-                            "Belum ada deskripsi mata kuliah yang ditambahkan."}
-                    </p>
+                    {courseInfo.deskripsi ? (
+                        <div
+                            className="leading-relaxed prose-sm prose text-gray-700 max-w-none"
+                            dangerouslySetInnerHTML={{
+                                __html: courseInfo.deskripsi,
+                            }}
+                        />
+                    ) : (
+                        <p className="italic text-gray-500">
+                            Belum ada deskripsi mata kuliah yang ditambahkan.
+                        </p>
+                    )}
                 </div>
             </div>
         </div>

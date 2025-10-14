@@ -54,9 +54,6 @@ const RencanaTab: FC<RencanaTabProps> = ({
             </CardHeader>
 
             <CardContent className="space-y-8">
-                {/* =======================
-                    TABEL RENCANA MINGGUAN
-                ======================= */}
                 <div className="p-6 border rounded-lg bg-gradient-to-r from-indigo-50 to-purple-50">
                     <h3 className="mb-4 text-lg font-bold text-indigo-900">
                         Rencana Pembelajaran Mingguan

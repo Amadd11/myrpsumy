@@ -30,16 +30,17 @@ class CPMKRelationManager extends RelationManager
                 ->options(function (RelationManager $livewire): array {
                     // $livewire->ownerRecord adalah objek model Course yang sedang diedit.
                     // Kita hanya mengambil CPL yang sudah berelasi dengan Course ini.
-                    return $livewire->ownerRecord->cpls()->pluck('title', 'cpls.id')->toArray();
+                    return $livewire->ownerRecord->cpls()->pluck('code', 'cpls.id')->toArray();
                 })
                 ->searchable()
                 ->preload()
                 ->nullable()
                 ->helperText('Hanya CPL yang sudah terhubung dengan mata kuliah ini yang akan tampil.'),
 
-            Forms\Components\RichEditor::make('description')
+            Forms\Components\Textarea::make('description')
                 ->label('Deskripsi')
                 ->nullable()
+                ->rows(6)
                 ->columnSpanFull(),
         ]);
     }

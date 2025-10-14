@@ -19,7 +19,7 @@ class TugasResource extends Resource
     protected static ?string $pluralModelLabel = 'Tugas & Ujian';
 
     // Sembunyikan dari navigasi utama agar tidak membingungkan
-    protected static bool $shouldRegisterNavigation = true;
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -35,7 +35,7 @@ class TugasResource extends Resource
                 Forms\Components\Textarea::make('tugas')
                     ->label('Deskripsi Tugas/Ujian')
                     ->required()
-                    ->columnSpanFull(),
+                    ->columnSpanFull(2),
             ]);
     }
 

@@ -4,9 +4,8 @@ import Layout from "@/Components/Layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
 import { Badge } from "@/Components/ui/badge";
 import * as LucideIcons from "lucide-react";
-import { useToast } from "@/Components/hooks/use-toast";
 
-// Impor komponen tab
+// Custom Components
 import DeskripsiTab from "@/Components/CourseRPS/DeskripsiTab";
 import CplTab from "@/Components/CourseRPS/CPLTab";
 import CpmkTab from "@/Components/CourseRPS/CPMKTab";
@@ -17,7 +16,7 @@ import EvaluasiTab from "@/Components/CourseRPS/EvaluasiTab";
 import TugasTab from "@/Components/CourseRPS/TugasTab";
 import ReferensiTab from "@/Components/CourseRPS/ReferensiTab";
 
-// --- Tipe data ---
+// --- Types ---
 interface Course {
     id: number;
     name: string;
@@ -26,6 +25,7 @@ interface Course {
     sks: number;
     semester: string;
 }
+
 interface Cpl {
     id: number;
     code: string;
@@ -34,6 +34,7 @@ interface Cpl {
     taksonomi: string;
     bg_color: string;
 }
+
 interface Cpmk {
     id: number;
     title: string;
@@ -41,6 +42,15 @@ interface Cpmk {
     bg_color: string;
     relatedCpl?: string;
 }
+
+interface SubCpmk {
+    id: number;
+    title: string;
+    description: string;
+    relatedCpmk?: string;
+    cpmk_id?: number;
+}
+
 interface Rencana {
     id: number;
     week: number;
@@ -50,19 +60,14 @@ interface Rencana {
     waktu: string;
     sub_cpmk_id: number;
 }
+
 interface Bobot {
     id: number;
     name: string;
     description: string;
     bobot: number;
 }
-interface SubCpmk {
-    id: number;
-    title: string;
-    description: string;
-    relatedCpmk?: string;
-    cpmk_id?: number;
-}
+
 interface Evaluasi {
     id: number;
     komponen_penilaian: string;
@@ -71,11 +76,13 @@ interface Evaluasi {
     waktu_pelaksanaan: string;
     bobot: number;
 }
+
 interface Tugas {
     id: number;
     tugas: string;
     created_at: string;
 }
+
 interface Referensi {
     id: number;
     tipe: string;
@@ -85,6 +92,7 @@ interface Referensi {
     penerbit?: string;
     tautan?: string;
 }
+
 type PageProps = {
     course: Course;
     relatedCpls: Cpl[];
@@ -103,8 +111,27 @@ type PageProps = {
     };
 };
 
-// Konfigurasi Tabs
-const tabsConfig = [
+// Color Keys (Break circular dependency)
+type ColorKey =
+    | "blue"
+    | "green"
+    | "purple"
+    | "orange"
+    | "indigo"
+    | "red"
+    | "teal"
+    | "amber"
+    | "cyan";
+
+// Tab Config
+type TabConfig = {
+    value: string;
+    label: string;
+    Icon: React.ComponentType<any>;
+    color: ColorKey;
+};
+
+const tabsConfig: TabConfig[] = [
     {
         value: "deskripsi",
         label: "Deskripsi",
@@ -156,7 +183,8 @@ const tabsConfig = [
     },
 ];
 
-const colorClasses: Record<string, string> = {
+// Color Classes
+const colorClasses: Record<ColorKey, string> = {
     blue: "bg-blue-100 text-blue-800 hover:bg-blue-200 data-[state=active]:bg-blue-500 data-[state=active]:text-white",
     green: "bg-green-100 text-green-800 hover:bg-green-200 data-[state=active]:bg-green-500 data-[state=active]:text-white",
     purple: "bg-purple-100 text-purple-800 hover:bg-purple-200 data-[state=active]:bg-purple-500 data-[state=active]:text-white",
@@ -167,6 +195,32 @@ const colorClasses: Record<string, string> = {
     amber: "bg-amber-100 text-amber-800 hover:bg-amber-200 data-[state=active]:bg-amber-500 data-[state=active]:text-white",
     cyan: "bg-cyan-100 text-cyan-800 hover:bg-cyan-200 data-[state=active]:bg-cyan-500 data-[state=active]:text-white",
 };
+
+// Hero Section Component
+const HeroSection = ({ course }: { course: Course }) => (
+    <section className="relative overflow-hidden text-white bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 min-h-[300px]">
+        <div className="absolute bottom-0 left-0 right-0 h-32 origin-bottom transform -skew-y-3 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600" />
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-blue-600/70 to-transparent" />
+
+        <div className="container relative z-10 px-4 py-16 mx-auto sm:px-6 md:px-8 lg:px-12">
+            <div className="flex flex-wrap items-center gap-4 mb-6">
+                <LucideIcons.BookOpen className="w-6 h-6 text-blue-200 shrink-0" />
+                <Badge className="px-3 py-1 text-sm text-white border shadow-lg bg-blue-500/80 backdrop-blur-sm border-blue-400/50">
+                    {course.code}
+                </Badge>
+                <Badge className="px-3 py-1 text-sm text-white border shadow-lg bg-blue-500/80 backdrop-blur-sm border-blue-400/50">
+                    {course.sks} SKS
+                </Badge>
+            </div>
+            <h1 className="mb-3 text-3xl font-bold leading-tight break-words md:text-4xl lg:text-5xl">
+                {course.name}
+            </h1>
+            <p className="text-base font-medium text-blue-100 md:text-lg">
+                Rencana Pembelajaran Semester - {course.semester}
+            </p>
+        </div>
+    </section>
+);
 
 const CourseRPS = () => {
     const {
@@ -179,11 +233,9 @@ const CourseRPS = () => {
         initialCpmks,
         initialSubCpmks,
         initialRencanas,
-        initialBobots,
+        initialBobots = [], // Fallback array kosong
         initialCourseInfo,
     } = usePage<PageProps>().props;
-
-    const { toast } = useToast();
 
     const [courseInfo, setCourseInfo] = useState(initialCourseInfo);
     const [rencanaItems, setRencanaItems] =
@@ -191,38 +243,17 @@ const CourseRPS = () => {
     const [cpmkItems, setCpmkItems] = useState<Cpmk[]>(initialCpmks);
     const [subCpmkItems, setSubCpmkItems] =
         useState<SubCpmk[]>(initialSubCpmks);
-    const [bobotItems, setBobotItems] = useState<Bobot[]>(initialBobots || []);
+    const [bobotItems, setBobotItems] = useState<Bobot[]>(initialBobots);
 
     return (
         <Layout>
-            {/* Header */}
-            <section className="text-white bg-gradient-to-r from-blue-600 to-blue-700">
-                <div className="container px-4 py-8 mx-auto sm:px-6 md:px-8 lg:px-12">
-                    <div className="flex flex-wrap items-center gap-3 mb-4">
-                        <LucideIcons.BookOpen className="w-6 h-6 text-blue-200 shrink-0" />
-                        <Badge className="px-3 py-1 text-sm text-white border shadow-lg bg-blue-500/80 backdrop-blur-sm border-blue-400/50">
-                            {course.code}
-                        </Badge>
-                        <Badge className="px-3 py-1 text-sm text-white border shadow-lg bg-blue-500/80 backdrop-blur-sm border-blue-400/50">
-                            {course.sks} SKS
-                        </Badge>
-                    </div>
-                    <h1 className="mb-3 text-3xl font-bold leading-tight break-words md:text-4xl lg:text-5xl">
-                        {course.name}
-                    </h1>
-                    <p className="text-base font-medium text-blue-100 md:text-lg">
-                        Rencana Pembelajaran Semester - {course.semester}
-                    </p>
-                </div>
-            </section>
+            <HeroSection course={course} />
 
-            {/* Tabs */}
             <section className="py-8 bg-gray-50">
                 <div className="container px-4 mx-auto sm:px-6 md:px-8">
                     <Tabs defaultValue="deskripsi" className="w-full">
-                        {/* Scroll horizontal untuk mobile */}
                         <div className="mb-8 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                            <TabsList className="flex w-full gap-2 mb-8 overflow-x-auto scrollbar-hide sm:grid sm:grid-cols-5 sm:overflow-visible sm:gap-2 lg:grid-cols-9">
+                            <TabsList className="flex w-full gap-2 overflow-x-auto scrollbar-hide sm:grid sm:grid-cols-5 sm:overflow-visible sm:gap-2 lg:grid-cols-9">
                                 {tabsConfig.map(
                                     ({ value, label, Icon, color }) => (
                                         <TabsTrigger

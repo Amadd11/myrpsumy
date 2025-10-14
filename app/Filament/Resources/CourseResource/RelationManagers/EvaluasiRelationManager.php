@@ -27,11 +27,13 @@ class EvaluasisRelationManager extends RelationManager
 
                 Forms\Components\Textarea::make('teknik_penilaian')
                     ->label('Teknik Penilaian')
-                    ->rows(2),
+                    ->columnSpanFull()
+                    ->rows(5),
 
                 Forms\Components\Textarea::make('kriteria_penilaian')
                     ->label('Kriteria Penilaian')
-                    ->rows(2),
+                    ->columnSpanFull()
+                    ->rows(5),
 
                 Forms\Components\TextInput::make('waktu_pelaksanaan')
                     ->label('Waktu Pelaksanaan')

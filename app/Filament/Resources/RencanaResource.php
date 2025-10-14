@@ -18,6 +18,8 @@ class RencanaResource extends Resource
     protected static ?string $navigationLabel = 'Rencana Pembelajaran';
     protected static ?string $pluralModelLabel = 'Rencana Pembelajaran';
     protected static ?string $modelLabel = 'Rencana';
+    protected static bool $shouldRegisterNavigation = false;
+
 
     public static function form(Form $form): Form
     {

@@ -22,7 +22,7 @@ class SubCpmkResource extends Resource
     protected static ?string $navigationLabel = 'Sub-CP Mata Kuliah (Sub-CPMK)';
     protected static ?string $pluralModelLabel = 'Sub-CPMK';
     protected static ?int $navigationSort = 4; // Mengatur urutan di sidebar
-    protected static bool $shouldRegisterNavigation = true; // Sembunyikan dari sidebar utama
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {

@@ -39,11 +39,11 @@ const DeskripsiMataKuliah = () => {
                                     Format Deskripsi
                                 </h3>
                                 <ul className="space-y-1 text-sm md:space-y-2 text-muted-foreground md:text-base">
-                                    <li>• Gambaran umum mata kuliah</li>
-                                    <li>• Tujuan pembelajaran umum</li>
-                                    <li>• Ruang lingkup materi</li>
-                                    <li>• Prasyarat mata kuliah (jika ada)</li>
-                                    <li>• Bobot SKS dan jam pembelajaran</li>
+                                    <li>Gambaran umum mata kuliah</li>
+                                    <li>Tujuan pembelajaran umum</li>
+                                    <li>Ruang lingkup materi</li>
+                                    <li>Prasyarat mata kuliah (jika ada)</li>
+                                    <li>Bobot SKS dan jam pembelajaran</li>
                                 </ul>
                             </div>
 

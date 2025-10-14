@@ -45,11 +45,11 @@ class RencanasRelationManager extends RelationManager
                 ->label('Materi Pembelajaran')
                 ->columnSpanFull(),
 
-            Forms\Components\TextInput::make('metode')
+            Forms\Components\Textarea::make('metode')
                 ->label('Metode Pembelajaran')
                 ->maxLength(255),
 
-            Forms\Components\TextInput::make('pengalaman_belajar')
+            Forms\Components\Textarea::make('pengalaman_belajar')
                 ->label('Pengalaman Belajar')
                 ->maxLength(255),
 

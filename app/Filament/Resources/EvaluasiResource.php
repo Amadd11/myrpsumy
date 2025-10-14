@@ -19,6 +19,7 @@ class EvaluasiResource extends Resource
     protected static ?string $navigationLabel = 'Evaluasi';
     protected static ?string $pluralModelLabel = 'Evaluasi';
     protected static ?string $modelLabel = 'Evaluasi';
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {

@@ -32,11 +32,6 @@ const EvaluasiTab: React.FC<EvaluasiTabProps> = ({ evaluasi }) => {
                 <h2 className="text-xl font-bold tracking-tight text-gray-900">
                     Evaluasi Pembelajaran
                 </h2>
-                {evaluasi.length > 0 && (
-                    <span className="ml-auto text-sm font-medium text-gray-500">
-                        Total: {evaluasi.length}
-                    </span>
-                )}
             </div>
 
             {evaluasi.length > 0 ? (

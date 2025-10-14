@@ -25,7 +25,9 @@ class CPMKResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
     protected static ?string $navigationLabel = 'CP Mata Kuliah (CPMK)';
     protected static ?string $pluralModelLabel = 'CPMK';
-    protected static ?int $navigationSort = 3; // Mengatur urutan di sidebar
+    protected static ?int $navigationSort = 3;
+    protected static bool $shouldRegisterNavigation = false;
+
 
     public static function form(Form $form): Form
     {
@@ -106,8 +108,7 @@ class CPMKResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-        ];
+        return [];
     }
 
     public static function getPages(): array

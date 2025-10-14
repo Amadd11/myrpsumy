@@ -38,11 +38,6 @@ const BobotTab: FC<BobotTabProps> = ({ bobotItems }) => {
                 <h2 className="text-xl font-bold tracking-tight text-gray-900">
                     Bobot Penilaian
                 </h2>
-                {bobotItems.length > 0 && (
-                    <span className="ml-auto text-sm font-medium text-gray-500">
-                        Total: {bobotItems.length}
-                    </span>
-                )}
             </div>
 
             {bobotItems.length > 0 ? (

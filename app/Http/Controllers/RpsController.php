@@ -8,29 +8,34 @@ use App\Models\Bobot;
 use Inertia\Response;
 use App\Models\Course;
 use App\Models\Rencana;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class RPSController extends Controller
 {
-    public function index()
+    /**
+     * Display the RPS dashboard index.
+     */
+    public function index(): Response
     {
-        $courses = Course::orderBy('semester')->get()
+        $semesterCourses = Course::orderBy('semester')->get()
             ->groupBy('semester')
-            ->mapWithKeys(function ($group, $semesterNumber) {
-                $courses = $group->map(function ($course) {
-                    return [
-                        'name' => $course->name,
-                        'slug' => $course->slug,
-                        'sks'  => $course->sks,
-                    ];
-                });
-                return ['Semester ' . $semesterNumber => $courses];
+            ->mapWithKeys(function (Collection $group, string $semesterNumber) {
+                return ['Semester ' . $semesterNumber => $group->map(fn(Course $course) => [
+                    'name' => $course->name,
+                    'slug' => $course->slug,
+                    'sks'  => $course->sks,
+                ])];
             });
 
         return Inertia::render('Index', [
-            'semesterCourses' => $courses,
+            'semesterCourses' => $semesterCourses,
         ]);
     }
 
+    /**
+     * Display the RPS for a specific course.
+     */
     public function show(string $semesterSlug, string $courseSlug): Response
     {
         $course = Course::with(['cpls', 'cpmks.subCpmks'])
@@ -38,25 +43,11 @@ class RPSController extends Controller
             ->firstOrFail();
 
         $rencanas = Rencana::with('subCpmk.cpmk')
-            ->whereHas('subCpmk.cpmk', function ($query) use ($course) {
-                $query->where('course_id', $course->id);
-            })
+            ->whereHas('subCpmk.cpmk', fn($query) => $query->where('course_id', $course->id))
             ->orderBy('week')
             ->get();
-        $bobots = Bobot::with('course')
-            ->where('course_id', $course->id)
-            ->get()
-            ->map(function ($bobot) {
-                return [
-                    'id' => $bobot->id,
-                    'courseName' => $bobot->course->name ?? '-', // <- kirim nama course
-                    'name' => $bobot->name,
-                    'description' => $bobot->description,
-                    'bobot' => $bobot->bobot,
-                ];
-            });
 
-
+        $bobots = $this->formatBobotsForCourse($course->id);
 
         return Inertia::render('CourseRPS', [
             'course' => [
@@ -66,7 +57,7 @@ class RPSController extends Controller
                 'deskripsi' => $course->deskripsi,
                 'semester' => 'Semester ' . $course->semester,
             ],
-            'allCpls' => CPL::orderBy('code')->get(), // semua CPL
+            'allCpls' => CPL::orderBy('code')->get(),
             'relatedCpls' => $course->cpls->map(fn($cpl) => [
                 'id' => $cpl->id,
                 'code' => $cpl->code,
@@ -83,7 +74,24 @@ class RPSController extends Controller
                 'penanggungJawab' => $course->penanggung_jawab ?? 'Belum Diatur',
                 'tahunAjaran' => $course->tahun_ajaran ?? '2024/2025',
                 'deskripsi' => $course->deskripsi ?? 'Belum ada deskripsi',
-            ]
+            ],
         ]);
+    }
+
+    /**
+     * Format bobots for a specific course.
+     */
+    private function formatBobotsForCourse(int $courseId): Collection
+    {
+        return Bobot::with('course')
+            ->where('course_id', $courseId)
+            ->get()
+            ->map(fn(Bobot $bobot) => [
+                'id' => $bobot->id,
+                'courseName' => $bobot->course->name ?? '-',
+                'name' => $bobot->name,
+                'description' => $bobot->description,
+                'bobot' => $bobot->bobot,
+            ]);
     }
 }
