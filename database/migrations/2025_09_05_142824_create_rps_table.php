@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('course_id')->constrained()->onDelete('cascade');
             $table->foreignId('dosen_id')->constrained()->onDelete('cascade');
             $table->text('deskripsi')->nullable();
+            $table->text('materi_pembelajaran')->nullable();
+            $table->text('tgl_penyusunan')->nullable();
             $table->text('tahun_ajaran')->nullable();
             $table->timestamps();
         });

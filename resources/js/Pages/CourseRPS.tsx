@@ -11,17 +11,14 @@ import CplTab from "@/Components/CourseRPS/CPLTab";
 import CpmkTab from "@/Components/CourseRPS/CPMKTab";
 import SubCpmkTab from "@/Components/CourseRPS/SubCPMKTab";
 import RencanaTab from "@/Components/CourseRPS/RencanaTab";
-import BobotTab from "@/Components/CourseRPS/BobotTab";
 import EvaluasiTab from "@/Components/CourseRPS/EvaluasiTab";
 import TugasTab from "@/Components/CourseRPS/TugasTab";
 import ReferensiTab from "@/Components/CourseRPS/ReferensiTab";
 
 // --- Types ---
 interface Course {
-    id: number;
     name: string;
     code: string;
-    deskripsi: string;
     sks: number;
     semester: string;
 }
@@ -29,7 +26,7 @@ interface Course {
 interface Cpl {
     id: number;
     code: string;
-    title: string;
+    bobot: string;
     description: string;
     taksonomi: string;
     bg_color: string;
@@ -61,12 +58,6 @@ interface Rencana {
     sub_cpmk_id: number;
 }
 
-interface Bobot {
-    id: number;
-    name: string;
-    description: string;
-    bobot: number;
-}
 
 interface Evaluasi {
     id: number;
@@ -103,11 +94,12 @@ type PageProps = {
     initialCpmks: Cpmk[];
     initialSubCpmks: SubCpmk[];
     initialRencanas: Rencana[];
-    initialBobots: Bobot[];
     initialCourseInfo: {
         penanggungJawab: string;
         tahunAjaran: string;
         deskripsi: string;
+        materiPembelajaran: string;
+        tglPenyusunan: string;
     };
 };
 
@@ -168,12 +160,6 @@ const tabsConfig: TabConfig[] = [
         label: "Evaluasi",
         Icon: LucideIcons.CheckCircle,
         color: "teal",
-    },
-    {
-        value: "bobot",
-        label: "Bobot",
-        Icon: LucideIcons.BarChart3,
-        color: "amber",
     },
     {
         value: "referensi",
@@ -243,7 +229,6 @@ const CourseRPS = () => {
     const [cpmkItems, setCpmkItems] = useState<Cpmk[]>(initialCpmks);
     const [subCpmkItems, setSubCpmkItems] =
         useState<SubCpmk[]>(initialSubCpmks);
-    const [bobotItems, setBobotItems] = useState<Bobot[]>(initialBobots);
 
     return (
         <Layout>
@@ -272,10 +257,7 @@ const CourseRPS = () => {
                         </div>
 
                         <TabsContent value="deskripsi">
-                            <DeskripsiTab
-                                courseInfo={courseInfo}
-                                setCourseInfo={setCourseInfo}
-                            />
+                            <DeskripsiTab courseInfo={courseInfo} />
                         </TabsContent>
                         <TabsContent value="cpl">
                             <CplTab
@@ -298,9 +280,6 @@ const CourseRPS = () => {
                                 setRencanaItems={setRencanaItems}
                                 subCpmkItems={subCpmkItems}
                             />
-                        </TabsContent>
-                        <TabsContent value="bobot">
-                            <BobotTab bobotItems={bobotItems} />
                         </TabsContent>
                         <TabsContent value="evaluasi">
                             <EvaluasiTab evaluasi={evaluasi} />

@@ -15,8 +15,9 @@ class Cpmk extends Model
     protected $table = 'cpmks';
 
     protected $fillable = [
-        'course_id',
+        'rps_id',
         'cpl_id',
+        'bobot',
         'title',
         'description',
         'bg_color',
@@ -24,9 +25,9 @@ class Cpmk extends Model
 
     // Relasi ke Course
     // PERBAIKAN: Menambahkan return type hint : BelongsTo
-    public function course(): BelongsTo
+    public function rps(): BelongsTo
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Rps::class);
     }
 
     // Relasi ke CPL

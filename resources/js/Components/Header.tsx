@@ -97,7 +97,6 @@ const Header: FC = () => {
                         {isRPSOpen && (
                             <div className="absolute right-0 z-50 mt-2 overflow-y-auto border rounded-lg shadow-lg top-full w-80 bg-card border-border max-h-96">
                                 <div className="p-2">
-                                    {/* PERBAIKAN: Menambahkan fallback object kosong {} untuk mencegah error */}
                                     {Object.entries(semesterCourses || {}).map(
                                         ([semester, courses]) => (
                                             <div
@@ -111,9 +110,7 @@ const Header: FC = () => {
                                                     {courses.map((course) => (
                                                         <Link
                                                             key={course.slug}
-                                                            href={`/rps/${createSemesterSlug(
-                                                                semester
-                                                            )}/${course.slug}`}
+                                                            href={`/rps/${course.slug}`} // FIX: Hapus createSemesterSlug(semester) — cuma course.slug
                                                             className="block w-full px-4 py-2 text-sm text-left transition-colors rounded-lg text-foreground hover:bg-muted"
                                                             onClick={() =>
                                                                 setIsRPSOpen(
@@ -203,9 +200,7 @@ const Header: FC = () => {
                                                     {courses.map((course) => (
                                                         <Link
                                                             key={course.slug}
-                                                            href={`/rps/${createSemesterSlug(
-                                                                semester
-                                                            )}/${course.slug}`}
+                                                            href={`/rps/${course.slug}`} // FIX: Hapus createSemesterSlug(semester) — cuma course.slug
                                                             className="block px-3 py-1 text-sm rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
                                                             onClick={
                                                                 closeMobileMenus

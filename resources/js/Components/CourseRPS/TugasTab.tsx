@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { Clock, FileText } from "lucide-react"; // Assuming Lucide React icons are installed for modern icons
 
 interface Tugas {
@@ -8,11 +8,14 @@ interface Tugas {
 }
 
 interface Props {
-    tugas: Tugas[];
+    tugas?: Tugas[]; // Buat optional supaya aman kalau undefined
     courseName?: string;
 }
 
-const TugasTab: React.FC<Props> = ({ tugas, courseName }) => {
+const TugasTab: FC<Props> = ({ tugas, courseName }) => {
+    // Null check: Fallback ke empty array kalau tugas undefined
+    const tugasList = tugas || [];
+
     // Helper to format date
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString("id-ID", {
@@ -33,7 +36,7 @@ const TugasTab: React.FC<Props> = ({ tugas, courseName }) => {
                 </h2>
             </div>
 
-            {tugas.length === 0 ? (
+            {tugasList.length === 0 ? ( // Sekarang aman, tugasList selalu array
                 <div className="flex flex-col items-center justify-center py-12 text-center">
                     <div className="p-4 mb-4 bg-gray-100 rounded-full">
                         <FileText className="w-8 h-8 text-gray-400" />
@@ -48,7 +51,7 @@ const TugasTab: React.FC<Props> = ({ tugas, courseName }) => {
                 </div>
             ) : (
                 <div className="space-y-4">
-                    {tugas.map((item) => (
+                    {tugasList.map((item) => (
                         <div
                             key={item.id}
                             className="transition-all duration-300 border shadow-sm group bg-gradient-to-r from-gray-50 to-white border-gray-200/60 rounded-xl hover:shadow-md hover:-translate-y-1"
@@ -57,6 +60,11 @@ const TugasTab: React.FC<Props> = ({ tugas, courseName }) => {
                                 <div className="flex-1">
                                     <p className="mb-3 leading-relaxed text-gray-900 transition-colors group-hover:text-blue-600">
                                         {item.tugas}
+                                    </p>
+                                    {/* Opsional: Tampilkan tanggal created_at */}
+                                    <p className="text-xs text-gray-500">
+                                        <Clock className="inline w-3 h-3 mr-1" />
+                                        Dibuat: {formatDate(item.created_at)}
                                     </p>
                                 </div>
                                 <div className="flex-shrink-0 p-2 transition-colors rounded-lg bg-blue-50 group-hover:bg-blue-100">

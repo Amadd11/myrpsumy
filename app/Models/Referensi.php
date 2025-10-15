@@ -12,7 +12,7 @@ class Referensi extends Model
     protected $table = 'referensis';
 
     protected $fillable = [
-        'course_id',
+        'rps_id',
         'tipe',
         'penulis',
         'judul',
@@ -24,8 +24,8 @@ class Referensi extends Model
     /**
      * Relasi ke model Course
      */
-    public function course()
+      public function rps()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Rps::class);
     }
 }

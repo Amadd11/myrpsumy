@@ -26,8 +26,8 @@ class TugasResource extends Resource
         return $form
             ->schema([
                 // PERBAIKAN: Menggunakan dropdown untuk memilih Course
-                Forms\Components\Select::make('course_id')
-                    ->relationship('course', 'name')
+                Forms\Components\Select::make('rps_id')
+                    ->relationship('rps', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),

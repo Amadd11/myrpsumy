@@ -14,13 +14,11 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // Nama mata kuliah, cth: "Manajemen Pelayanan RS"
+            $table->string('name_en')->nullable(); // Nama mata kuliah dalam bahasa Inggris
             $table->string('slug')->unique(); // Untuk URL, cth: "manajemen-pelayanan-rs"
             $table->string('code')->unique(); // Kode mata kuliah, cth: "MRS102"
-            $table->text('deskripsi')->nullable(); // Kode mata kuliah, cth: "MRS102"
             $table->string('sks');
             $table->string('semester'); // Semester 1, 2, atau 3
-            $table->foreignId('dosen_id')->constrained()->onDelete('cascade')->nullable(); // Relasi ke tabel dosens
-            $table->string('tahun_ajaran')->nullable();
             $table->timestamps();
         });
     }

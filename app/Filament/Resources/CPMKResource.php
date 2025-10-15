@@ -61,6 +61,10 @@ class CPMKResource extends Resource
                         Forms\Components\TextInput::make('title')
                             ->required()
                             ->maxLength(255),
+                        Forms\Components\TextInput::make('bobot')
+                            ->numeric()
+                            ->required()
+                            ->maxLength(255),
 
                         Forms\Components\Textarea::make('description')
                             ->columnSpanFull(),

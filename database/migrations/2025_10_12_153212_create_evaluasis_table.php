@@ -11,14 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
+
         Schema::create('evaluasis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_id')->constrained()->onDelete('cascade');
-            $table->string('komponen_penilaian');
-            $table->text('teknik_penilaian')->nullable();
-            $table->text('kriteria_penilaian')->nullable();
-            $table->string('waktu_pelaksanaan')->nullable();
-            $table->string('bobot')->nullable();
+            $table->foreignId('rps_id')->constrained()->onDelete('cascade');
+            $table->foreignId('cpl_id')->nullable()->constrained('cpls')->nullOnDelete();
+            $table->foreignId('cpmk_id')->nullable()->constrained('cpmks')->nullOnDelete();
+            $table->foreignId('sub_cpmk_id')->nullable()->constrained('sub_cpmks')->nullOnDelete();
+            $table->string('week')->nullable();
+            $table->unsignedTinyInteger('bobot_sub_cpmk')->nullable();
+            $table->text('indikator')->nullable();
+            $table->text('bentuk_penilaian')->nullable();
+            $table->unsignedTinyInteger('bobot_cpmk')->nullable();
             $table->timestamps();
         });
     }

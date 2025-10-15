@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('cpmks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('rps_id')->constrained()->cascadeOnDelete();
             $table->foreignId('cpl_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('bobot')->nullable();
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('bg_color')->nullable();

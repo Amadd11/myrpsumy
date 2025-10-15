@@ -43,6 +43,6 @@ Route::get('/rencana-kegiatan-pembelajaran', function () {
     return Inertia::render('RencanaKegiatanPembelajaran');
 });
 
-Route::get('/rps/{semester}/{slug}', [RpsController::class, 'show'])->name('rps.show');
-
+Route::get('/rps/{courseSlug}/{tahunAjaran?}', [RPSController::class, 'show'])
+    ->name('rps.show');
 require __DIR__ . '/auth.php';

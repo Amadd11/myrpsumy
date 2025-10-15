@@ -12,12 +12,12 @@ class Tugas extends Model
     use HasFactory;
 
     protected $fillable = [
-        'course_id',
+        'rps_id',
         'tugas',
     ];
 
-    public function course(): BelongsTo
+    public function rps()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Rps::class);
     }
 }

@@ -23,7 +23,7 @@ interface ReferensiTabProps {
     referensi: Referensi[];
 }
 
-const ReferensiTab: React.FC<ReferensiTabProps> = ({ referensi }) => {
+const ReferensiTab: React.FC<ReferensiTabProps> = ({ referensi = [] }) => {
     const getTipeVariant = (tipe: string) => {
         if (tipe === "utama")
             return "bg-cyan-100 text-cyan-800 border-cyan-200";

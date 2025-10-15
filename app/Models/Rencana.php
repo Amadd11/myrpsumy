@@ -14,13 +14,17 @@ class Rencana extends Model
     protected $table = 'rencanas';
 
     protected $fillable = [
+        'rps_id',
         'sub_cpmk_id',
-        'course_id',
         'week',
+        'indikator',
+        'kriteria_penilaian',
+        'teknik_penilaian',
         'materi_pembelajaran',
         'metode',
-        'pengalaman_belajar',
+        'deskripi_belajar',
         'waktu',
+        'bobot_penilaian',
     ];
 
     /**
@@ -30,5 +34,10 @@ class Rencana extends Model
     public function subCpmk(): BelongsTo
     {
         return $this->belongsTo(SubCpmk::class,);
+    }
+
+    public function rps()
+    {
+        return $this->belongsTo(Rps::class);
     }
 }

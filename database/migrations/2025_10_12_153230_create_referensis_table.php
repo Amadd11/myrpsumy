@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('referensis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_id')->constrained()->onDelete('cascade');
+            $table->foreignId('rps_id')->constrained()->onDelete('cascade');
             $table->string('tipe')->default('utama'); // 'utama' atau 'tambahan'
             $table->string('penulis')->nullable();
             $table->string('judul');

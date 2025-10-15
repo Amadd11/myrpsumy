@@ -12,15 +12,6 @@ use Illuminate\Support\Str;
 use Filament\Resources\Resource;
 use RelationManagers\CPLsRelationManager;
 use App\Filament\Resources\CourseResource\Pages;
-use App\Filament\Resources\CourseResource\RelationManagers\BobotRelationManager;
-use App\Filament\Resources\CourseResource\RelationManagers\CPLsRelationManager as RelationManagersCPLsRelationManager;
-use App\Filament\Resources\CourseResource\RelationManagers\CPMKRelationManager;
-use App\Filament\Resources\CourseResource\RelationManagers\EvaluasisRelationManager;
-use App\Filament\Resources\CourseResource\RelationManagers\ReferensisRelationManager;
-use App\Filament\Resources\CourseResource\RelationManagers\RencanasRelationManager;
-use App\Filament\Resources\CourseResource\RelationManagers\SubCpmksRelationManager as RelationManagersSubCpmksRelationManager;
-use App\Filament\Resources\CourseResource\RelationManagers\TugasesRelationManager;
-use App\Filament\Resources\CPMKResource\RelationManagers\SubCpmksRelationManager;
 use App\Models\CPL;
 
 class CourseResource extends Resource
@@ -43,7 +34,10 @@ class CourseResource extends Resource
                     ->lazy() // Update slug setelah user selesai mengetik
                     ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))
                     ->placeholder('contoh: Manajemen Pelayanan RS'),
-
+                Forms\Components\TextInput::make('name_en')
+                    ->label('Course Name (English)')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
                     ->hidden()
                     ->required()
@@ -70,29 +64,6 @@ class CourseResource extends Resource
                     ->required()
                     ->placeholder('contoh: 1'),
 
-                Forms\Components\RichEditor::make('deskripsi')
-                    ->columnSpanFull(),
-                Forms\Components\Select::make('dosen_id')
-                    ->relationship('dosen', 'name')
-                    ->label('Penanggung Jawab')
-                    ->searchable()
-                    ->preload(),
-                Forms\Components\TextInput::make('tahun_ajaran')
-                    ->label('Tahun Ajaran')
-                    ->maxLength(255)
-                    ->placeholder('contoh: 2024/2025'),
-                Forms\Components\Section::make('Capaian Pembelajaran Lulusan (CPL)')
-                    ->description('Pilih CPL yang dibebankan pada mata kuliah ini.')
-                    ->schema([
-                        Forms\Components\CheckboxList::make('cpls') // Nama relasi harus sama dengan nama metode di Model Course
-                            ->relationship('cpls', 'code') // 'cpls' adalah nama relasi, 'code' adalah kolom yang ingin ditampilkan
-                            ->options(
-                                CPL::all()->pluck('code', 'id')->toArray() // Opsi checkbox diambil dari semua CPL yang ada
-                            )
-                            ->label('CPL')
-                            ->columns(2)
-                            ->helperText('Pilih satu atau lebih CPL yang sesuai.')
-                    ]),
             ]);
     }
 
@@ -104,12 +75,14 @@ class CourseResource extends Resource
                     ->label('Mata Kuliah')
                     ->searchable()
                     ->sortable(),
-
+                Tables\Columns\TextColumn::make('name_en')
+                    ->label('Mata Kuliah (EN)')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('code')
                     ->label('Kode')
                     ->searchable()
                     ->sortable(),
-
                 Tables\Columns\TextColumn::make('sks')
                     ->badge()
                     ->label('SKS')
@@ -119,15 +92,6 @@ class CourseResource extends Resource
                     ->badge()
                     ->label('Semester')
                     ->sortable(),
-
-                Tables\Columns\TextColumn::make('penanggung_jawab')
-                    ->label('Penanggung Jawab')
-                    ->searchable(),
-
-                Tables\Columns\TextColumn::make('tahun_ajaran')
-                    ->label('Tahun Ajaran')
-                    ->searchable(),
-
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
                     ->dateTime('d M Y H:i')
@@ -157,14 +121,6 @@ class CourseResource extends Resource
     {
         return [
             // Contoh nanti bisa tambah Relation Manager: CPMK, CPL, dll.
-            RelationManagersCPLsRelationManager::class,
-            CPMKRelationManager::class,
-            RelationManagersSubCpmksRelationManager::class,
-            RencanasRelationManager::class,
-            BobotRelationManager::class,
-            TugasesRelationManager::class,
-            EvaluasisRelationManager::class,
-            ReferensisRelationManager::class,
         ];
     }
 

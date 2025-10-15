@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\CourseResource\RelationManagers;
+namespace App\Filament\Resources\RpsResource\RelationManagers;
 
 use App\Models\Cpmk;
 use Filament\Forms;
@@ -25,8 +25,8 @@ class SubCpmksRelationManager extends RelationManager
                     ->label('CPMK Induk')
                     ->options(function (RelationManager $livewire) {
                         // Pastikan hanya ambil CPMK milik course ini
-                        $course = $livewire->getOwnerRecord(); // Record course aktif
-                        return Cpmk::where('course_id', $course->id)
+                        $rps = $livewire->getOwnerRecord(); // Record course aktif
+                        return Cpmk::where('rps_id', $rps->id)
                             ->orderBy('title')
                             ->pluck('title', 'id');
                     })

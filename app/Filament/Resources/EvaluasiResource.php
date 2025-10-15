@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EvaluasiResource\Pages;
 use App\Models\Evaluasi;
-use App\Models\Course;
+use App\Models\Rps; // Import Rps
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -19,40 +19,50 @@ class EvaluasiResource extends Resource
     protected static ?string $navigationLabel = 'Evaluasi';
     protected static ?string $pluralModelLabel = 'Evaluasi';
     protected static ?string $modelLabel = 'Evaluasi';
+
+    // Resource ini tidak akan muncul di navigasi utama,
+    // karena akan dikelola melalui Relation Manager di dalam RPS.
     protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('course_id')
-                    ->label('Mata Kuliah')
-                    ->relationship('course', 'name') // pastikan kolom di model Course bernama 'name' atau sesuaikan
+                // Mengganti course_id menjadi rps_id
+                Forms\Components\Select::make('rps_id')
+                    ->label('RPS Terkait')
+                    ->relationship('rps', 'id') // Placeholder, akan kita perbaiki tampilannya
+                    ->getOptionLabelFromRecordUsing(fn(Rps $record) => "{$record->course->name} ({$record->tahun_ajaran})")
                     ->searchable()
+                    ->preload()
                     ->required(),
 
-                Forms\Components\TextInput::make('komponen_penilaian')
-                    ->label('Komponen Penilaian')
-                    ->required()
+                Forms\Components\TextInput::make('minggu_ke')
+                    ->label('Minggu Ke-')
                     ->maxLength(255),
 
-                Forms\Components\Textarea::make('teknik_penilaian')
-                    ->label('Teknik Penilaian')
-                    ->rows(2),
+                // Menambahkan relasi ke CPL, CPMK, Sub-CPMK
+                Forms\Components\Select::make('cpl_id')->relationship('cpl', 'code')->label('CPL'),
+                Forms\Components\Select::make('cpmk_id')->relationship('cpmk', 'title')->label('CPMK'),
+                Forms\Components\Select::make('sub_cpmk_id')->relationship('subCpmk', 'title')->label('Sub-CPMK'),
 
-                Forms\Components\Textarea::make('kriteria_penilaian')
-                    ->label('Kriteria Penilaian')
-                    ->rows(2),
+                Forms\Components\Textarea::make('indikator')
+                    ->label('Indikator Penilaian')
+                    ->columnSpanFull(),
 
-                Forms\Components\TextInput::make('waktu_pelaksanaan')
-                    ->label('Waktu Pelaksanaan')
-                    ->maxLength(255),
+                Forms\Components\Textarea::make('bentuk_penilaian')
+                    ->label('Bentuk Penilaian (Tugas/Metode)')
+                    ->columnSpanFull(),
 
-                Forms\Components\TextInput::make('bobot')
-                    ->label('Bobot (%)')
+                Forms\Components\TextInput::make('bobot_sub_cpmk')
+                    ->label('Bobot Sub-CPMK (%)')
                     ->numeric()
-                    ->suffix('%')
-                    ->maxLength(255),
+                    ->suffix('%'),
+
+                Forms\Components\TextInput::make('bobot_cpmk')
+                    ->label('Bobot CPMK (%)')
+                    ->numeric()
+                    ->suffix('%'),
             ]);
     }
 
@@ -60,42 +70,34 @@ class EvaluasiResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('course.name')
+                Tables\Columns\TextColumn::make('rps.course.name')
                     ->label('Mata Kuliah')
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('komponen_penilaian')
-                    ->label('Komponen')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('minggu_ke')
+                    ->label('Minggu')
+                    ->sortable(),
 
-                Tables\Columns\TextColumn::make('teknik_penilaian')
-                    ->label('Teknik')
+                Tables\Columns\TextColumn::make('subCpmk.title')
+                    ->label('Sub-CPMK')
                     ->limit(30)
                     ->toggleable(),
 
-                Tables\Columns\TextColumn::make('kriteria_penilaian')
-                    ->label('Kriteria')
-                    ->limit(30)
+                Tables\Columns\TextColumn::make('indikator')
+                    ->label('Indikator')
+                    ->limit(40)
                     ->toggleable(),
 
-                Tables\Columns\TextColumn::make('waktu_pelaksanaan')
-                    ->label('Waktu')
+                Tables\Columns\TextColumn::make('bentuk_penilaian')
+                    ->label('Bentuk Penilaian')
+                    ->limit(40)
+                    ->toggleable(),
+
+                Tables\Columns\TextColumn::make('bobot_cpmk')
+                    ->label('Bobot CPMK')
+                    ->suffix('%')
                     ->sortable(),
-
-                Tables\Columns\TextColumn::make('bobot')
-                    ->label('Bobot (%)')
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Dibuat')
-                    ->dateTime('d M Y H:i')
-                    ->toggleable(isToggledHiddenByDefault: true),
-
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Diperbarui')
-                    ->dateTime('d M Y H:i')
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([])
             ->actions([

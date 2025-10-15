@@ -4,17 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\CPL;
 use Inertia\Inertia;
-use App\Models\Bobot;
 use Inertia\Response;
 use App\Models\Course;
-use App\Models\Rencana;
-use Illuminate\Http\Request;
+use App\Models\Rps;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class RPSController extends Controller
 {
     /**
-     * Display the RPS dashboard index.
+     * Halaman daftar RPS (index)
      */
     public function index(): Response
     {
@@ -34,64 +33,94 @@ class RPSController extends Controller
     }
 
     /**
-     * Display the RPS for a specific course.
+     * Halaman detail RPS per mata kuliah
      */
-    public function show(string $semesterSlug, string $courseSlug): Response
+    public function show(string $courseSlug, ?string $tahunAjaran = null): Response
     {
-        $course = Course::with(['cpls', 'cpmks.subCpmks'])
-            ->where('slug', $courseSlug)
-            ->firstOrFail();
+        try {
+            // Ambil data course berdasarkan slug
+            $course = Course::where('slug', $courseSlug)->firstOrFail();
 
-        $rencanas = Rencana::with('subCpmk.cpmk')
-            ->whereHas('subCpmk.cpmk', fn($query) => $query->where('course_id', $course->id))
-            ->orderBy('week')
-            ->get();
+            if (!$tahunAjaran) {
+                $latestTahun = Rps::where('course_id', $course->id)
+                    ->orderBy('tahun_ajaran', 'desc') // DESC biar ambil yang paling baru dulu
+                    ->value('tahun_ajaran'); // Cuma ambil kolom tahun, lebih efisien
+                $tahunAjaran = $latestTahun ?? date('Y') . '/' . (date('Y') + 1);
+            }
 
-        $bobots = $this->formatBobotsForCourse($course->id);
+            // Ambil RPS jika ada
+            $rps = Rps::with(['dosen', 'cpmks.subCpmks', 'rencanas.subCpmk.cpmk', 'cpls'])
+                ->where('course_id', $course->id)
+                ->where('tahun_ajaran', $tahunAjaran)
+                ->first();
 
-        return Inertia::render('CourseRPS', [
-            'course' => [
-                'name' => $course->name,
-                'code' => $course->code,
-                'sks' => $course->sks,
-                'deskripsi' => $course->deskripsi,
-                'semester' => 'Semester ' . $course->semester,
-            ],
-            'allCpls' => CPL::orderBy('code')->get(),
-            'relatedCpls' => $course->cpls->map(fn($cpl) => [
-                'id' => $cpl->id,
-                'code' => $cpl->code,
-                'description' => $cpl->description,
-            ]),
-            'evaluasi' => $course->evaluasi,
-            'tugas' => $course->tugas,
-            'referensi' => $course->referensi,
-            'initialCpmks' => $course->cpmks,
-            'initialSubCpmks' => $course->cpmks->flatMap->subCpmks,
-            'initialRencanas' => $rencanas,
-            'initialBobots' => $bobots,
-            'initialCourseInfo' => [
-                'penanggungJawab' => $course->dosen->name ?? 'Belum Diatur',
-                'tahunAjaran' => $course->tahun_ajaran ?? '2024/2025',
-                'deskripsi' => $course->deskripsi ?? 'Belum ada deskripsi',
-            ],
-        ]);
-    }
+            return Inertia::render('CourseRPS', [
+                // Informasi mata kuliah
+                'course' => [
+                    'name' => $course->name,
+                    'code' => $course->code,
+                    'sks' => $course->sks,
+                    'semester' => 'Semester ' . $course->semester,
+                ],
 
-    /**
-     * Format bobots for a specific course.
-     */
-    private function formatBobotsForCourse(int $courseId): Collection
-    {
-        return Bobot::with('course')
-            ->where('course_id', $courseId)
-            ->get()
-            ->map(fn(Bobot $bobot) => [
-                'id' => $bobot->id,
-                'courseName' => $bobot->course->name ?? '-',
-                'name' => $bobot->name,
-                'description' => $bobot->description,
-                'bobot' => $bobot->bobot,
+                // Informasi umum RPS (default kalau kosong)
+                'initialCourseInfo' => [
+                    'penanggungJawab' => $rps?->dosen?->name ?? 'Belum Diatur',
+                    'tahunAjaran' => $rps?->tahun_ajaran ?? $tahunAjaran,
+                    'deskripsi' => $rps?->deskripsi ?? 'Deskripsi belum tersedia.',
+                    'materiPembelajaran' => $rps?->materi_pembelajaran ?? null,
+                    'tglPenyusunan' => $rps?->tgl_penyusunan
+                        ? \Carbon\Carbon::parse($rps->tgl_penyusunan)->translatedFormat('d F Y')
+                        : null,
+                ],
+
+                // Data CPL, CPMK, Rencana, dsb
+                'allCpls' => CPL::orderBy('code')->get(),
+                'relatedCpls' => $rps?->cpls->map(fn($cpl) => [
+                    'id' => $cpl->id,
+                    'bobot' => $cpl->bobot,
+                    'code' => $cpl->code,
+                    'description' => $cpl->description,
+                ]) ?? collect(),
+
+                'initialCpmks'    => $rps?->cpmks ?? collect(),
+                'initialSubCpmks' => $rps?->subCpmks ?? collect(),
+                'initialRencanas' => $rps?->rencanas ?? collect(),
+
+                'evaluasi'  => $rps?->evaluasi ?? null,
+                'tugas'     => $rps?->tugas ?? null,
+                'referensi' => $rps?->referensi ?? null,
             ]);
+        } catch (\Exception $e) {
+            Log::error('Error in RPS show: ' . $e->getMessage(), [
+                'course_slug' => $courseSlug,
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            // Tidak redirect ke halaman lain, tetap di halaman RPS dengan data default
+            return Inertia::render('CourseRPS', [
+                'course' => [
+                    'name' => 'Tidak ditemukan',
+                    'code' => '-',
+                    'sks' => 0,
+                    'semester' => '-',
+                ],
+                'initialCourseInfo' => [
+                    'penanggungJawab' => 'Belum Diatur',
+                    'tahunAjaran' => $tahunAjaran ?? '-',
+                    'deskripsi' => 'Deskripsi belum tersedia.',
+                    'materiPembelajaran' => null,
+                    'tglPenyusunan' => null,
+                ],
+                'allCpls' => collect(),
+                'relatedCpls' => collect(),
+                'initialCpmks' => collect(),
+                'initialSubCpmks' => collect(),
+                'initialRencanas' => collect(),
+                'evaluasi' => null,
+                'tugas' => null,
+                'referensi' => null,
+            ]);
+        }
     }
 }

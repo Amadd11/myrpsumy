@@ -109,8 +109,13 @@ const RencanaTab: FC<RencanaTabProps> = ({
                                                         : "-"}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {activity.materi_pembelajaran ||
-                                                        "Materi sesuai Sub-CPMK"}
+                                                    <div
+                                                        dangerouslySetInnerHTML={{
+                                                            __html:
+                                                                activity.materi_pembelajaran ||
+                                                                "Materi sesuai Sub-CPMK",
+                                                        }}
+                                                    />
                                                 </TableCell>
                                                 <TableCell>
                                                     {activity.metode ||

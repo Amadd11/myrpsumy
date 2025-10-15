@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\CourseResource\RelationManagers;
+namespace App\Filament\Resources\RpsResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -25,7 +25,8 @@ class CplsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('code')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('title')
+                Forms\Components\TextInput::make('bobot')
+                    ->numeric()
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
@@ -47,14 +48,16 @@ class CplsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('code')
                     ->label('Kode')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('title')
+                Tables\Columns\TextColumn::make('bobot')
                     ->label('Judul CPL')
-                    ->wrap(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('taksonomi')
                     ->badge(),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\AttachAction::make()
+                    ->preloadRecordSelect() // Membuat dropdown CPL bisa dicari dan di-scroll
+                    ->label('Hubungkan CPL Existing'),
             ])
             ->actions([
                 Tables\Actions\DetachAction::make()

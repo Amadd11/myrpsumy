@@ -19,6 +19,8 @@ class Rps extends Model
         'course_id',
         'dosen_id',
         'deskripsi',
+        'materi_pembelajaran',
+        'tgl_penyusunan',
         'tahun_ajaran',
     ];
 
@@ -34,16 +36,58 @@ class Rps extends Model
     /**
      * Get the course that owns the RPS.
      */
+
+    public function cpls()
+    {
+        return $this->belongsToMany(
+            CPL::class,
+            'rps_cpl',
+            'rps_id',
+            'cpl_id'
+        );
+    }
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
     }
+    public function cpmks()
+    {
+        return $this->hasMany(Cpmk::class);
+    }
 
-    /**
-     * Get the dosen that owns the RPS.
-     */
-    public function dosen(): BelongsTo
+    public function evaluasis()
+    {
+        return $this->hasMany(Evaluasi::class);
+    }
+
+    public function tugas()
+    {
+        return $this->hasMany(Tugas::class);
+    }
+
+    public function rencanas()
+    {
+        return $this->hasMany(Rencana::class);
+    }
+
+    public function referensi()
+    {
+        return $this->hasMany(Referensi::class);
+    }
+
+    public function dosen()
     {
         return $this->belongsTo(Dosen::class);
+    }
+    public function subCpmks()
+    {
+        return $this->hasManyThrough(
+            SubCPMK::class,
+            Cpmk::class,
+            'rps_id', // Foreign key di tabel cpmks yang mengarah ke courses
+            'cpmk_id',   // Foreign key di tabel sub_cpmks yang mengarah ke cpmks
+            'id',        // Local key di tabel courses
+            'id'         // Local key di tabel cpmks
+        );
     }
 }

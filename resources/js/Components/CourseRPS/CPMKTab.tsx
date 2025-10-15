@@ -13,7 +13,7 @@ export interface Cpmk {
 export interface Cpl {
     id: number;
     code: string;
-    title: string;
+    bobot: string;
     description: string;
     taksonomi: string;
     bg_color: string;
