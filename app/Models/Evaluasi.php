@@ -17,7 +17,7 @@ class Evaluasi extends Model
         'cpl_id',
         'cpmk_id',
         'sub_cpmk_id',
-        'minggu_ke',
+        'week',
         'bobot_sub_cpmk',
         'indikator',
         'bentuk_penilaian',

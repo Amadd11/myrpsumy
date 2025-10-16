@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import {
     Table,
@@ -8,16 +8,27 @@ import {
     TableHeader,
     TableRow,
 } from "@/Components/ui/table";
-import { BookOpen, Calendar, GitBranch, Target } from "lucide-react";
+import {
+    BookOpen,
+    Calendar,
+    GitBranch,
+    Target,
+    ChevronDown,
+    ChevronUp,
+} from "lucide-react";
 
 interface Rencana {
     id: number;
-    week: number;
+    week: string | number;
     sub_cpmk_id: number;
     materi_pembelajaran: string;
+    indikator: string;
+    kriteria_penilaian: string;
+    teknik_penilaian: string;
     metode: string;
-    pengalaman_belajar: string;
+    deskripsi_belajar: string;
     waktu: string;
+    bobot_penilaian: string | number;
 }
 
 interface SubCpmk {
@@ -26,15 +37,66 @@ interface SubCpmk {
     description: string;
 }
 
+interface ExpandableCellProps {
+    content: string;
+    defaultContent?: string;
+}
+
+const ExpandableCell: FC<ExpandableCellProps> = ({
+    content,
+    defaultContent = "-",
+}) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const displayContent = content || defaultContent;
+    const isLong = displayContent.length > 200; // Threshold untuk tampilkan expand button
+
+    if (!isLong) {
+        return (
+            <div
+                dangerouslySetInnerHTML={{ __html: displayContent }}
+                className="prose-sm prose text-left align-top max-w-none" // Rata kiri atas
+            />
+        );
+    }
+
+    const shortContent =
+        displayContent.length > 300
+            ? `${displayContent.substring(0, 300)}...`
+            : displayContent;
+
+    return (
+        <div className="space-y-1 text-left align-top">
+            {" "}
+            {/* Rata kiri atas di container */}
+            <div
+                dangerouslySetInnerHTML={{
+                    __html: isExpanded ? displayContent : shortContent,
+                }}
+                className="prose-sm prose max-w-none"
+            />
+            {isLong && (
+                <button
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="flex items-center gap-1 -ml-1 text-xs font-medium text-indigo-600 hover:text-indigo-800"
+                >
+                    {isExpanded ? "Baca Lebih Sedikit" : "Baca Selengkapnya"}
+                    {isExpanded ? (
+                        <ChevronUp className="w-3 h-3" />
+                    ) : (
+                        <ChevronDown className="w-3 h-3" />
+                    )}
+                </button>
+            )}
+        </div>
+    );
+};
+
 interface RencanaTabProps {
     rencanaItems: Rencana[];
     setRencanaItems: React.Dispatch<React.SetStateAction<Rencana[]>>;
     subCpmkItems: SubCpmk[];
 }
 
-// =======================
-// Component
-// =======================
 const RencanaTab: FC<RencanaTabProps> = ({
     rencanaItems,
     setRencanaItems,
@@ -60,26 +122,42 @@ const RencanaTab: FC<RencanaTabProps> = ({
                     </h3>
 
                     <div className="overflow-x-auto bg-white border rounded-lg">
-                        <Table>
+                        <Table className="min-w-full">
                             <TableHeader>
                                 <TableRow className="bg-indigo-100">
-                                    <TableHead className="w-16 font-bold text-center text-indigo-900">
+                                    <TableHead className="w-12 font-bold text-center text-indigo-900">
                                         Minggu
                                     </TableHead>
-                                    <TableHead className="font-bold text-indigo-900">
+                                    <TableHead className="w-32 font-bold text-left text-indigo-900">
+                                        {" "}
+                                        {/* Rata kiri untuk header teks */}
                                         Sub-CPMK
                                     </TableHead>
-                                    <TableHead className="font-bold text-indigo-900">
+                                    <TableHead className="w-48 font-bold text-left text-indigo-900">
+                                        {" "}
+                                        {/* Rata kiri */}
                                         Materi Pembelajaran
                                     </TableHead>
-                                    <TableHead className="font-bold text-indigo-900">
+                                    <TableHead className="w-48 font-bold text-left text-indigo-900">
+                                        Indikator Penilaian
+                                    </TableHead>
+                                    <TableHead className="w-48 font-bold text-left text-indigo-900">
+                                        Kriteria Penilaian
+                                    </TableHead>
+                                    <TableHead className="w-48 font-bold text-left text-indigo-900">
+                                        Teknik Penilaian
+                                    </TableHead>
+                                    <TableHead className="font-bold text-left text-indigo-900 w-28">
                                         Metode
                                     </TableHead>
-                                    <TableHead className="font-bold text-center text-indigo-900 w-28">
+                                    <TableHead className="w-20 font-bold text-center text-indigo-900">
                                         Waktu
                                     </TableHead>
-                                    <TableHead className="font-bold text-indigo-900">
-                                        Pengalaman Belajar
+                                    <TableHead className="w-48 font-bold text-left text-indigo-900">
+                                        Deskripsi Belajar
+                                    </TableHead>
+                                    <TableHead className="w-16 font-bold text-center text-indigo-900">
+                                        Bobot (%)
                                     </TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -100,34 +178,74 @@ const RencanaTab: FC<RencanaTabProps> = ({
                                                         : "bg-indigo-50/50"
                                                 }
                                             >
-                                                <TableCell className="font-medium text-center">
+                                                <TableCell className="py-3 font-medium text-center align-top">
+                                                    {" "}
+                                                    {/* Align top untuk vertikal */}
                                                     {activity.week}
                                                 </TableCell>
-                                                <TableCell className="font-medium text-purple-800">
+                                                <TableCell className="py-3 font-medium text-left text-purple-800 align-top">
+                                                    {" "}
+                                                    {/* Rata kiri atas */}
                                                     {subCpmk
-                                                        ? `${subCpmk.title} `
+                                                        ? subCpmk.title
                                                         : "-"}
                                                 </TableCell>
-                                                <TableCell>
-                                                    <div
-                                                        dangerouslySetInnerHTML={{
-                                                            __html:
-                                                                activity.materi_pembelajaran ||
-                                                                "Materi sesuai Sub-CPMK",
-                                                        }}
+                                                <TableCell className="py-3 text-left align-top">
+                                                    {" "}
+                                                    {/* Rata kiri atas */}
+                                                    <ExpandableCell
+                                                        content={
+                                                            activity.materi_pembelajaran
+                                                        }
+                                                        defaultContent="Materi sesuai Sub-CPMK"
                                                     />
                                                 </TableCell>
-                                                <TableCell>
-                                                    {activity.metode ||
-                                                        "Ceramah, Diskusi"}
+                                                <TableCell className="py-3 text-left align-top">
+                                                    <ExpandableCell
+                                                        content={
+                                                            activity.indikator
+                                                        }
+                                                    />
                                                 </TableCell>
-                                                <TableCell className="text-center">
+                                                <TableCell className="py-3 text-left align-top">
+                                                    <ExpandableCell
+                                                        content={
+                                                            activity.kriteria_penilaian
+                                                        }
+                                                    />
+                                                </TableCell>
+                                                <TableCell className="py-3 text-left align-top">
+                                                    <ExpandableCell
+                                                        content={
+                                                            activity.teknik_penilaian
+                                                        }
+                                                    />
+                                                </TableCell>
+                                                <TableCell className="py-3 text-left align-top">
+                                                    {activity.metode ===
+                                                    "Luring"
+                                                        ? "Luring (Tatap Muka)"
+                                                        : activity.metode ===
+                                                          "Daring"
+                                                        ? "Daring (Online)"
+                                                        : activity.metode ||
+                                                          "Ceramah, Diskusi"}
+                                                </TableCell>
+                                                <TableCell className="py-3 text-center align-top">
                                                     {activity.waktu ||
                                                         "3 x 50 menit"}
                                                 </TableCell>
-                                                <TableCell>
-                                                    {activity.pengalaman_belajar ||
-                                                        "Mahasiswa mengikuti kuliah dan diskusi"}
+                                                <TableCell className="py-3 text-left align-top">
+                                                    <ExpandableCell
+                                                        content={
+                                                            activity.deskripsi_belajar
+                                                        }
+                                                        defaultContent="Mahasiswa mengikuti kuliah dan diskusi"
+                                                    />
+                                                </TableCell>
+                                                <TableCell className="py-3 font-medium text-center text-indigo-900 align-top">
+                                                    {activity.bobot_penilaian ||
+                                                        "-"}
                                                 </TableCell>
                                             </TableRow>
                                         );
@@ -135,8 +253,8 @@ const RencanaTab: FC<RencanaTabProps> = ({
                                 ) : (
                                     <TableRow>
                                         <TableCell
-                                            colSpan={6}
-                                            className="py-4 text-center text-gray-500"
+                                            colSpan={10}
+                                            className="py-8 text-center text-gray-500"
                                         >
                                             Belum ada rencana pembelajaran
                                         </TableCell>

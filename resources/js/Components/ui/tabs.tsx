@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-
 import { cn } from "@/lib/utils";
 
 const Tabs = TabsPrimitive.Root;
@@ -9,18 +8,21 @@ const TabsList = React.forwardRef<
     React.ElementRef<typeof TabsPrimitive.List>,
     React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
 >(({ className, ...props }, ref) => (
-    <div className="w-full overflow-x-auto sm:overflow-visible">
-        <TabsPrimitive.List
-            ref={ref}
-            className={cn(
-                // tambahkan scroll dan hilangkan justify-center
-                "flex min-w-max items-center gap-2 rounded-md bg-muted p-1 text-muted-foreground sm:grid sm:grid-cols-5 lg:grid-cols-9",
-                className
-            )}
-            {...props}
-        />
+    <div className="flex justify-center w-full">
+        {/* Scroll hanya aktif di mobile, scrollbar disembunyikan */}
+        <div className="w-full max-w-5xl overflow-x-auto sm:overflow-visible scrollbar-hide">
+            <TabsPrimitive.List
+                ref={ref}
+                className={cn(
+                    "flex justify-center min-w-max items-center gap-2 rounded-md bg-muted p-1 text-muted-foreground sm:grid sm:grid-cols-5 lg:grid-cols-9",
+                    className
+                )}
+                {...props}
+            />
+        </div>
     </div>
 ));
+
 TabsList.displayName = TabsPrimitive.List.displayName;
 
 const TabsTrigger = React.forwardRef<

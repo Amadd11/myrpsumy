@@ -50,22 +50,28 @@ interface SubCpmk {
 
 interface Rencana {
     id: number;
-    week: number;
-    materi_pembelajaran: string;
-    metode: string;
-    pengalaman_belajar: string;
-    waktu: string;
+    week: string | number;
     sub_cpmk_id: number;
+    materi_pembelajaran: string;
+    indikator: string;
+    kriteria_penilaian: string;
+    teknik_penilaian: string;
+    metode: string;
+    deskripsi_belajar: string;
+    waktu: string;
+    bobot_penilaian: string | number;
 }
-
 
 interface Evaluasi {
     id: number;
-    komponen_penilaian: string;
-    teknik_penilaian: string;
-    kriteria_penilaian: string;
-    waktu_pelaksanaan: string;
-    bobot: number;
+    week: number;
+    cpl_id: number;
+    cpmk_id: number;
+    sub_cpmk_id: number;
+    indikator: string;
+    bentuk_penilaian: string;
+    bobot_sub_cpmk: number;
+    bobot_cpmk: number;
 }
 
 interface Tugas {
@@ -219,7 +225,6 @@ const CourseRPS = () => {
         initialCpmks,
         initialSubCpmks,
         initialRencanas,
-        initialBobots = [], // Fallback array kosong
         initialCourseInfo,
     } = usePage<PageProps>().props;
 
@@ -229,16 +234,18 @@ const CourseRPS = () => {
     const [cpmkItems, setCpmkItems] = useState<Cpmk[]>(initialCpmks);
     const [subCpmkItems, setSubCpmkItems] =
         useState<SubCpmk[]>(initialSubCpmks);
+    const [evaluasiItems, setEvaluasiItems] = useState<Evaluasi[]>(
+        evaluasi || []
+    );
 
     return (
         <Layout>
             <HeroSection course={course} />
-
             <section className="py-8 bg-gray-50">
                 <div className="container px-4 mx-auto sm:px-6 md:px-8">
                     <Tabs defaultValue="deskripsi" className="w-full">
-                        <div className="mb-8 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                            <TabsList className="flex w-full gap-2 overflow-x-auto scrollbar-hide sm:grid sm:grid-cols-5 sm:overflow-visible sm:gap-2 lg:grid-cols-9">
+                        <div className="mb-8 overflow-x-auto scrollbar-hide sm:overflow-visible">
+                            <TabsList>
                                 {tabsConfig.map(
                                     ({ value, label, Icon, color }) => (
                                         <TabsTrigger
@@ -282,7 +289,13 @@ const CourseRPS = () => {
                             />
                         </TabsContent>
                         <TabsContent value="evaluasi">
-                            <EvaluasiTab evaluasi={evaluasi} />
+                            <EvaluasiTab
+                                evaluasiItems={evaluasiItems}
+                                setEvaluasiItems={setEvaluasiItems}
+                                cplItems={allCpls}
+                                cpmkItems={cpmkItems}
+                                subCpmkItems={subCpmkItems}
+                            />
                         </TabsContent>
                         <TabsContent value="tugas">
                             <TugasTab tugas={tugas} />

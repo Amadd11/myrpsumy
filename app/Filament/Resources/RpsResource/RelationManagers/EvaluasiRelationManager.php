@@ -24,7 +24,7 @@ class EvaluasisRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('minggu_ke')
+                Forms\Components\TextInput::make('week')
                     ->label('Minggu Ke-')
                     ->numeric()
                     ->required()
@@ -112,9 +112,9 @@ class EvaluasisRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('minggu_ke')
+            ->recordTitleAttribute('week')
             ->columns([
-                Tables\Columns\TextColumn::make('minggu_ke'),
+                Tables\Columns\TextColumn::make('week'),
                 Tables\Columns\TextColumn::make('subCpmk.title')->label('Sub-CPMK')->limit(50),
                 Tables\Columns\TextColumn::make('bobot_cpmk')->suffix('%'),
             ])

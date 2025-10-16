@@ -1,142 +1,233 @@
-import React, { FC } from "react";
-import { Percent, Ruler, Calendar, CheckCircle } from "lucide-react";
-import clsx from "clsx"; // 👉 untuk conditional class agar lebih clean
+import React, { FC, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/Components/ui/table";
+import { Calendar, Target, ChevronDown, ChevronUp } from "lucide-react";
 
 interface Evaluasi {
     id: number;
-    komponen_penilaian: string;
-    teknik_penilaian: string;
-    kriteria_penilaian: string;
-    waktu_pelaksanaan: string;
-    bobot: number;
+    week: number;
+    cpl_id: number;
+    cpmk_id: number;
+    sub_cpmk_id: number;
+    indikator: string;
+    bentuk_penilaian: string;
+    bobot_sub_cpmk: number;
+    bobot_cpmk: number;
+}
+
+interface Cpl {
+    id: number;
+    code: string;
+    description: string;
+}
+
+interface Cpmk {
+    id: number;
+    title: string;
+}
+
+interface SubCpmk {
+    id: number;
+    title: string;
 }
 
 interface EvaluasiTabProps {
-    evaluasi?: Evaluasi[];
+    evaluasiItems: Evaluasi[];
+    setEvaluasiItems: React.Dispatch<React.SetStateAction<Evaluasi[]>>;
+    cplItems: Cpl[];
+    cpmkItems: Cpmk[];
+    subCpmkItems: SubCpmk[];
 }
 
-const EvaluasiTab: FC<EvaluasiTabProps> = ({ evaluasi }) => {
-    const evaluasiList = evaluasi || [];
+interface ExpandableCellProps {
+    content: string;
+    defaultContent?: string;
+}
 
-    // 🎨 Warna badge berdasarkan nilai bobot
-    const getBobotColor = (bobot: number) => {
-        if (bobot >= 40)
-            return "bg-emerald-100 text-emerald-700 border-emerald-200";
-        if (bobot >= 20) return "bg-amber-100 text-amber-700 border-amber-200";
-        return "bg-gray-100 text-gray-700 border-gray-200";
-    };
+const ExpandableCell: FC<ExpandableCellProps> = ({
+    content,
+    defaultContent = "-",
+}) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const displayContent = content || defaultContent;
+    const isLong = displayContent.length > 200; // Threshold untuk tampilkan expand button
 
-    // 🧩 Komponen tampilan kosong
-    const renderEmptyState = () => (
-        <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="p-4 mb-4 bg-gray-100 rounded-full">
-                <Percent className="w-8 h-8 text-gray-400" />
-            </div>
-            <h3 className="mb-2 text-lg font-semibold text-gray-900">
-                Belum Ada Evaluasi
-            </h3>
-            <p className="max-w-md text-gray-500">
-                Tidak ada data evaluasi pembelajaran yang tersedia saat ini.
-                Silakan periksa kembali nanti.
-            </p>
-        </div>
-    );
+    if (!isLong) {
+        return (
+            <div
+                dangerouslySetInnerHTML={{ __html: displayContent }}
+                className="prose-sm prose text-left align-top max-w-none"
+            />
+        );
+    }
 
-    // 🧾 Tabel evaluasi
-    const renderTable = () => (
-        <div className="overflow-hidden bg-white border shadow-sm border-gray-200/50 rounded-xl">
-            <div className="overflow-x-auto">
-                <table
-                    className="min-w-full text-sm"
-                    aria-label="Tabel evaluasi pembelajaran"
-                >
-                    <thead className="text-gray-700 bg-gradient-to-r from-gray-50 to-gray-100">
-                        <tr>
-                            <th className="px-6 py-4 font-semibold tracking-wide text-left border-b border-gray-200">
-                                <div className="flex items-center gap-2">
-                                    <Ruler className="w-4 h-4 text-gray-400" />
-                                    Komponen Penilaian
-                                </div>
-                            </th>
-                            <th className="px-6 py-4 font-semibold tracking-wide text-left border-b border-gray-200">
-                                Teknik Penilaian
-                            </th>
-                            <th className="px-6 py-4 font-semibold tracking-wide text-left border-b border-gray-200">
-                                Kriteria Penilaian
-                            </th>
-                            <th className="px-6 py-4 font-semibold tracking-wide text-left border-b border-gray-200">
-                                <div className="flex items-center gap-2">
-                                    <Calendar className="w-4 h-4 text-gray-400" />
-                                    Waktu Pelaksanaan
-                                </div>
-                            </th>
-                            <th className="px-6 py-4 font-semibold tracking-wide text-center border-b border-gray-200">
-                                Bobot
-                            </th>
-                        </tr>
-                    </thead>
+    const shortContent =
+        displayContent.length > 300
+            ? `${displayContent.substring(0, 300)}...`
+            : displayContent;
 
-                    <tbody className="divide-y divide-gray-100">
-                        {evaluasiList.map((item, index) => (
-                            <tr
-                                key={item.id ?? index}
-                                className={clsx(
-                                    "transition-all duration-300 hover:bg-cyan-50/50",
-                                    index % 2 === 0
-                                        ? "bg-white/80"
-                                        : "bg-gray-50/80"
-                                )}
-                            >
-                                <td className="px-6 py-5 font-medium text-gray-900 border-b border-gray-100">
-                                    {item.komponen_penilaian}
-                                </td>
-                                <td className="px-6 py-5 text-gray-700 border-b border-gray-100">
-                                    {item.teknik_penilaian}
-                                </td>
-                                <td className="w-64 px-6 py-5 text-gray-700 border-b border-gray-100">
-                                    <p className="break-words">
-                                        {item.kriteria_penilaian}
-                                    </p>
-                                </td>
-                                <td className="px-6 py-5 text-gray-600 border-b border-gray-100">
-                                    {item.waktu_pelaksanaan}
-                                </td>
-                                <td className="px-6 py-5 text-center border-b border-gray-100">
-                                    <span
-                                        className={clsx(
-                                            "inline-flex items-center justify-center px-3 py-1.5 text-xs font-bold rounded-full border transition-colors",
-                                            getBobotColor(item.bobot)
-                                        )}
-                                    >
-                                        <CheckCircle className="w-3 h-3 mr-1" />
-                                        {new Intl.NumberFormat("id-ID").format(
-                                            item.bobot
-                                        )}
-                                        %
-                                    </span>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    );
-
-    // 🔷 Tampilan utama
     return (
-        <div className="p-6 space-y-6 border shadow-xl bg-white/80 backdrop-blur-sm rounded-2xl border-gray-100/50">
-            <div className="flex items-center gap-3">
-                <div className="p-2 text-white shadow-lg bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl">
-                    <Percent className="w-5 h-5" />
-                </div>
-                <h2 className="text-xl font-bold tracking-tight text-gray-900">
-                    Evaluasi Pembelajaran
-                </h2>
-            </div>
-
-            {evaluasiList.length === 0 ? renderEmptyState() : renderTable()}
+        <div className="space-y-1 text-left align-top">
+            <div
+                dangerouslySetInnerHTML={{
+                    __html: isExpanded ? displayContent : shortContent,
+                }}
+                className="prose-sm prose max-w-none"
+            />
+            {isLong && (
+                <button
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="flex items-center gap-1 -ml-1 text-xs font-medium text-indigo-600 hover:text-indigo-800"
+                >
+                    {isExpanded ? "Baca Lebih Sedikit" : "Baca Selengkapnya"}
+                    {isExpanded ? (
+                        <ChevronUp className="w-3 h-3" />
+                    ) : (
+                        <ChevronDown className="w-3 h-3" />
+                    )}
+                </button>
+            )}
         </div>
+    );
+};
+
+const EvaluasiTab: FC<EvaluasiTabProps> = ({
+    evaluasiItems,
+    setEvaluasiItems,
+    cplItems,
+    cpmkItems,
+    subCpmkItems,
+}) => {
+    return (
+        <Card className="border shadow-xl border-gray-200/50 bg-white/80 rounded-2xl">
+            <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-3 text-gray-800">
+                    <div className="p-2 text-white shadow-lg bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl">
+                        <Target className="w-5 h-5" />
+                    </div>
+                    <span className="text-xl font-bold tracking-tight">
+                        Evaluasi Pembelajaran
+                    </span>
+                </CardTitle>
+            </CardHeader>
+
+            <CardContent className="space-y-8">
+                <div className="p-6 border rounded-lg bg-gradient-to-r from-green-50 to-emerald-50">
+                    <h3 className="mb-4 text-lg font-bold text-green-900">
+                        Rencana Evaluasi Mingguan
+                    </h3>
+
+                    <div className="overflow-x-auto bg-white border rounded-lg">
+                        <Table className="min-w-full">
+                            <TableHeader>
+                                <TableRow className="bg-green-100">
+                                    <TableHead className="w-16 font-bold text-center text-green-900">
+                                        Minggu
+                                    </TableHead>
+                                    <TableHead className="w-32 font-bold text-left text-green-900">
+                                        CPL
+                                    </TableHead>
+                                    <TableHead className="w-32 font-bold text-left text-green-900">
+                                        CPMK
+                                    </TableHead>
+                                    <TableHead className="w-40 font-bold text-left text-green-900">
+                                        Sub-CPMK
+                                    </TableHead>
+                                    <TableHead className="w-48 font-bold text-left text-green-900">
+                                        Indikator Penilaian
+                                    </TableHead>
+                                    <TableHead className="w-48 font-bold text-left text-green-900">
+                                        Bentuk Penilaian
+                                    </TableHead>
+                                    <TableHead className="w-24 font-bold text-center text-green-900">
+                                        Bobot Sub-CPMK (%)
+                                    </TableHead>
+                                    <TableHead className="w-24 font-bold text-center text-green-900">
+                                        Bobot CPMK (%)
+                                    </TableHead>
+                                </TableRow>
+                            </TableHeader>
+
+                            <TableBody>
+                                {evaluasiItems.length > 0 ? (
+                                    evaluasiItems.map((item, index) => {
+                                        const cpl = cplItems.find(
+                                            (c) => c.id === item.cpl_id
+                                        );
+                                        const cpmk = cpmkItems.find(
+                                            (c) => c.id === item.cpmk_id
+                                        );
+                                        const subCpmk = subCpmkItems.find(
+                                            (s) => s.id === item.sub_cpmk_id
+                                        );
+
+                                        return (
+                                            <TableRow
+                                                key={item.id ?? index}
+                                                className={
+                                                    index % 2 === 0
+                                                        ? "bg-white"
+                                                        : "bg-green-50/50"
+                                                }
+                                            >
+                                                <TableCell className="py-3 font-medium text-center align-top">
+                                                    {item.week}
+                                                </TableCell>
+                                                <TableCell className="py-3 font-medium text-left text-blue-800 align-top">
+                                                    {cpl ? cpl.code : "-"}
+                                                </TableCell>
+                                                <TableCell className="py-3 text-left align-top">
+                                                    {cpmk ? cpmk.title : "-"}
+                                                </TableCell>
+                                                <TableCell className="py-3 text-left align-top">
+                                                    {subCpmk
+                                                        ? subCpmk.title
+                                                        : "-"}
+                                                </TableCell>
+                                                <TableCell className="py-3 text-left align-top">
+                                                    <ExpandableCell
+                                                        content={item.indikator}
+                                                    />
+                                                </TableCell>
+                                                <TableCell className="py-3 text-left align-top">
+                                                    <ExpandableCell
+                                                        content={
+                                                            item.bentuk_penilaian
+                                                        }
+                                                    />
+                                                </TableCell>
+                                                <TableCell className="py-3 font-medium text-center text-green-900 align-top">
+                                                    {item.bobot_sub_cpmk || "-"}
+                                                </TableCell>
+                                                <TableCell className="py-3 font-medium text-center text-green-900 align-top">
+                                                    {item.bobot_cpmk || "-"}
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })
+                                ) : (
+                                    <TableRow>
+                                        <TableCell
+                                            colSpan={8}
+                                            className="py-8 text-center text-gray-500"
+                                        >
+                                            Belum ada data evaluasi
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
     );
 };
 

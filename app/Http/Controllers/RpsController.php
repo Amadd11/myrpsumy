@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\CPL;
+use App\Models\Rps;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Course;
-use App\Models\Rps;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
@@ -35,23 +36,25 @@ class RPSController extends Controller
     /**
      * Halaman detail RPS per mata kuliah
      */
-    public function show(string $courseSlug, ?string $tahunAjaran = null): Response
+    public function show(string $courseSlug): Response
     {
         try {
             // Ambil data course berdasarkan slug
             $course = Course::where('slug', $courseSlug)->firstOrFail();
 
-            if (!$tahunAjaran) {
-                $latestTahun = Rps::where('course_id', $course->id)
-                    ->orderBy('tahun_ajaran', 'desc') // DESC biar ambil yang paling baru dulu
-                    ->value('tahun_ajaran'); // Cuma ambil kolom tahun, lebih efisien
-                $tahunAjaran = $latestTahun ?? date('Y') . '/' . (date('Y') + 1);
-            }
+
 
             // Ambil RPS jika ada
-            $rps = Rps::with(['dosen', 'cpmks.subCpmks', 'rencanas.subCpmk.cpmk', 'cpls'])
+            $rps = Rps::with([
+                'dosen',
+                'cpmks.subCpmks',
+                'rencanas.subCpmk.cpmk',
+                'cpls',
+                'evaluasis.cpl',
+                'evaluasis.cpmk',
+                'evaluasis.subCpmk'
+            ])
                 ->where('course_id', $course->id)
-                ->where('tahun_ajaran', $tahunAjaran)
                 ->first();
 
             return Inertia::render('CourseRPS', [
@@ -66,11 +69,11 @@ class RPSController extends Controller
                 // Informasi umum RPS (default kalau kosong)
                 'initialCourseInfo' => [
                     'penanggungJawab' => $rps?->dosen?->name ?? 'Belum Diatur',
-                    'tahunAjaran' => $rps?->tahun_ajaran ?? $tahunAjaran,
+                    'tahunAjaran' => $rps?->tahun_ajaran,
                     'deskripsi' => $rps?->deskripsi ?? 'Deskripsi belum tersedia.',
                     'materiPembelajaran' => $rps?->materi_pembelajaran ?? null,
                     'tglPenyusunan' => $rps?->tgl_penyusunan
-                        ? \Carbon\Carbon::parse($rps->tgl_penyusunan)->translatedFormat('d F Y')
+                        ? Carbon::parse($rps->tgl_penyusunan)->translatedFormat('d F Y')
                         : null,
                 ],
 
@@ -87,7 +90,7 @@ class RPSController extends Controller
                 'initialSubCpmks' => $rps?->subCpmks ?? collect(),
                 'initialRencanas' => $rps?->rencanas ?? collect(),
 
-                'evaluasi'  => $rps?->evaluasi ?? null,
+                'evaluasi' => $rps?->evaluasis ?? collect(),
                 'tugas'     => $rps?->tugas ?? null,
                 'referensi' => $rps?->referensi ?? null,
             ]);
