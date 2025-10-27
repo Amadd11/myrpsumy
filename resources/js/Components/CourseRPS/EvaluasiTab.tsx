@@ -8,7 +8,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/Components/ui/table";
-import { Calendar, Target, ChevronDown, ChevronUp } from "lucide-react";
+import { Target, ChevronDown, ChevronUp } from "lucide-react";
 
 interface Evaluasi {
     id: number;
@@ -57,7 +57,7 @@ const ExpandableCell: FC<ExpandableCellProps> = ({
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const displayContent = content || defaultContent;
-    const isLong = displayContent.length > 200; // Threshold untuk tampilkan expand button
+    const isLong = displayContent.length > 200;
 
     if (!isLong) {
         return (
@@ -105,6 +105,15 @@ const EvaluasiTab: FC<EvaluasiTabProps> = ({
     cpmkItems,
     subCpmkItems,
 }) => {
+    // Kelompokkan evaluasi berdasarkan CPMK
+    const groupedByCpmk = Object.entries(
+        evaluasiItems.reduce((acc, item) => {
+            if (!acc[item.cpmk_id]) acc[item.cpmk_id] = [];
+            acc[item.cpmk_id].push(item);
+            return acc;
+        }, {} as Record<number, Evaluasi[]>)
+    );
+
     return (
         <Card className="border shadow-xl border-gray-200/50 bg-white/80 rounded-2xl">
             <CardHeader className="pb-4">
@@ -157,60 +166,115 @@ const EvaluasiTab: FC<EvaluasiTabProps> = ({
 
                             <TableBody>
                                 {evaluasiItems.length > 0 ? (
-                                    evaluasiItems.map((item, index) => {
-                                        const cpl = cplItems.find(
-                                            (c) => c.id === item.cpl_id
-                                        );
+                                    groupedByCpmk.map(([cpmkId, group]) => {
                                         const cpmk = cpmkItems.find(
-                                            (c) => c.id === item.cpmk_id
+                                            (c) => c.id === Number(cpmkId)
                                         );
-                                        const subCpmk = subCpmkItems.find(
-                                            (s) => s.id === item.sub_cpmk_id
+                                        const cpl = cplItems.find(
+                                            (c) => c.id === group[0].cpl_id
                                         );
 
-                                        return (
-                                            <TableRow
-                                                key={item.id ?? index}
-                                                className={
-                                                    index % 2 === 0
-                                                        ? "bg-white"
-                                                        : "bg-green-50/50"
-                                                }
-                                            >
-                                                <TableCell className="py-3 font-medium text-center align-top">
-                                                    {item.week}
-                                                </TableCell>
-                                                <TableCell className="py-3 font-medium text-left text-blue-800 align-top">
-                                                    {cpl ? cpl.code : "-"}
-                                                </TableCell>
-                                                <TableCell className="py-3 text-left align-top">
-                                                    {cpmk ? cpmk.title : "-"}
-                                                </TableCell>
-                                                <TableCell className="py-3 text-left align-top">
-                                                    {subCpmk
-                                                        ? subCpmk.title
-                                                        : "-"}
-                                                </TableCell>
-                                                <TableCell className="py-3 text-left align-top">
-                                                    <ExpandableCell
-                                                        content={item.indikator}
-                                                    />
-                                                </TableCell>
-                                                <TableCell className="py-3 text-left align-top">
-                                                    <ExpandableCell
-                                                        content={
-                                                            item.bentuk_penilaian
-                                                        }
-                                                    />
-                                                </TableCell>
-                                                <TableCell className="py-3 font-medium text-center text-green-900 align-top">
-                                                    {item.bobot_sub_cpmk || "-"}
-                                                </TableCell>
-                                                <TableCell className="py-3 font-medium text-center text-green-900 align-top">
-                                                    {item.bobot_cpmk || "-"}
-                                                </TableCell>
-                                            </TableRow>
-                                        );
+                                        return group.map((item, index) => {
+                                            const subCpmk = subCpmkItems.find(
+                                                (s) => s.id === item.sub_cpmk_id
+                                            );
+
+                                            return (
+                                                <TableRow
+                                                    key={item.id}
+                                                    className={
+                                                        index % 2 === 0
+                                                            ? "bg-white"
+                                                            : "bg-green-50/50"
+                                                    }
+                                                >
+                                                    {/* Kolom Minggu (gabung juga per CPMK) */}
+                                                    {index === 0 && (
+                                                        <TableCell
+                                                            rowSpan={
+                                                                group.length
+                                                            }
+                                                            className="py-3 font-medium text-center align-top"
+                                                        >
+                                                            {item.week}
+                                                        </TableCell>
+                                                    )}
+
+                                                    {/* Kolom CPL */}
+                                                    {index === 0 && (
+                                                        <TableCell
+                                                            rowSpan={
+                                                                group.length
+                                                            }
+                                                            className="py-3 font-medium text-left text-blue-800 align-top"
+                                                        >
+                                                            {cpl
+                                                                ? cpl.code
+                                                                : "-"}
+                                                        </TableCell>
+                                                    )}
+
+                                                    {/* Kolom CPMK */}
+                                                    {index === 0 && (
+                                                        <TableCell
+                                                            rowSpan={
+                                                                group.length
+                                                            }
+                                                            className="py-3 font-semibold text-left text-green-900 align-top"
+                                                        >
+                                                            {cpmk
+                                                                ? cpmk.title
+                                                                : "-"}
+                                                        </TableCell>
+                                                    )}
+
+                                                    {/* Kolom Sub-CPMK */}
+                                                    <TableCell className="py-3 text-left align-top">
+                                                        {subCpmk
+                                                            ? subCpmk.title
+                                                            : "-"}
+                                                    </TableCell>
+
+                                                    {/* Kolom Indikator */}
+                                                    <TableCell className="py-3 text-left align-top">
+                                                        <ExpandableCell
+                                                            content={
+                                                                item.indikator
+                                                            }
+                                                        />
+                                                    </TableCell>
+
+                                                    {/* Kolom Bentuk Penilaian */}
+                                                    <TableCell className="py-3 text-left align-top">
+                                                        <ExpandableCell
+                                                            content={
+                                                                item.bentuk_penilaian
+                                                            }
+                                                        />
+                                                    </TableCell>
+
+                                                    {/* Kolom Bobot Sub-CPMK */}
+                                                    <TableCell className="py-3 font-medium text-center text-green-900 align-top">
+                                                        {item.bobot_sub_cpmk ||
+                                                            "-"}
+                                                    </TableCell>
+
+                                                    {/* Kolom Bobot CPMK */}
+                                                    {index === 0 && (
+                                                        <TableCell
+                                                            rowSpan={
+                                                                group.length
+                                                            }
+                                                            className="py-3 font-medium text-center text-green-900 align-top"
+                                                        >
+                                                            {group[0]
+                                                                .bobot_cpmk ||
+                                                                "-"}
+                                                        </TableCell>
+                                                    )}
+                                                </TableRow>
+                                            );
+                                        });
                                     })
                                 ) : (
                                     <TableRow>

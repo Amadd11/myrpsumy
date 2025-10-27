@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('rps_id')->constrained()->onDelete('cascade');
             $table->foreignId('cpl_id')->constrained()->onDelete('cascade');
+            $table->string('bobot')->nullable();
             $table->timestamps();
         });
     }

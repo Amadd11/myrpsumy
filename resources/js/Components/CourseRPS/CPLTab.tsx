@@ -6,10 +6,10 @@ import { Target, CheckCircle } from "lucide-react";
 interface Cpl {
     id: number;
     code: string;
-    bobot: string;
     description: string;
     taksonomi: string;
     bg_color: string;
+    bobot: string; 
 }
 
 interface CplTabProps {
@@ -18,9 +18,9 @@ interface CplTabProps {
 }
 
 const CplTab: FC<CplTabProps> = ({ allCpls, relatedCpls }) => {
-    // Hitung total bobot dari relatedCpls
+    // Hitung total bobot dari CPL terpilih
     const totalBobot = relatedCpls.reduce((sum, cpl) => {
-        const bobotNum = parseFloat(cpl.bobot) || 0;
+        const bobotNum = parseFloat(cpl.bobot?.toString() || "0");
         return sum + bobotNum;
     }, 0);
 
@@ -37,7 +37,7 @@ const CplTab: FC<CplTabProps> = ({ allCpls, relatedCpls }) => {
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-8">
-                {/* --- Semua CPL --- */}
+                {/* Semua CPL */}
                 <div className="space-y-3">
                     <h3 className="mb-2 text-lg font-bold text-gray-800">
                         Daftar CPL
@@ -53,30 +53,22 @@ const CplTab: FC<CplTabProps> = ({ allCpls, relatedCpls }) => {
                                     isSelected ? "ring-2 ring-blue-300" : ""
                                 }`}
                                 style={{
-                                    borderColor: cpl.bg_color || "#e5e7eb", // fallback abu-abu
+                                    borderColor: cpl.bg_color || "#e5e7eb",
                                     backgroundColor: cpl.bg_color
                                         ? `${cpl.bg_color}20`
-                                        : "white", // transparan versi warna
+                                        : "white",
                                 }}
                             >
                                 <div className="flex flex-wrap items-center justify-between gap-2">
                                     <h4 className="font-bold text-gray-900">
                                         {cpl.code}
                                     </h4>
-                                    <div className="flex flex-wrap items-center gap-2">
-                                        <Badge
-                                            variant="outline"
-                                            className="text-yellow-800 bg-yellow-100 border-yellow-400"
-                                        >
-                                            Taksonomi: {cpl.taksonomi}
-                                        </Badge>
-                                        <Badge
-                                            variant="secondary"
-                                            className="text-purple-800 bg-purple-100 border-purple-400"
-                                        >
-                                            Bobot: {cpl.bobot}%
-                                        </Badge>
-                                    </div>
+                                    <Badge
+                                        variant="outline"
+                                        className="text-yellow-800 bg-yellow-100 border-yellow-400"
+                                    >
+                                        Taksonomi: {cpl.taksonomi}
+                                    </Badge>
                                 </div>
                                 <p className="mt-1 text-sm text-gray-700">
                                     {cpl.description}
@@ -86,7 +78,7 @@ const CplTab: FC<CplTabProps> = ({ allCpls, relatedCpls }) => {
                     })}
                 </div>
 
-                {/* --- CPL Terpilih --- */}
+                {/* CPL Terpilih */}
                 {relatedCpls.length > 0 ? (
                     <div className="p-6 border shadow-sm bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200/60 rounded-xl">
                         <div className="flex items-center justify-between mb-4">
@@ -99,7 +91,7 @@ const CplTab: FC<CplTabProps> = ({ allCpls, relatedCpls }) => {
                             </h4>
                             <Badge
                                 variant="default"
-                                className="font-semibold text-green-800 bg-green-100 border-green-400"
+                                className="font-semibold text-green-900 bg-green-100 border-green-400"
                             >
                                 Total Bobot: {totalBobot.toFixed(1)}%
                             </Badge>
@@ -120,7 +112,11 @@ const CplTab: FC<CplTabProps> = ({ allCpls, relatedCpls }) => {
                                                 variant="secondary"
                                                 className="text-xs text-purple-800 bg-purple-100 border-purple-400"
                                             >
-                                                Bobot: {cpl.bobot}%
+                                                Bobot:{" "}
+                                                {parseFloat(
+                                                    cpl.bobot?.toString() || "0"
+                                                ).toFixed(1)}
+                                                %
                                             </Badge>
                                         </div>
                                         <p className="text-sm leading-relaxed text-gray-700">

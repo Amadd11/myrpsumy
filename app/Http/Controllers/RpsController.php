@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\CPL;
 use App\Models\Rps;
-use Inertia\Inertia;
-use Inertia\Response;
 use App\Models\Course;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class RPSController extends Controller
 {
@@ -21,11 +21,13 @@ class RPSController extends Controller
         $semesterCourses = Course::orderBy('semester')->get()
             ->groupBy('semester')
             ->mapWithKeys(function (Collection $group, string $semesterNumber) {
-                return ['Semester ' . $semesterNumber => $group->map(fn(Course $course) => [
-                    'name' => $course->name,
-                    'slug' => $course->slug,
-                    'sks'  => $course->sks,
-                ])];
+                return [
+                    'Semester ' . $semesterNumber => $group->map(fn(Course $course) => [
+                        'name' => $course->name,
+                        'slug' => $course->slug,
+                        'sks'  => $course->sks,
+                    ]),
+                ];
             });
 
         return Inertia::render('Index', [
@@ -42,14 +44,14 @@ class RPSController extends Controller
             // Ambil data course berdasarkan slug
             $course = Course::where('slug', $courseSlug)->firstOrFail();
 
-
-
-            // Ambil RPS jika ada
+            // Ambil RPS + relasi-relasinya
             $rps = Rps::with([
                 'dosen',
                 'cpmks.subCpmks',
                 'rencanas.subCpmk.cpmk',
-                'cpls',
+                'cpls' => function ($query) {
+                    $query->withPivot('bobot');
+                },
                 'evaluasis.cpl',
                 'evaluasis.cpmk',
                 'evaluasis.subCpmk'
@@ -66,7 +68,7 @@ class RPSController extends Controller
                     'semester' => 'Semester ' . $course->semester,
                 ],
 
-                // Informasi umum RPS (default kalau kosong)
+                // Informasi umum RPS
                 'initialCourseInfo' => [
                     'penanggungJawab' => $rps?->dosen?->name ?? 'Belum Diatur',
                     'tahunAjaran' => $rps?->tahun_ajaran,
@@ -77,15 +79,18 @@ class RPSController extends Controller
                         : null,
                 ],
 
-                // Data CPL, CPMK, Rencana, dsb
+                // === CPL ===
                 'allCpls' => CPL::orderBy('code')->get(),
                 'relatedCpls' => $rps?->cpls->map(fn($cpl) => [
                     'id' => $cpl->id,
-                    'bobot' => $cpl->bobot,
                     'code' => $cpl->code,
                     'description' => $cpl->description,
+                    'taksonomi' => $cpl->taksonomi,
+                    'bg_color' => $cpl->bg_color,
+                    'bobot' => $cpl->pivot?->bobot,
                 ]) ?? collect(),
 
+                // === Bagian lain tetap ===
                 'initialCpmks'    => $rps?->cpmks ?? collect(),
                 'initialSubCpmks' => $rps?->subCpmks ?? collect(),
                 'initialRencanas' => $rps?->rencanas ?? collect(),
@@ -100,7 +105,7 @@ class RPSController extends Controller
                 'trace' => $e->getTraceAsString(),
             ]);
 
-            // Tidak redirect ke halaman lain, tetap di halaman RPS dengan data default
+            // fallback jika gagal
             return Inertia::render('CourseRPS', [
                 'course' => [
                     'name' => 'Tidak ditemukan',
@@ -110,7 +115,7 @@ class RPSController extends Controller
                 ],
                 'initialCourseInfo' => [
                     'penanggungJawab' => 'Belum Diatur',
-                    'tahunAjaran' => $tahunAjaran ?? '-',
+                    'tahunAjaran' => '-',
                     'deskripsi' => 'Deskripsi belum tersedia.',
                     'materiPembelajaran' => null,
                     'tglPenyusunan' => null,

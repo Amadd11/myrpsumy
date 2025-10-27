@@ -30,11 +30,6 @@ class CPLResource extends Resource
                 Forms\Components\TextInput::make('code')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('bobot')
-                    ->numeric()
-                    ->required()
-                    ->suffix('%')
-                    ->maxLength(255),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('taksonomi')
@@ -56,9 +51,6 @@ class CPLResource extends Resource
                 Tables\Columns\TextColumn::make('code')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('bobot')
-                    ->suffix('%')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('taksonomi')
                     ->searchable()
                     ->badge(),

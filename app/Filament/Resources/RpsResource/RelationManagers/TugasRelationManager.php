@@ -18,30 +18,71 @@ class TugasesRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-        return $form->schema([
-            Forms\Components\Textarea::make('tugas')
-                ->label('Deskripsi Tugas / Ujian')
-                ->rows(8)
-                ->required()
-                ->columnSpanFull(),
-        ]);
+        return $form
+            ->schema([
+                Forms\Components\Grid::make(2)->schema([
+                    Forms\Components\TextInput::make('judul_penilaian')
+                        ->label('Judul Penilaian')
+                        ->required()
+                        ->columnSpan(1),
+
+                    Forms\Components\TextInput::make('jadwal_pelaksanaan')
+                        ->label('Jadwal Pelaksanaan')
+                        ->placeholder('Contoh: Minggu ke-5')
+                        ->columnSpan(1),
+                ]),
+
+                Forms\Components\RichEditor::make('sub_cpmk')
+                    ->label('Deskripsi Sub-CPMK')
+                    ->columnSpanFull(),
+
+                Forms\Components\RichEditor::make('deskripsi_penilaian')
+                    ->label('Deskripsi Penilaian')
+                    ->columnSpanFull(),
+
+                Forms\Components\RichEditor::make('bentuk_penilaian')
+                    ->label('Bentuk Penilaian (Tugas/Metode)')
+                    ->columnSpanFull(),
+
+                Forms\Components\RichEditor::make('indikator_kriteria_bobot')
+                    ->label('Indikator, Kriteria, dan Bobot Penilaian')
+                    ->columnSpanFull(),
+
+                Forms\Components\RichEditor::make('metode_penilaian')
+                    ->label('Metode Penilaian')
+                    ->columnSpanFull(1),
+
+                Forms\Components\RichEditor::make('bentuk_dan_format_luaran')
+                    ->label('Bentuk dan Format Luaran')
+                    ->columnSpanFull(1),
+
+                Forms\Components\RichEditor::make('pustaka')
+                    ->label('Pustaka / Referensi')
+                    ->columnSpanFull(),
+
+                Forms\Components\RichEditor::make('lain_lain')
+                    ->label('Lain-lain')
+                    ->columnSpanFull(),
+            ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('tugas')
+            ->recordTitleAttribute('judul_penilaian') // Menggunakan judul sebagai judul record
             ->columns([
-                Tables\Columns\TextColumn::make('tugas')
-                    ->label('Deskripsi Tugas / Ujian')
+                Tables\Columns\TextColumn::make('judul_penilaian')
+                    ->label('Judul Penilaian')
+                    ->searchable()
+                    ->limit(40),
+                Tables\Columns\TextColumn::make('sub_cpmk')
+                    ->label('Sub-CPMK')
                     ->limit(50)
+                    ->html()
                     ->wrap(),
-
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Dibuat')
-                    ->dateTime('d M Y H:i')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('jadwal_pelaksanaan')
+                    ->label('Jadwal')
+                    ->searchable(),
             ])
             ->filters([])
             ->headerActions([

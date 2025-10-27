@@ -18,19 +18,13 @@ class Rencana extends Model
         'sub_cpmk_id',
         'week',
         'indikator',
-        'kriteria_penilaian',
-        'teknik_penilaian',
+        'kriteria_teknik',
         'materi_pembelajaran',
-        'metode',
-        'deskripi_belajar',
-        'waktu',
+        'luring',
+        'daring',
         'bobot_penilaian',
     ];
 
-    /**
-     * Mendefinisikan relasi "dimiliki oleh" (inverse one-to-one) ke model SubCpmk.
-     * Setiap Rencana dimiliki oleh satu SubCpmk.
-     */
     public function subCpmk(): BelongsTo
     {
         return $this->belongsTo(SubCpmk::class,);

@@ -23,11 +23,9 @@ interface Rencana {
     sub_cpmk_id: number;
     materi_pembelajaran: string;
     indikator: string;
-    kriteria_penilaian: string;
-    teknik_penilaian: string;
-    metode: string;
-    deskripsi_belajar: string;
-    waktu: string;
+    kriteria_teknik: string;
+    luring: string;
+    daring: string;
     bobot_penilaian: string | number;
 }
 
@@ -48,13 +46,13 @@ const ExpandableCell: FC<ExpandableCellProps> = ({
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const displayContent = content || defaultContent;
-    const isLong = displayContent.length > 200; // Threshold untuk tampilkan expand button
+    const isLong = displayContent.length > 200;
 
     if (!isLong) {
         return (
             <div
                 dangerouslySetInnerHTML={{ __html: displayContent }}
-                className="prose-sm prose text-left align-top max-w-none" // Rata kiri atas
+                className="prose-sm prose text-left align-top max-w-none"
             />
         );
     }
@@ -66,27 +64,23 @@ const ExpandableCell: FC<ExpandableCellProps> = ({
 
     return (
         <div className="space-y-1 text-left align-top">
-            {" "}
-            {/* Rata kiri atas di container */}
             <div
                 dangerouslySetInnerHTML={{
                     __html: isExpanded ? displayContent : shortContent,
                 }}
                 className="prose-sm prose max-w-none"
             />
-            {isLong && (
-                <button
-                    onClick={() => setIsExpanded(!isExpanded)}
-                    className="flex items-center gap-1 -ml-1 text-xs font-medium text-indigo-600 hover:text-indigo-800"
-                >
-                    {isExpanded ? "Baca Lebih Sedikit" : "Baca Selengkapnya"}
-                    {isExpanded ? (
-                        <ChevronUp className="w-3 h-3" />
-                    ) : (
-                        <ChevronDown className="w-3 h-3" />
-                    )}
-                </button>
-            )}
+            <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="flex items-center gap-1 -ml-1 text-xs font-medium text-indigo-600 hover:text-indigo-800"
+            >
+                {isExpanded ? "Baca Lebih Sedikit" : "Baca Selengkapnya"}
+                {isExpanded ? (
+                    <ChevronUp className="w-3 h-3" />
+                ) : (
+                    <ChevronDown className="w-3 h-3" />
+                )}
+            </button>
         </div>
     );
 };
@@ -116,144 +110,181 @@ const RencanaTab: FC<RencanaTabProps> = ({
             </CardHeader>
 
             <CardContent className="space-y-8">
-                <div className="p-6 border rounded-lg bg-gradient-to-r from-indigo-50 to-purple-50">
-                    <h3 className="mb-4 text-lg font-bold text-indigo-900">
-                        Rencana Pembelajaran Mingguan
-                    </h3>
-
-                    <div className="overflow-x-auto bg-white border rounded-lg">
-                        <Table className="min-w-full">
+                {/* Scrollable Table */}
+                <div className="overflow-x-auto bg-white border rounded-lg scrollbar-thin scrollbar-thumb-indigo-300 scrollbar-track-indigo-100">
+                    <div className="min-w-[1200px]">
+                        <Table className="w-full">
                             <TableHeader>
-                                <TableRow className="bg-indigo-100">
-                                    <TableHead className="w-12 font-bold text-center text-indigo-900">
-                                        Minggu
+                                {/* Baris Header Utama */}
+                                <TableRow className="text-indigo-900 bg-indigo-200 border-b-2 border-black">
+                                    <TableHead
+                                        rowSpan={2}
+                                        className="w-12 font-semibold text-center border border-indigo-400"
+                                    >
+                                        Minggu ke <br /> (1)
                                     </TableHead>
-                                    <TableHead className="w-32 font-bold text-left text-indigo-900">
-                                        {" "}
-                                        {/* Rata kiri untuk header teks */}
-                                        Sub-CPMK
+                                    <TableHead
+                                        rowSpan={2}
+                                        className="w-40 font-semibold text-center border border-indigo-400"
+                                    >
+                                        Kemampuan Akhir (Sub-CPMK) <br /> (2)
                                     </TableHead>
-                                    <TableHead className="w-48 font-bold text-left text-indigo-900">
-                                        {" "}
-                                        {/* Rata kiri */}
-                                        Materi Pembelajaran
+                                    <TableHead
+                                        colSpan={2}
+                                        className="font-semibold text-center border border-indigo-400"
+                                    >
+                                        Penilaian
                                     </TableHead>
-                                    <TableHead className="w-48 font-bold text-left text-indigo-900">
-                                        Indikator Penilaian
+                                    <TableHead
+                                        colSpan={2}
+                                        className="font-semibold text-center border border-indigo-400"
+                                    >
+                                        Bentuk / Strategi Pembelajaran <br />{" "}
+                                        (Metode & Tugas)
                                     </TableHead>
-                                    <TableHead className="w-48 font-bold text-left text-indigo-900">
-                                        Kriteria Penilaian
+                                    <TableHead
+                                        rowSpan={2}
+                                        className="w-40 font-semibold text-center border border-indigo-400"
+                                    >
+                                        Materi Pembelajaran <br /> (7)
                                     </TableHead>
-                                    <TableHead className="w-48 font-bold text-left text-indigo-900">
-                                        Teknik Penilaian
+                                    <TableHead
+                                        rowSpan={2}
+                                        className="w-24 font-semibold text-center border border-indigo-400"
+                                    >
+                                        Bobot Penilaian (%) <br /> (8)
                                     </TableHead>
-                                    <TableHead className="font-bold text-left text-indigo-900 w-28">
-                                        Metode
+                                </TableRow>
+
+                                {/* Baris Subheader */}
+                                <TableRow className="text-indigo-900 bg-indigo-100 border border-indigo-400">
+                                    <TableHead className="w-40 font-semibold text-center border border-indigo-400">
+                                        Indikator (3)
                                     </TableHead>
-                                    <TableHead className="w-20 font-bold text-center text-indigo-900">
-                                        Waktu
+                                    <TableHead className="w-40 font-semibold text-center border border-indigo-400">
+                                        Kriteria & Teknik (4)
                                     </TableHead>
-                                    <TableHead className="w-48 font-bold text-left text-indigo-900">
-                                        Deskripsi Belajar
+                                    <TableHead className="font-semibold text-center border border-indigo-400 w-28">
+                                        Luring (5)
                                     </TableHead>
-                                    <TableHead className="w-16 font-bold text-center text-indigo-900">
-                                        Bobot (%)
+                                    <TableHead className="font-semibold text-center border border-indigo-400 w-28">
+                                        Daring (6)
                                     </TableHead>
                                 </TableRow>
                             </TableHeader>
 
                             <TableBody>
                                 {rencanaItems.length > 0 ? (
-                                    rencanaItems.map((activity, index) => {
-                                        const subCpmk = subCpmkItems.find(
-                                            (s) => s.id === activity.sub_cpmk_id
-                                        );
+                                    <>
+                                        {rencanaItems.map((activity, index) => {
+                                            const subCpmk = subCpmkItems.find(
+                                                (s) =>
+                                                    s.id ===
+                                                    activity.sub_cpmk_id
+                                            );
 
-                                        return (
-                                            <TableRow
-                                                key={activity.id ?? index}
-                                                className={
-                                                    index % 2 === 0
-                                                        ? "bg-white"
-                                                        : "bg-indigo-50/50"
-                                                }
+                                            return (
+                                                <TableRow
+                                                    key={activity.id ?? index}
+                                                    className={`border-b border-gray-200 ${
+                                                        index % 2 === 0
+                                                            ? "bg-white"
+                                                            : "bg-indigo-50/50"
+                                                    } hover:bg-indigo-50 transition-colors`}
+                                                >
+                                                    <TableCell className="text-center align-top border border-indigo-200">
+                                                        {activity.week}
+                                                    </TableCell>
+                                                    <TableCell className="text-left align-top border border-indigo-200">
+                                                        {subCpmk ? (
+                                                            <div className="space-y-1">
+                                                                <span className="font-semibold text-purple-800">
+                                                                    {
+                                                                        subCpmk.title
+                                                                    }
+                                                                </span>
+                                                                <span className="text-sm text-gray-600">
+                                                                    -{" "}
+                                                                    {
+                                                                        subCpmk.description
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                        ) : (
+                                                            <span className="text-gray-400">
+                                                                -
+                                                            </span>
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell className="align-top border border-indigo-200">
+                                                        <ExpandableCell
+                                                            content={
+                                                                activity.indikator
+                                                            }
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell className="align-top border border-indigo-200">
+                                                        <ExpandableCell
+                                                            content={
+                                                                activity.kriteria_teknik
+                                                            }
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell className="align-top border border-indigo-200">
+                                                        <ExpandableCell
+                                                            content={
+                                                                activity.luring ??
+                                                                "-"
+                                                            }
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell className="align-top border border-indigo-200">
+                                                        <ExpandableCell
+                                                            content={
+                                                                activity.daring ??
+                                                                "-"
+                                                            }
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell className="align-top border border-indigo-200">
+                                                        <ExpandableCell
+                                                            content={
+                                                                activity.materi_pembelajaran
+                                                            }
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell className="font-medium text-center text-indigo-900 align-top border border-indigo-200">
+                                                        {activity.bobot_penilaian ??
+                                                            "-"}
+                                                    </TableCell>
+                                                </TableRow>
+                                            );
+                                        })}
+
+                                        {/* Baris Total Bobot */}
+                                        <TableRow className="font-semibold text-indigo-800 shadow-sm bg-gradient-to-r from-indigo-200 via-purple-300 to-indigo-300">
+                                            <TableCell
+                                                colSpan={7}
+                                                className="py-4 tracking-wide text-center uppercase border-t border-indigo-400"
                                             >
-                                                <TableCell className="py-3 font-medium text-center align-top">
-                                                    {" "}
-                                                    {/* Align top untuk vertikal */}
-                                                    {activity.week}
-                                                </TableCell>
-                                                <TableCell className="py-3 font-medium text-left text-purple-800 align-top">
-                                                    {" "}
-                                                    {/* Rata kiri atas */}
-                                                    {subCpmk
-                                                        ? subCpmk.title
-                                                        : "-"}
-                                                </TableCell>
-                                                <TableCell className="py-3 text-left align-top">
-                                                    {" "}
-                                                    {/* Rata kiri atas */}
-                                                    <ExpandableCell
-                                                        content={
-                                                            activity.materi_pembelajaran
-                                                        }
-                                                        defaultContent="Materi sesuai Sub-CPMK"
-                                                    />
-                                                </TableCell>
-                                                <TableCell className="py-3 text-left align-top">
-                                                    <ExpandableCell
-                                                        content={
-                                                            activity.indikator
-                                                        }
-                                                    />
-                                                </TableCell>
-                                                <TableCell className="py-3 text-left align-top">
-                                                    <ExpandableCell
-                                                        content={
-                                                            activity.kriteria_penilaian
-                                                        }
-                                                    />
-                                                </TableCell>
-                                                <TableCell className="py-3 text-left align-top">
-                                                    <ExpandableCell
-                                                        content={
-                                                            activity.teknik_penilaian
-                                                        }
-                                                    />
-                                                </TableCell>
-                                                <TableCell className="py-3 text-left align-top">
-                                                    {activity.metode ===
-                                                    "Luring"
-                                                        ? "Luring (Tatap Muka)"
-                                                        : activity.metode ===
-                                                          "Daring"
-                                                        ? "Daring (Online)"
-                                                        : activity.metode ||
-                                                          "Ceramah, Diskusi"}
-                                                </TableCell>
-                                                <TableCell className="py-3 text-center align-top">
-                                                    {activity.waktu ||
-                                                        "3 x 50 menit"}
-                                                </TableCell>
-                                                <TableCell className="py-3 text-left align-top">
-                                                    <ExpandableCell
-                                                        content={
-                                                            activity.deskripsi_belajar
-                                                        }
-                                                        defaultContent="Mahasiswa mengikuti kuliah dan diskusi"
-                                                    />
-                                                </TableCell>
-                                                <TableCell className="py-3 font-medium text-center text-indigo-900 align-top">
-                                                    {activity.bobot_penilaian ||
-                                                        "-"}
-                                                </TableCell>
-                                            </TableRow>
-                                        );
-                                    })
+                                                Total Bobot Penilaian (%)
+                                            </TableCell>
+                                            <TableCell className="py-4 text-lg font-semibold text-center border-t border-indigo-400">
+                                                {rencanaItems.reduce(
+                                                    (total, item) =>
+                                                        total +
+                                                        (Number(
+                                                            item.bobot_penilaian
+                                                        ) || 0),
+                                                    0
+                                                )}
+                                            </TableCell>
+                                        </TableRow>
+                                    </>
                                 ) : (
-                                    <TableRow>
+                                    <TableRow className="border-b border-gray-200">
                                         <TableCell
-                                            colSpan={10}
+                                            colSpan={8}
                                             className="py-8 text-center text-gray-500"
                                         >
                                             Belum ada rencana pembelajaran
@@ -262,121 +293,6 @@ const RencanaTab: FC<RencanaTabProps> = ({
                                 )}
                             </TableBody>
                         </Table>
-                    </div>
-                </div>
-
-                {/* Metode Pembelajaran */}
-                <div className="p-6 border bg-gradient-to-r from-green-50 to-blue-50 border-green-200/60 rounded-xl">
-                    <h3 className="flex items-center gap-2 mb-6 text-lg font-bold text-green-900">
-                        <BookOpen className="w-5 h-5" />
-                        Metode Pembelajaran
-                    </h3>
-
-                    <div className="grid gap-4 md:grid-cols-2">
-                        {[
-                            {
-                                title: "1. Ceramah Interaktif",
-                                border: "border-green-400",
-                                text: "text-green-800",
-                                desc: "Penyampaian materi dengan melibatkan partisipasi aktif mahasiswa melalui tanya jawab dan diskusi.",
-                            },
-                            {
-                                title: "2. Diskusi Kelompok",
-                                border: "border-blue-400",
-                                text: "text-blue-800",
-                                desc: "Pembahasan kasus dan permasalahan dalam kelompok kecil untuk mengembangkan kemampuan analisis.",
-                            },
-                            {
-                                title: "3. Studi Kasus",
-                                border: "border-purple-400",
-                                text: "text-purple-800",
-                                desc: "Analisis kasus nyata untuk mengaplikasikan teori dalam situasi praktis.",
-                            },
-                            {
-                                title: "4. Presentasi",
-                                border: "border-orange-400",
-                                text: "text-orange-800",
-                                desc: "Penyajian hasil analisis dan penelitian oleh mahasiswa untuk melatih kemampuan komunikasi.",
-                            },
-                            {
-                                title: "5. Praktik Lapangan",
-                                border: "border-red-400",
-                                text: "text-red-800",
-                                desc: "Observasi dan praktik langsung di lapangan untuk mengaplikasikan teori.",
-                            },
-                            {
-                                title: "6. E-Learning",
-                                border: "border-indigo-400",
-                                text: "text-indigo-800",
-                                desc: "Pembelajaran daring melalui platform digital untuk fleksibilitas waktu dan akses.",
-                            },
-                        ].map((m, i) => (
-                            <div
-                                key={i}
-                                className={`group p-5 bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 border-l-4 ${m.border}`}
-                            >
-                                <h4
-                                    className={`mb-3 font-semibold leading-tight ${m.text}`}
-                                >
-                                    {m.title}
-                                </h4>
-                                <p className="text-sm leading-relaxed text-gray-700">
-                                    {m.desc}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Pengalaman Belajar Mahasiswa */}
-                <div className="p-6 border bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200/60 rounded-xl">
-                    <h3 className="flex items-center gap-2 mb-6 text-lg font-bold text-orange-900">
-                        <Target className="w-5 h-5" />
-                        Pengalaman Belajar Mahasiswa
-                    </h3>
-
-                    <div className="grid gap-4 md:grid-cols-3">
-                        {/* Teoritis */}
-                        <div className="p-5 transition-all duration-300 bg-white shadow-sm group rounded-xl hover:shadow-md hover:-translate-y-1">
-                            <h4 className="flex items-center gap-2 mb-4 font-semibold text-yellow-800">
-                                <BookOpen className="w-4 h-4" />
-                                Pembelajaran Teoritis
-                            </h4>
-                            <ul className="space-y-2 text-sm text-gray-700">
-                                <li>• Mengikuti kuliah dan membuat catatan</li>
-                                <li>• Membaca literatur yang ditugaskan</li>
-                                <li>• Menganalisis konsep dan teori</li>
-                                <li>• Mengerjakan latihan soal</li>
-                            </ul>
-                        </div>
-
-                        {/* Praktis */}
-                        <div className="p-5 transition-all duration-300 bg-white shadow-sm group rounded-xl hover:shadow-md hover:-translate-y-1">
-                            <h4 className="flex items-center gap-2 mb-4 font-semibold text-orange-800">
-                                <Target className="w-4 h-4" />
-                                Pembelajaran Praktis
-                            </h4>
-                            <ul className="space-y-2 text-sm text-gray-700">
-                                <li>• Melakukan studi kasus</li>
-                                <li>• Praktik di laboratorium</li>
-                                <li>• Observasi lapangan</li>
-                                <li>• Simulasi situasi nyata</li>
-                            </ul>
-                        </div>
-
-                        {/* Kolaboratif */}
-                        <div className="p-5 transition-all duration-300 bg-white shadow-sm group rounded-xl hover:shadow-md hover:-translate-y-1">
-                            <h4 className="flex items-center gap-2 mb-4 font-semibold text-red-800">
-                                <GitBranch className="w-4 h-4" />
-                                Pembelajaran Kolaboratif
-                            </h4>
-                            <ul className="space-y-2 text-sm text-gray-700">
-                                <li>• Diskusi kelompok</li>
-                                <li>• Presentasi hasil kerja</li>
-                                <li>• Peer review dan feedback</li>
-                                <li>• Proyek kelompok</li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </CardContent>

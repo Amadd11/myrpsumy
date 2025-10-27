@@ -13,7 +13,16 @@ class Tugas extends Model
 
     protected $fillable = [
         'rps_id',
-        'tugas',
+        'bentuk_penilaian',
+        'judul_penilaian',
+        'sub_cpmk',
+        'deskripsi_penilaian',
+        'metode_penilaian',
+        'bentuk_dan_format_luaran',
+        'indikator_kriteria_bobot',
+        'jadwal_pelaksanaan',
+        'pustaka',
+        'lain_lain',
     ];
 
     public function rps()

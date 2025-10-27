@@ -116,7 +116,8 @@ class EvaluasisRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('week'),
                 Tables\Columns\TextColumn::make('subCpmk.title')->label('Sub-CPMK')->limit(50),
-                Tables\Columns\TextColumn::make('bobot_cpmk')->suffix('%'),
+                Tables\Columns\TextColumn::make('bobot_cpmk')->label('Bobot CPMK')->suffix('%'),
+                Tables\Columns\TextColumn::make('bobot_sub_cpmk')->label('Bobot Sub-CPMK'),
             ])
             ->filters([])
             ->headerActions([

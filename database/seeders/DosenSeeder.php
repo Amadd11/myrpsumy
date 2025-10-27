@@ -13,19 +13,18 @@ class DosenSeeder extends Seeder
      */
     public function run(): void
     {
-        //
         $dosens = [
-            [
-                'name' => 'Dr. Ahmad Fauzi, M.Kes', // Kalau ada auth
-            ],
-            [
-                'name' => 'Dr. Siti Nurjanah, M.Kes',
-            ],
-            // Tambah lebih banyak kalau perlu
+            ['name' => 'Prof. Dr. dr. Arlina Dewi, M.Kes'],
+            ['name' => 'Dr. Firman Pribadi, M.Si'],
+            ['name' => 'Dr. Qurratul Aini, SKG., M.Kes'],
+            ['name' => 'Dr. Elsye Maria Rosa, M.Kep'],
+            ['name' => 'Dr. Kusbaryanto, M.Kes'],
+            ['name' => 'Dr. Mahendro Prasetyo Kusumo, M.M.'],
+            ['name' => 'Dr. Merita Arini, MMR.'],
         ];
 
         foreach ($dosens as $dosen) {
-            Dosen::create($dosen);
+            Dosen::firstOrCreate($dosen);
         }
     }
 }

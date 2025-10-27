@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('cpls', function (Blueprint $table) {
             $table->id();
             $table->string('code'); // CPL1, CPL2, dst
-            $table->string('bobot')->nullable();
             $table->text('description')->nullable();
             $table->string('taksonomi')->nullable();
             $table->string('bg_color')->nullable();

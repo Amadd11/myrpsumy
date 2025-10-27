@@ -57,42 +57,29 @@ class RencanasRelationManager extends RelationManager
 
             // --- SEKSI 3: DETAIL PENILAIAN ---
             Forms\Components\Section::make('Detail Penilaian')
-                ->description('Jelaskan bagaimana pencapaian Sub-CPMK akan dinilai.')
                 ->schema([
                     Forms\Components\RichEditor::make('indikator')
                         ->label('Indikator Penilaian')
                         ->columnSpanFull(),
-                    Forms\Components\RichEditor::make('kriteria_penilaian')
+                    Forms\Components\RichEditor::make('kriteria_teknik')
                         ->label('Kriteria Penilaian')
-                        ->columnSpanFull(),
-                    Forms\Components\RichEditor::make('teknik_penilaian')
-                        ->label('Teknik Penilaian')
                         ->columnSpanFull(),
                 ])->columns(2),
 
             // --- SEKSI 4: STRATEGI PEMBELAJARAN ---
-            Forms\Components\Section::make('Strategi Pembelajaran')
+            Forms\Components\Section::make('Bentuk/ Strategi Pembelajaran (Metode & Tugas)')
                 ->schema([
-                    Forms\Components\Select::make('metode')
-                        ->label('Bentuk & Metode Pembelajaran (Luring/Daring)')
-                        ->options([
-                            'Luring' => 'Luring (Tatap Muka)',
-                            'Daring' => 'Daring (Online)',
-                        ])
-                        ->required(),
-                    Forms\Components\RichEditor::make('deskripi_belajar')
-                        ->label('Pengalaman Belajar Mahasiswa')
+                    Forms\Components\RichEditor::make('luring')
+                        ->label('Luring')
+                        ->columnSpanFull(),
+                    Forms\Components\RichEditor::make('daring')
+                        ->label('Daring')
                         ->columnSpanFull(),
                 ]),
 
             // --- SEKSI 5: ALOKASI WAKTU & BOBOT ---
-            Forms\Components\Section::make('Alokasi Waktu dan Bobot')
+            Forms\Components\Section::make('Bobot')
                 ->schema([
-                    Forms\Components\TextInput::make('waktu')
-                        ->label('Alokasi Waktu')
-                        ->default('3 x 50 menit')
-                        ->maxLength(255),
-
                     Forms\Components\TextInput::make('bobot_penilaian')
                         ->label('Bobot Penilaian (%)')
                         ->numeric()

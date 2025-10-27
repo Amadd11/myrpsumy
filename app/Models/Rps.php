@@ -39,13 +39,11 @@ class Rps extends Model
 
     public function cpls()
     {
-        return $this->belongsToMany(
-            CPL::class,
-            'rps_cpl',
-            'rps_id',
-            'cpl_id'
-        );
+        return $this->belongsToMany(Cpl::class, 'rps_cpl', 'rps_id', 'cpl_id')
+            ->withPivot('bobot')
+            ->withTimestamps();
     }
+
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);

@@ -54,11 +54,9 @@ interface Rencana {
     sub_cpmk_id: number;
     materi_pembelajaran: string;
     indikator: string;
-    kriteria_penilaian: string;
-    teknik_penilaian: string;
-    metode: string;
-    deskripsi_belajar: string;
-    waktu: string;
+    kriteria_teknik: string;
+    luring: string;
+    daring: string;
     bobot_penilaian: string | number;
 }
 
@@ -76,8 +74,16 @@ interface Evaluasi {
 
 interface Tugas {
     id: number;
-    tugas: string;
-    created_at: string;
+    judul_penilaian: string;
+    bentuk_penilaian?: string;
+    sub_cpmk?: string;
+    deskripsi_penilaian?: string;
+    metode_penilaian?: string;
+    bentuk_dan_format_luaran?: string;
+    indikator_kriteria_bobot?: string;
+    jadwal_pelaksanaan?: string;
+    pustaka?: string;
+    lain_lain?: string;
 }
 
 interface Referensi {
