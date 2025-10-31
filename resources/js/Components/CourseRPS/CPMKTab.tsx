@@ -39,6 +39,22 @@ const CpmkTab: FC<CpmkTabProps> = ({ cpmkItems, allCpls, courseName }) => {
         {}
     );
 
+    // Helper: Render description dengan support HTML (jika dari rich text)
+    const renderDescription = (desc: string) => {
+        if (!desc)
+            return (
+                <p className="text-sm italic text-gray-500">
+                    Deskripsi tidak tersedia
+                </p>
+            );
+        return (
+            <div
+                className="text-sm leading-relaxed text-gray-700"
+                dangerouslySetInnerHTML={{ __html: desc }}
+            />
+        );
+    };
+
     return (
         <div className="p-6 space-y-6 border shadow-xl bg-white/80 rounded-2xl border-gray-100/50">
             {/* Header */}
@@ -100,21 +116,29 @@ const CpmkTab: FC<CpmkTabProps> = ({ cpmkItems, allCpls, courseName }) => {
                                 </div>
 
                                 <div className="space-y-3">
-                                    {cpmks.map((cpmk) => (
-                                        <div
-                                            key={cpmk.id}
-                                            className={`p-4 border-l-4 rounded-lg ${
-                                                cpmk.bg_color || "bg-blue-50"
-                                            } border-blue-400`}
-                                        >
-                                            <p className="mb-1 font-medium leading-relaxed text-gray-900">
-                                                {cpmk.title}
-                                            </p>
-                                            <p className="text-sm text-gray-700">
-                                                {cpmk.description}
-                                            </p>
-                                        </div>
-                                    ))}
+                                    {cpmks.length === 0 ? (
+                                        <p className="py-4 text-sm italic text-center text-gray-500">
+                                            Tidak ada CPMK untuk grup ini.
+                                        </p>
+                                    ) : (
+                                        cpmks.map((cpmk) => (
+                                            <div
+                                                key={cpmk.id}
+                                                className={`p-4 border-l-4 rounded-lg transition-all duration-200 hover:shadow-inner ${
+                                                    cpmk.bg_color
+                                                        ? `bg-${cpmk.bg_color}-50 border-${cpmk.bg_color}-400`
+                                                        : "bg-blue-50 border-blue-400"
+                                                }`}
+                                            >
+                                                <p className="mb-1 font-medium leading-relaxed text-gray-900">
+                                                    {cpmk.title}
+                                                </p>
+                                                {renderDescription(
+                                                    cpmk.description
+                                                )}
+                                            </div>
+                                        ))
+                                    )}
                                 </div>
                             </div>
                         </div>

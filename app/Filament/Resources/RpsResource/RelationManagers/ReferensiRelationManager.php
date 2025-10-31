@@ -26,33 +26,13 @@ class ReferensisRelationManager extends RelationManager
                     ->label('Tipe Referensi')
                     ->options([
                         'utama' => 'Utama',
-                        'pendukung' => 'Pendukung',
+                        'tambahan' => 'Tambahan',
                     ])
                     ->required()
                     ->default('utama'),
 
-                Forms\Components\Textarea::make('penulis')
-                    ->label('Penulis')
-                    ->columnSpanFull()
-                    ->maxLength(255),
-
-                Forms\Components\Textarea::make('judul')
-                    ->label('Judul')
-                    ->columnSpanFull()
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('tahun')
-                    ->label('Tahun')
-                    ->maxLength(4),
-
-                Forms\Components\Textarea::make('penerbit')
-                    ->label('Penerbit')
-                    ->maxLength(255),
-
-                Forms\Components\Textarea::make('tautan')
-                    ->label('Tautan (opsional)')
-                    ->placeholder('https://contoh.com/referensi')
+                Forms\Components\RichEditor::make('referensi')
+                    ->label('referensi')
                     ->columnSpanFull(),
             ]);
     }
@@ -70,25 +50,12 @@ class ReferensisRelationManager extends RelationManager
                         'success' => 'pendukung',
                     ]),
 
-                Tables\Columns\TextColumn::make('penulis')
-                    ->label('Penulis')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('referensi')
+                    ->label('Referensi')
+                    ->limit(250)
+                    ->html()
+                    ->wrap(),
 
-                Tables\Columns\TextColumn::make('judul')
-                    ->label('Judul')
-                    ->searchable(),
-
-                Tables\Columns\TextColumn::make('tahun')
-                    ->label('Tahun')
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('penerbit')
-                    ->label('Penerbit'),
-
-                Tables\Columns\TextColumn::make('tautan')
-                    ->label('Tautan')
-                    ->limit(30)
-                    ->url(fn($record) => $record->tautan, true),
             ])
             ->filters([])
             ->headerActions([

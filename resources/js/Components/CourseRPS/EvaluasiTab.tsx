@@ -4,6 +4,7 @@ import {
     Table,
     TableBody,
     TableCell,
+    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
@@ -19,7 +20,7 @@ interface Evaluasi {
     indikator: string;
     bentuk_penilaian: string;
     bobot_sub_cpmk: number;
-    bobot_cpmk: number;
+    bobot_cpmk: number; // Ini tidak digunakan lagi, karena dihitung dari sum bobot_sub_cpmk
 }
 
 interface Cpl {
@@ -114,6 +115,14 @@ const EvaluasiTab: FC<EvaluasiTabProps> = ({
         }, {} as Record<number, Evaluasi[]>)
     );
 
+    // Hitung grand total bobot dari semua sub-CPMK (sama dengan total CPMK)
+    const grandTotal = groupedByCpmk.reduce(
+        (sum, [_, group]) =>
+            sum +
+            group.reduce((gSum, item) => gSum + (item.bobot_sub_cpmk || 0), 0),
+        0
+    );
+
     return (
         <Card className="border shadow-xl border-gray-200/50 bg-white/80 rounded-2xl">
             <CardHeader className="pb-4">
@@ -149,14 +158,14 @@ const EvaluasiTab: FC<EvaluasiTabProps> = ({
                                     <TableHead className="w-40 font-bold text-left text-green-900">
                                         Sub-CPMK
                                     </TableHead>
+                                    <TableHead className="w-24 font-bold text-center text-green-900">
+                                        Bobot Sub-CPMK (%)
+                                    </TableHead>
                                     <TableHead className="w-48 font-bold text-left text-green-900">
                                         Indikator Penilaian
                                     </TableHead>
                                     <TableHead className="w-48 font-bold text-left text-green-900">
                                         Bentuk Penilaian
-                                    </TableHead>
-                                    <TableHead className="w-24 font-bold text-center text-green-900">
-                                        Bobot Sub-CPMK (%)
                                     </TableHead>
                                     <TableHead className="w-24 font-bold text-center text-green-900">
                                         Bobot CPMK (%)
@@ -172,6 +181,14 @@ const EvaluasiTab: FC<EvaluasiTabProps> = ({
                                         );
                                         const cpl = cplItems.find(
                                             (c) => c.id === group[0].cpl_id
+                                        );
+
+                                        // Hitung total bobot CPMK sebagai sum bobot_sub_cpmk di group ini
+                                        const totalBobotCpmk = group.reduce(
+                                            (sum, item) =>
+                                                sum +
+                                                (item.bobot_sub_cpmk || 0),
+                                            0
                                         );
 
                                         return group.map((item, index) => {
@@ -235,6 +252,12 @@ const EvaluasiTab: FC<EvaluasiTabProps> = ({
                                                             : "-"}
                                                     </TableCell>
 
+                                                    {/* Kolom Bobot Sub-CPMK */}
+                                                    <TableCell className="py-3 font-medium text-center text-green-900 align-top">
+                                                        {item.bobot_sub_cpmk
+                                                            ? `${item.bobot_sub_cpmk}%`
+                                                            : "-"}
+                                                    </TableCell>
                                                     {/* Kolom Indikator */}
                                                     <TableCell className="py-3 text-left align-top">
                                                         <ExpandableCell
@@ -253,13 +276,7 @@ const EvaluasiTab: FC<EvaluasiTabProps> = ({
                                                         />
                                                     </TableCell>
 
-                                                    {/* Kolom Bobot Sub-CPMK */}
-                                                    <TableCell className="py-3 font-medium text-center text-green-900 align-top">
-                                                        {item.bobot_sub_cpmk ||
-                                                            "-"}
-                                                    </TableCell>
-
-                                                    {/* Kolom Bobot CPMK */}
+                                                    {/* Kolom Bobot CPMK (total dari sub-CPMK) */}
                                                     {index === 0 && (
                                                         <TableCell
                                                             rowSpan={
@@ -267,9 +284,9 @@ const EvaluasiTab: FC<EvaluasiTabProps> = ({
                                                             }
                                                             className="py-3 font-medium text-center text-green-900 align-top"
                                                         >
-                                                            {group[0]
-                                                                .bobot_cpmk ||
-                                                                "-"}
+                                                            {totalBobotCpmk
+                                                                ? `${totalBobotCpmk}%`
+                                                                : "-"}
                                                         </TableCell>
                                                     )}
                                                 </TableRow>
@@ -287,6 +304,23 @@ const EvaluasiTab: FC<EvaluasiTabProps> = ({
                                     </TableRow>
                                 )}
                             </TableBody>
+                            {evaluasiItems.length > 0 && (
+                                <TableFooter>
+                                    <TableRow className="bg-green-100">
+                                        <TableCell colSpan={3} />
+                                        <TableCell className="py-3 font-semibold text-center text-green-900">
+                                            Jumlah
+                                        </TableCell>
+                                        <TableCell className="py-3 font-semibold text-center text-green-900">
+                                            {grandTotal}%
+                                        </TableCell>
+                                        <TableCell colSpan={2} />
+                                        <TableCell className="py-3 font-semibold text-center text-green-900">
+                                            {grandTotal}%
+                                        </TableCell>
+                                    </TableRow>
+                                </TableFooter>
+                            )}
                         </Table>
                     </div>
                 </div>

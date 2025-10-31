@@ -15,38 +15,38 @@ class CplSeeder extends Seeder
     {
         $cpls = [
             [
-                'code' => 'CPL1MARS',
-                'description' => 'Menguasai teori dan konsep manajemen, prinsip bisnis visioner serta pelayanan yang islami',
-                'taksonomi' => 'C1',
+                'code' => 'CPL 1',
+                'description' => 'Menganalisis teori dan konsep manajemen serta nilai Islam sebagai dasar pengambilan keputusan strategis di rumah sakit.',
+                'taksonomi' => 'C4',
                 'bg_color' => '#3B82F6', // Biru
             ],
             [
-                'code' => 'CPL2MARS',
-                'description' => 'Mampu menganalisis faktor internal dan eksternal rumah sakit dengan menggunakan pendekatan Evidence Based Management Practice untuk sustainability organization',
-                'taksonomi' => 'C2',
+                'code' => 'CPL 2',
+                'description' => 'Mengevaluasi kinerja dan daya saing rumah sakit berdasarkan analisis faktor internal dan eksternal berbasis bukti.',
+                'taksonomi' => 'C5',
                 'bg_color' => '#10B981', // Hijau
             ],
             [
-                'code' => 'CPL3MARS',
-                'description' => 'Mampu menerapkan hasil kajian kritis dan kajian analisis untuk menyelesaikan masalah perumahsakitan dan proses pengambilan keputusan, melalui kolaborasi inter, multi dan trans-disiplin',
-                'taksonomi' => 'C3',
+                'code' => 'CPL 3',
+                'description' => 'Merumuskan solusi terhadap masalah manajerial rumah sakit melalui kolaborasi lintas profesi dan pendekatan ilmiah.',
+                'taksonomi' => 'C6',
                 'bg_color' => '#F59E0B', // Kuning
             ],
             [
-                'code' => 'CPL4MARS',
-                'description' => 'Mampu mengintegrasikan inisiatif, argumen saintifik, data hasil penelitian, serta mampu mengkomunikasikan melalui berbagai media ilmiah',
-                'taksonomi' => 'C4',
+                'code' => 'CPL 4',
+                'description' => 'Menyusun dan menyajikan hasil kajian ilmiah dalam format akademik, profesional, dan digital.',
+                'taksonomi' => 'C6',
                 'bg_color' => '#8B5CF6', // Ungu
             ],
             [
-                'code' => 'CPL5MARS',
-                'description' => 'Mampu menghasilkan nilai tambah dalam pengelolaan rumah sakit yang siap menuju smart hospital',
-                'taksonomi' => 'C5',
+                'code' => 'CPL 5',
+                'description' => 'Menciptakan inovasi manajerial yang meningkatkan mutu dan efisiensi pengelolaan rumah sakit menuju smart hospital.',
+                'taksonomi' => 'C6',
                 'bg_color' => '#EC4899', // Pink
             ],
             [
-                'code' => 'CPL6MARS',
-                'description' => 'Mampu mengembangkan pelayanan rumah sakit yang efektivitas dan efisiensi menggunakan pendekatan teknologi',
+                'code' => 'CPL 6',
+                'description' => 'Mengembangkan sistem pelayanan berbasis teknologi untuk memperkuat efektivitas dan integrasi layanan rumah sakit.',
                 'taksonomi' => 'C6',
                 'bg_color' => '#EF4444', // Merah
             ],

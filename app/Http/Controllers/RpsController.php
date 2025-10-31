@@ -41,17 +41,13 @@ class RPSController extends Controller
     public function show(string $courseSlug): Response
     {
         try {
-            // Ambil data course berdasarkan slug
             $course = Course::where('slug', $courseSlug)->firstOrFail();
 
-            // Ambil RPS + relasi-relasinya
             $rps = Rps::with([
                 'dosen',
                 'cpmks.subCpmks',
                 'rencanas.subCpmk.cpmk',
-                'cpls' => function ($query) {
-                    $query->withPivot('bobot');
-                },
+                'cpls' => fn($q) => $q->withPivot('bobot'),
                 'evaluasis.cpl',
                 'evaluasis.cpmk',
                 'evaluasis.subCpmk'
@@ -60,26 +56,22 @@ class RPSController extends Controller
                 ->first();
 
             return Inertia::render('CourseRPS', [
-                // Informasi mata kuliah
                 'course' => [
                     'name' => $course->name,
                     'code' => $course->code,
                     'sks' => $course->sks,
                     'semester' => 'Semester ' . $course->semester,
                 ],
-
-                // Informasi umum RPS
                 'initialCourseInfo' => [
                     'penanggungJawab' => $rps?->dosen?->name ?? 'Belum Diatur',
-                    'tahunAjaran' => $rps?->tahun_ajaran,
+                    'tahunAjaran' => $rps?->tahun_ajaran ?? '-',
                     'deskripsi' => $rps?->deskripsi ?? 'Deskripsi belum tersedia.',
+                    'file_pdf' => $rps?->file_pdf ? asset('storage/' . $rps->file_pdf) : null,
                     'materiPembelajaran' => $rps?->materi_pembelajaran ?? null,
                     'tglPenyusunan' => $rps?->tgl_penyusunan
                         ? Carbon::parse($rps->tgl_penyusunan)->translatedFormat('d F Y')
                         : null,
                 ],
-
-                // === CPL ===
                 'allCpls' => CPL::orderBy('code')->get(),
                 'relatedCpls' => $rps?->cpls->map(fn($cpl) => [
                     'id' => $cpl->id,
@@ -89,14 +81,11 @@ class RPSController extends Controller
                     'bg_color' => $cpl->bg_color,
                     'bobot' => $cpl->pivot?->bobot,
                 ]) ?? collect(),
-
-                // === Bagian lain tetap ===
                 'initialCpmks'    => $rps?->cpmks ?? collect(),
                 'initialSubCpmks' => $rps?->subCpmks ?? collect(),
                 'initialRencanas' => $rps?->rencanas ?? collect(),
-
                 'evaluasi' => $rps?->evaluasis ?? collect(),
-                'tugas'     => $rps?->tugas ?? null,
+                'tugas' => $rps?->tugas ?? null,
                 'referensi' => $rps?->referensi ?? null,
             ]);
         } catch (\Exception $e) {
@@ -105,7 +94,6 @@ class RPSController extends Controller
                 'trace' => $e->getTraceAsString(),
             ]);
 
-            // fallback jika gagal
             return Inertia::render('CourseRPS', [
                 'course' => [
                     'name' => 'Tidak ditemukan',
@@ -117,6 +105,7 @@ class RPSController extends Controller
                     'penanggungJawab' => 'Belum Diatur',
                     'tahunAjaran' => '-',
                     'deskripsi' => 'Deskripsi belum tersedia.',
+                    'file_pdf' => null,
                     'materiPembelajaran' => null,
                     'tglPenyusunan' => null,
                 ],

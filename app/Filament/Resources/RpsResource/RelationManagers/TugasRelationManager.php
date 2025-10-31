@@ -33,29 +33,23 @@ class TugasesRelationManager extends RelationManager
                 ]),
 
                 Forms\Components\RichEditor::make('sub_cpmk')
-                    ->label('Deskripsi Sub-CPMK')
+                    ->label('Sub-CPMK')
                     ->columnSpanFull(),
-
+                Forms\Components\RichEditor::make('bentuk_penilaian')
+                    ->label('Bentuk Penilaian')
+                    ->columnSpanFull(),
                 Forms\Components\RichEditor::make('deskripsi_penilaian')
                     ->label('Deskripsi Penilaian')
                     ->columnSpanFull(),
-
-                Forms\Components\RichEditor::make('bentuk_penilaian')
-                    ->label('Bentuk Penilaian (Tugas/Metode)')
-                    ->columnSpanFull(),
-
-                Forms\Components\RichEditor::make('indikator_kriteria_bobot')
-                    ->label('Indikator, Kriteria, dan Bobot Penilaian')
-                    ->columnSpanFull(),
-
                 Forms\Components\RichEditor::make('metode_penilaian')
                     ->label('Metode Penilaian')
                     ->columnSpanFull(1),
-
                 Forms\Components\RichEditor::make('bentuk_dan_format_luaran')
                     ->label('Bentuk dan Format Luaran')
                     ->columnSpanFull(1),
-
+                Forms\Components\RichEditor::make('indikator_kriteria_bobot')
+                    ->label('Indikator, Kriteria, dan Bobot Penilaian')
+                    ->columnSpanFull(),
                 Forms\Components\RichEditor::make('pustaka')
                     ->label('Pustaka / Referensi')
                     ->columnSpanFull(),
@@ -75,11 +69,14 @@ class TugasesRelationManager extends RelationManager
                     ->label('Judul Penilaian')
                     ->searchable()
                     ->limit(40),
+                Tables\Columns\TextColumn::make('bentuk_penilaian')
+                    ->label('Bentuk Penilaian')
+                    ->html()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('sub_cpmk')
                     ->label('Sub-CPMK')
                     ->limit(50)
-                    ->html()
-                    ->wrap(),
+                    ->html(),
                 Tables\Columns\TextColumn::make('jadwal_pelaksanaan')
                     ->label('Jadwal')
                     ->searchable(),

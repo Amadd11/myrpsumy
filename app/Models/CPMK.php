@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo; // 1. Impor tipe relasi
 use Illuminate\Database\Eloquent\Relations\HasMany;   // 1. Impor tipe relasi
 
 // PERBAIKAN: Nama kelas diubah menjadi PascalCase
-class Cpmk extends Model
+class CPMK extends Model
 {
     use HasFactory;
 
@@ -41,6 +41,6 @@ class Cpmk extends Model
     // PERBAIKAN: Menambahkan return type hint : HasMany
     public function subCpmks(): HasMany
     {
-        return $this->hasMany(SubCpmk::class, 'cpmk_id');
+        return $this->hasMany(SubCPMK::class, 'cpmk_id');
     }
 }

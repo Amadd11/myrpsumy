@@ -35,9 +35,8 @@ class SubCpmksRelationManager extends RelationManager
                 Forms\Components\TextInput::make('title')
                     ->label('Kode Sub-CPMK')
                     ->required(),
-                Forms\Components\Textarea::make('description')
+                Forms\Components\RichEditor::make('description')
                     ->label('Deskripsi')
-                    ->rows(6)
                     ->columnSpanFull()
             ]);
     }

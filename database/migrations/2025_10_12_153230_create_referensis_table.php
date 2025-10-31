@@ -15,11 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('rps_id')->constrained()->onDelete('cascade');
             $table->string('tipe')->default('utama'); // 'utama' atau 'tambahan'
-            $table->string('penulis')->nullable();
-            $table->string('judul');
-            $table->string('tahun')->nullable();
-            $table->string('penerbit')->nullable();
-            $table->text('tautan')->nullable(); // jika berupa sumber online
+            $table->text('referensi')->nullable();
             $table->timestamps();
         });
     }

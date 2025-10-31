@@ -89,11 +89,7 @@ interface Tugas {
 interface Referensi {
     id: number;
     tipe: string;
-    penulis?: string;
-    judul: string;
-    tahun?: string;
-    penerbit?: string;
-    tautan?: string;
+    referensi: string;
 }
 
 type PageProps = {

@@ -46,23 +46,14 @@ class RencanasRelationManager extends RelationManager
                         ->placeholder('Pilih Sub-CPMK dari course ini...'),
                 ])->columns(2),
 
-            // --- SEKSI 2: MATERI PEMBELAJARAN ---
-            Forms\Components\Section::make('Materi Pembelajaran')
-                ->schema([
-                    Forms\Components\RichEditor::make('materi_pembelajaran')
-                        ->label('Detail Materi Pembelajaran (Pokok Bahasan)')
-                        ->required()
-                        ->columnSpanFull(),
-                ]),
-
             // --- SEKSI 3: DETAIL PENILAIAN ---
             Forms\Components\Section::make('Detail Penilaian')
                 ->schema([
                     Forms\Components\RichEditor::make('indikator')
-                        ->label('Indikator Penilaian')
+                        ->label('Indikator ')
                         ->columnSpanFull(),
                     Forms\Components\RichEditor::make('kriteria_teknik')
-                        ->label('Kriteria Penilaian')
+                        ->label('Kriteria dan Teknik')
                         ->columnSpanFull(),
                 ])->columns(2),
 
@@ -74,6 +65,14 @@ class RencanasRelationManager extends RelationManager
                         ->columnSpanFull(),
                     Forms\Components\RichEditor::make('daring')
                         ->label('Daring')
+                        ->columnSpanFull(),
+                ]),
+
+            Forms\Components\Section::make('Materi Pembelajaran')
+                ->schema([
+                    Forms\Components\RichEditor::make('materi_pembelajaran')
+                        ->label('Detail Materi Pembelajaran (Pokok Bahasan)')
+                        ->required()
                         ->columnSpanFull(),
                 ]),
 

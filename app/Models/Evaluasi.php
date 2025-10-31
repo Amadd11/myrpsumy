@@ -21,7 +21,6 @@ class Evaluasi extends Model
         'bobot_sub_cpmk',
         'indikator',
         'bentuk_penilaian',
-        'bobot_cpmk',
     ];
 
     /**
@@ -33,7 +32,7 @@ class Evaluasi extends Model
     }
     public function cpl(): BelongsTo
     {
-        return $this->belongsTo(CPL::class);
+        return $this->belongsTo(Cpl::class);
     }
 
     /**
@@ -49,6 +48,6 @@ class Evaluasi extends Model
      */
     public function subCpmk(): BelongsTo
     {
-        return $this->belongsTo(SubCpmk::class);
+        return $this->belongsTo(SubCPMK::class);
     }
 }

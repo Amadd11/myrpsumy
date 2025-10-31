@@ -78,7 +78,7 @@ class EvaluasisRelationManager extends RelationManager
                             return collect();
                         }
                         // ✅ PERBAIKAN FINAL: Ambil semua data, filter di PHP, baru pluck.
-                        return SubCpmk::where('cpmk_id', $cpmkId)
+                        return SubCPMK::where('cpmk_id', $cpmkId)
                             ->get()
                             ->filter(fn($subcpmk) => !empty($subcpmk->title))
                             ->pluck('title', 'id');
@@ -100,12 +100,6 @@ class EvaluasisRelationManager extends RelationManager
                     ->numeric()
                     ->suffix('%')
                     ->columnSpan(1),
-
-                Forms\Components\TextInput::make('bobot_cpmk')
-                    ->label('Bobot CPMK (%)')
-                    ->numeric()
-                    ->suffix('%')
-                    ->columnSpan(1),
             ])->columns(2);
     }
 
@@ -116,7 +110,6 @@ class EvaluasisRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('week'),
                 Tables\Columns\TextColumn::make('subCpmk.title')->label('Sub-CPMK')->limit(50),
-                Tables\Columns\TextColumn::make('bobot_cpmk')->label('Bobot CPMK')->suffix('%'),
                 Tables\Columns\TextColumn::make('bobot_sub_cpmk')->label('Bobot Sub-CPMK'),
             ])
             ->filters([])

@@ -22,7 +22,6 @@ return new class extends Migration
             $table->unsignedTinyInteger('bobot_sub_cpmk')->nullable();
             $table->text('indikator')->nullable();
             $table->text('bentuk_penilaian')->nullable();
-            $table->unsignedTinyInteger('bobot_cpmk')->nullable();
             $table->timestamps();
         });
     }

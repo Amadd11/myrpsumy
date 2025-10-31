@@ -60,28 +60,13 @@ class CplsRelationManager extends RelationManager
                     ->label('Taksonomi')
                     ->badge(),
 
-                // ✅ Ambil bobot dari pivot
                 Tables\Columns\TextColumn::make('pivot.bobot')
                     ->label('Bobot (%)')
                     ->sortable()
                     ->alignCenter()
                     ->color('success'),
             ])
-            ->headerActions([
-                // Hubungkan CPL Existing + input bobot pivot
-                Tables\Actions\AttachAction::make()
-                    ->preloadRecordSelect()
-                    ->label('Hubungkan CPL')
-                    ->form(fn($action) => [
-                        $action->getRecordSelect(), // dropdown CPL
-                        Forms\Components\TextInput::make('bobot')
-                            ->label('Bobot CPL (%)')
-                            ->numeric()
-                            ->required()
-                            ->suffix('%')
-                            ->helperText('Masukkan bobot CPL untuk mata kuliah ini'),
-                    ]),
-            ])
+            ->headerActions([])
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->label('Edit Bobot') // edit hanya pivot field

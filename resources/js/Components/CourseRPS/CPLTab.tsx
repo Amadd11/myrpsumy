@@ -9,7 +9,7 @@ interface Cpl {
     description: string;
     taksonomi: string;
     bg_color: string;
-    bobot: string; 
+    bobot: string;
 }
 
 interface CplTabProps {
@@ -23,6 +23,20 @@ const CplTab: FC<CplTabProps> = ({ allCpls, relatedCpls }) => {
         const bobotNum = parseFloat(cpl.bobot?.toString() || "0");
         return sum + bobotNum;
     }, 0);
+
+    // Helper: Render description dengan support HTML (jika dari rich text)
+    const renderDescription = (desc: string) => {
+        if (!desc)
+            return (
+                <p className="italic text-gray-500">Deskripsi tidak tersedia</p>
+            );
+        return (
+            <div
+                className="mt-1 text-sm leading-relaxed text-gray-700"
+                dangerouslySetInnerHTML={{ __html: desc }} // Hapus ini kalau pasti plain text
+            />
+        );
+    };
 
     return (
         <Card className="border shadow-xl border-gray-200/50 bg-white/80 rounded-2xl">
@@ -42,40 +56,46 @@ const CplTab: FC<CplTabProps> = ({ allCpls, relatedCpls }) => {
                     <h3 className="mb-2 text-lg font-bold text-gray-800">
                         Daftar CPL
                     </h3>
-                    {allCpls.map((cpl) => {
-                        const isSelected = relatedCpls.some(
-                            (rc) => rc.id === cpl.id
-                        );
-                        return (
-                            <div
-                                key={cpl.id}
-                                className={`p-4 rounded-lg border-2 transition ${
-                                    isSelected ? "ring-2 ring-blue-300" : ""
-                                }`}
-                                style={{
-                                    borderColor: cpl.bg_color || "#e5e7eb",
-                                    backgroundColor: cpl.bg_color
-                                        ? `${cpl.bg_color}20`
-                                        : "white",
-                                }}
-                            >
-                                <div className="flex flex-wrap items-center justify-between gap-2">
-                                    <h4 className="font-bold text-gray-900">
-                                        {cpl.code}
-                                    </h4>
-                                    <Badge
-                                        variant="outline"
-                                        className="text-yellow-800 bg-yellow-100 border-yellow-400"
-                                    >
-                                        Taksonomi: {cpl.taksonomi}
-                                    </Badge>
+                    {allCpls.length === 0 ? (
+                        <p className="text-sm italic text-gray-500">
+                            Belum ada data CPL.
+                        </p>
+                    ) : (
+                        allCpls.map((cpl) => {
+                            const isSelected = relatedCpls.some(
+                                (rc) => rc.id === cpl.id
+                            );
+                            return (
+                                <div
+                                    key={cpl.id}
+                                    className={`p-4 rounded-lg border-2 transition-all duration-200 ${
+                                        isSelected
+                                            ? "ring-2 ring-blue-300 shadow-md"
+                                            : "hover:shadow-sm"
+                                    }`}
+                                    style={{
+                                        borderColor: cpl.bg_color || "#e5e7eb",
+                                        backgroundColor: cpl.bg_color
+                                            ? `${cpl.bg_color}20`
+                                            : "white",
+                                    }}
+                                >
+                                    <div className="flex flex-wrap items-center justify-between gap-2">
+                                        <h4 className="font-bold text-gray-900">
+                                            {cpl.code}
+                                        </h4>
+                                        <Badge
+                                            variant="outline"
+                                            className="text-yellow-800 bg-yellow-100 border-yellow-400"
+                                        >
+                                            Taksonomi: {cpl.taksonomi}
+                                        </Badge>
+                                    </div>
+                                    {renderDescription(cpl.description)}
                                 </div>
-                                <p className="mt-1 text-sm text-gray-700">
-                                    {cpl.description}
-                                </p>
-                            </div>
-                        );
-                    })}
+                            );
+                        })
+                    )}
                 </div>
 
                 {/* CPL Terpilih */}
@@ -119,9 +139,7 @@ const CplTab: FC<CplTabProps> = ({ allCpls, relatedCpls }) => {
                                                 %
                                             </Badge>
                                         </div>
-                                        <p className="text-sm leading-relaxed text-gray-700">
-                                            {cpl.description}
-                                        </p>
+                                        {renderDescription(cpl.description)}
                                     </div>
                                 </div>
                             ))}

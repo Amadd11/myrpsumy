@@ -27,7 +27,7 @@ class Rencana extends Model
 
     public function subCpmk(): BelongsTo
     {
-        return $this->belongsTo(SubCpmk::class,);
+        return $this->belongsTo(SubCPMK::class,);
     }
 
     public function rps()

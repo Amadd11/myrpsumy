@@ -6,13 +6,14 @@ use App\Models\CPL;
 use App\Models\Rps;
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Tugas;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\RpsResource\Pages;
-use App\Models\Course; // Import untuk reactive
 
+use App\Models\Course; // Import untuk reactive
 use App\Filament\Resources\RpsResource\RelationManagers\CplsRelationManager;
 use App\Filament\Resources\RpsResource\RelationManagers\CPMKRelationManager;
 use App\Filament\Resources\RpsResource\RelationManagers\BobotRelationManager;
@@ -26,14 +27,14 @@ class RpsResource extends Resource
 {
     protected static ?string $model = Rps::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document';
     protected static ?string $navigationLabel = 'RPS';
     protected static ?string $pluralLabel = 'RPS';
-    protected static ?string $navigationGroup = 'Akademik'; // Grup sama dengan Course
+    protected static ?string $navigationGroup = 'Akademik';
 
     public static function form(Form $form): Form
     {
-        $years = range(2021, 2028); // Membuat rentang tahun dari 2021 sampai 2028
+        $years = range(2021, 2028);
         $academicYears = [];
         foreach ($years as $year) {
             $nextYear = $year + 1;
@@ -48,8 +49,12 @@ class RpsResource extends Resource
                             ->schema([
                                 // Kolom 1
                                 Forms\Components\Select::make('course_id')
-                                    ->relationship('course', 'name')
-                                    ->label('Mata Kuliah')
+                                    ->relationship(
+                                        name: 'course',
+                                        titleAttribute: 'name',
+                                        modifyQueryUsing: fn($query) =>
+                                        $query->whereNotIn('id', Rps::pluck('course_id'))
+                                    )->label('Mata Kuliah')
                                     ->searchable()
                                     ->preload()
                                     ->required()
@@ -58,8 +63,6 @@ class RpsResource extends Resource
                                     ->afterStateUpdated(function ($state, callable $set, callable $get) {
                                         $course = Course::find($state);
                                         if ($course) {
-                                            // Bisa tambah hidden field atau placeholder untuk auto-fill
-                                            // Misal: $set('course_code_preview', $course->code);
                                         }
                                     })
                                     ->columnSpan(1),
@@ -102,6 +105,15 @@ class RpsResource extends Resource
                                 Forms\Components\RichEditor::make('materi_pembelajaran')
                                     ->label('Mater Pembelajaran/Bahan Kajian')
                                     ->columnSpan(2),
+                                Forms\Components\FileUpload::make('file_pdf')
+                                    ->label('PDF RPS')
+                                    ->directory('rps')
+                                    ->disk('public')
+                                    ->acceptedFileTypes(['application/pdf'])
+                                    ->preserveFilenames()
+                                    ->openable()
+                                    ->downloadable()
+                                    ->columnSpan(2),
                             ]),
                     ]),
 
@@ -126,25 +138,25 @@ class RpsResource extends Resource
                 Tables\Columns\TextColumn::make('course.name')
                     ->label('Mata Kuliah')
                     ->searchable()
-                    ->sortable()
-                    ->badge(), // Bukan numeric, ganti ke text biasa
-
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('course.code')
                     ->label('Kode Course')
                     ->badge()
                     ->sortable(),
-
+                Tables\Columns\TextColumn::make('course.semester')
+                    ->label('Semester')
+                    ->badge()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('dosen.name')
                     ->label('Dosen')
                     ->searchable()
-                    ->sortable()
-                    ->badge(), // Bukan numeric
-
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('tahun_ajaran')
                     ->label('Tahun Ajaran')
-                    ->sortable()
-                    ->badge(),
-
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('tgl_penyusunan')
+                    ->label('Tanggal Penyusunan')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->label('Deskripsi')
                     ->limit(50) // Truncate panjang

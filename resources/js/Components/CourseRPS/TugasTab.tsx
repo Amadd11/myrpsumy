@@ -52,20 +52,15 @@ const DetailItem: FC<{
             className={`space-y-2 p-4 bg-white/50 backdrop-blur-sm rounded-xl border border-blue-100/50 hover:border-blue-200/50 transition-all duration-300 ${className}`}
         >
             <div className="flex items-start gap-3">
-                {" "}
-                {/* items-start untuk sejajar ke atas */}
                 <div className="flex-shrink-0 p-1 text-blue-600 rounded-lg">
-                    {" "}
                     {/* Tanpa gradien background */}
                     {React.cloneElement(icon as React.ReactElement, {
                         className: "w-5 h-5",
-                    })}{" "}
-                    {/* Ukuran ikon konsisten */}
+                    })}
+
                 </div>
                 <div className="flex-1 min-w-0">
                     <h4 className="text-sm font-semibold text-gray-800">
-                        {" "}
-                        {/* truncate dihapus jika tidak diperlukan */}
                         {label}
                     </h4>
                     {isHtml ? (
@@ -94,7 +89,7 @@ const TugasTab: FC<Props> = ({ tugas, courseName }) => {
                     </div>
                     <div>
                         <span className="text-2xl font-bold tracking-tight">
-                            Daftar Tugas
+                            Rencana Penilaian Tugas/Ujian
                         </span>
                         {courseName && (
                             <span className="ml-2 text-lg font-medium text-gray-600">
@@ -120,14 +115,6 @@ const TugasTab: FC<Props> = ({ tugas, courseName }) => {
                             Silakan periksa kembali nanti atau hubungi dosen
                             pengampu.
                         </p>
-                        <div className="flex gap-3 mt-6">
-                            <button className="px-4 py-2 text-sm font-medium text-blue-600 transition-colors bg-blue-100 rounded-xl hover:bg-blue-200">
-                                Refresh
-                            </button>
-                            <button className="px-4 py-2 text-sm font-medium text-gray-600 transition-colors bg-gray-100 rounded-xl hover:bg-gray-200">
-                                Hubungi Dosen
-                            </button>
-                        </div>
                     </div>
                 ) : (
                     // Modern Accordion
@@ -149,9 +136,7 @@ const TugasTab: FC<Props> = ({ tugas, courseName }) => {
                                                 {" "}
                                                 {/* Tanpa gradien background & shadow */}
                                                 <FileText className="w-5 h-5" />{" "}
-                                                {/* Ukuran ikon 20x20px */}
                                             </div>
-                                            {/* Judul Penilaian */}
                                             <h3 className="flex-1 text-lg font-bold text-gray-900 truncate">
                                                 {item.judul_penilaian}
                                             </h3>

@@ -22,6 +22,7 @@ class Rps extends Model
         'materi_pembelajaran',
         'tgl_penyusunan',
         'tahun_ajaran',
+        'file_pdf'
     ];
 
     /**
@@ -50,7 +51,7 @@ class Rps extends Model
     }
     public function cpmks()
     {
-        return $this->hasMany(Cpmk::class);
+        return $this->hasMany(CPMK::class);
     }
 
     public function evaluasis()
@@ -81,7 +82,7 @@ class Rps extends Model
     {
         return $this->hasManyThrough(
             SubCPMK::class,
-            Cpmk::class,
+            CPMK::class,
             'rps_id', // Foreign key di tabel cpmks yang mengarah ke courses
             'cpmk_id',   // Foreign key di tabel sub_cpmks yang mengarah ke cpmks
             'id',        // Local key di tabel courses

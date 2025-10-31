@@ -41,10 +41,9 @@ class CPMKRelationManager extends RelationManager
                     ->preload()
                     ->nullable()
                     ->helperText('Hanya CPL yang sudah dipilih pada RPS ini yang akan tampil.'),
-                Forms\Components\Textarea::make('description')
+                Forms\Components\RichEditor::make('description')
                     ->label('Deskripsi')
                     ->nullable()
-                    ->rows(6)
                     ->columnSpanFull(),
             ]);
     }

@@ -1,5 +1,11 @@
 import React, { FC } from "react";
-import { BookOpen, User, Calendar, ClipboardList } from "lucide-react";
+import {
+    BookOpen,
+    User,
+    Calendar,
+    ClipboardList,
+    Download,
+} from "lucide-react";
 
 interface DeskripsiTabProps {
     courseInfo?: {
@@ -8,24 +14,22 @@ interface DeskripsiTabProps {
         deskripsi?: string;
         materiPembelajaran?: string;
         tglPenyusunan?: string;
+        file_pdf?: string;
     };
 }
 
 const DeskripsiTab: FC<DeskripsiTabProps> = ({ courseInfo }) => {
-    // Fallback jika data courseInfo belum ada
-    console.log("Data yang diterima oleh DeskripsiTab:", courseInfo);
-
     const info = courseInfo || {
         penanggungJawab: "Belum Diatur",
         tahunAjaran: "—",
         deskripsi: undefined,
         materiPembelajaran: undefined,
         tglPenyusunan: undefined,
+        file_pdf: undefined,
     };
 
     return (
         <div className="p-6 space-y-8 border shadow-xl bg-white/80 rounded-2xl border-gray-100/50">
-            {/* 🧭 Header */}
             <div className="flex items-center gap-3">
                 <div className="p-2 text-white shadow-lg bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl">
                     <BookOpen className="w-5 h-5" />
@@ -35,7 +39,6 @@ const DeskripsiTab: FC<DeskripsiTabProps> = ({ courseInfo }) => {
                 </h2>
             </div>
 
-            {/* 📘 Informasi Umum */}
             <div className="space-y-4">
                 <h4 className="text-base font-semibold text-gray-900">
                     Informasi Umum
@@ -53,7 +56,6 @@ const DeskripsiTab: FC<DeskripsiTabProps> = ({ courseInfo }) => {
                         </p>
                     </div>
 
-                    {/* 🗓 Tahun Ajaran */}
                     <div className="space-y-2">
                         <div className="flex items-center gap-2 text-sm font-medium text-gray-600">
                             <Calendar className="w-4 h-4 text-gray-400" />
@@ -123,6 +125,19 @@ const DeskripsiTab: FC<DeskripsiTabProps> = ({ courseInfo }) => {
                     )}
                 </div>
             </div>
+            {courseInfo?.file_pdf && (
+                <div className="flex justify-center pt-4">
+                    <a
+                        href={courseInfo.file_pdf}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-6 py-3 font-semibold text-white transition-all duration-200 transform shadow-lg bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl hover:from-blue-700 hover:to-purple-700 hover:scale-105"
+                    >
+                        <Download className="w-4 h-4" />
+                        Download RPS (PDF)
+                    </a>
+                </div>
+            )}
         </div>
     );
 };

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('materi_pembelajaran')->nullable();
             $table->text('tgl_penyusunan')->nullable();
             $table->text('tahun_ajaran')->nullable();
+            $table->string('file_pdf')->nullable();
             $table->timestamps();
         });
     }

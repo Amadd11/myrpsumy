@@ -2,42 +2,43 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CourseResource\RelationManagers\CplsRelationManager;
-use App\Filament\Resources\CPLResource\Pages;
-use App\Filament\Resources\CPLResource\RelationManagers;
 use App\Models\CPL;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\CPLResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\CPLResource\RelationManagers;
+use App\Filament\Resources\CourseResource\RelationManagers\CplsRelationManager;
 
 class CPLResource extends Resource
 {
     protected static ?string $model = CPL::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon  = 'heroicon-o-document-text';
     protected static ?string $navigationLabel = 'Capaian Lulusan (CPL)';
     protected static ?string $pluralModelLabel = 'CPL';
+    protected static ?string $navigationGroup = 'Akademik';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                // 2. Kolom 'course_id' dihapus karena tidak relevan di sini
                 Forms\Components\TextInput::make('code')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('description')
+                Forms\Components\RichEditor::make('description')
+                    ->label('Deskripsi')
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('taksonomi')
                     ->label('Taksonomi Bloom')
                     ->maxLength(255),
                 Forms\Components\ColorPicker::make('bg_color')
                     ->label('Warna CPL')
-                    ->default('#16a34a') // warna hijau
+                    ->default('#16a34a')
                     ->required(),
 
             ]);
@@ -51,6 +52,8 @@ class CPLResource extends Resource
                 Tables\Columns\TextColumn::make('code')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('description')
+                    ->label('Deskripsi'),
                 Tables\Columns\TextColumn::make('taksonomi')
                     ->searchable()
                     ->badge(),

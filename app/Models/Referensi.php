@@ -14,11 +14,7 @@ class Referensi extends Model
     protected $fillable = [
         'rps_id',
         'tipe',
-        'penulis',
-        'judul',
-        'tahun',
-        'penerbit',
-        'tautan',
+        'referensi',
     ];
 
     /**

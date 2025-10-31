@@ -21,8 +21,8 @@ class RoleSeeder extends Seeder
 
         $admin = User::create([
             'name' => 'Admin',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('password'), // Jangan lupa untuk mengganti dengan password yang aman
+            'email' => 'prodimarsumy@mail.com',
+            'password' => Hash::make('marsumy21'),
         ]);
 
         $admin->assignRole('admin');
@@ -30,8 +30,8 @@ class RoleSeeder extends Seeder
         // Membuat perawat
         $dosen = User::create([
             'name' => 'Dosen',
-            'email' => 'dosen@example.com',
-            'password' => Hash::make('password'),
+            'email' => 'dosenmarsumy@mail.com',
+            'password' => Hash::make('dosenmars'),
         ]);
 
         // Menetapkan role 'perawat' ke pengguna ini
